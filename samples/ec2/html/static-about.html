@@ -1,0 +1,46 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: Manually provision static website</h2>
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <div class="inner-body panel">
+                        <p>"Amazon Simple Storage Service (Amazon S3) is object storage with a simple web service interface to store and retrieve any amount of data from anywhere on the web." (<a href="https://aws.amazon.com/s3/">Source</a>)</p>
+                        <p>In this sublesson, you will upload HTML and other files to an Amazon Simple Storage Service (S3) bucket and configure it as a static website. Later in this lesson, you will automate the process you're performing manually.</p>
+                        <p>For more information on using S3 for static website hosting, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/user-guide/static-website-hosting.html">How Do I Configure an S3 Bucket for Static Website Hosting?</a></p>
+                    </div>  
+                 </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Create and configure an S3 Bucket for Static Website Hosting</h4>
+                    <div class="inner-body panel">
+                        <p>Follow these steps to create and configure an S3 bucket for static website hosting -</p>
+                        <ul class="ul-listed">
+                            <li>Go to the <a href="https://console.aws.amazon.com/s3/">Amazon S3 console</a> and select <strong>Create Bucket</strong></li>
+                            <li>Enter a globally-unique <strong>Bucket name</strong>. See <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html">Bucket Restrictions and Limitations</a> for bucket naming constraints and other limits.</li>
+                            <li>Select the <strong>US East</strong> region</li>
+                            <li>Select <strong>Next</strong></li>
+                            <li>From the <em>Set Properties</em> panel, select <strong>Next</strong></li>
+                            <li>From the <em>Set Permissions</em> panel, select <strong>Next</strong></li>
+                            <li>From the <em>Review</em> panel, select <strong>Create bucket</strong></li>
+                            <li>Click the newly-created bucket and go to the <strong>Properties</strong> tab and select  <strong>Static website hosting</strong></li>
+                            <li>Choose the <strong>Use this bucket to host a website</strong> radio button and type <strong>index.html</strong> for <em>Index document</em> and select <strong>Save</strong></li>
+                            <li>Select the <strong>Objects</strong> tab. Select <strong>Upload</strong>, then drag and drop the contents of the <strong>html</strong> directory from your cloned GitHub repository.</li>
+                            <li>Choose <strong>Next</strong></li>
+                            <li>Choose <strong>Manage public permissions</strong> and select the <strong>Read</strong> checkbox for <em>Objects</em> and <em>Everyone</em></li>
+                            <li>Choose <strong>Next</strong></li>
+                            <li>Choose <strong>Next</strong></li>
+                            <li>Choose <strong>Upload</strong></li>
+                            <li>Select the <strong>Properties</strong> tab</li>
+                            <li>Select the <strong>Static website hosting</strong> and click on the <em>Endpoint URL</em>. The static website should correctly display.</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+                 

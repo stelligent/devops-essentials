@@ -1,0 +1,74 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">EC2: CodeDeploy</h2>
+
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Create CodeDeploy Application and Deployment Group</h4>
+                    <p><a href="https://console.aws.amazon.com/codedeploy/">CodeDeploy console</a></p>
+                    <div class="inner-body panel">
+                        <table style="width:100%" border="1">
+                          <tr>
+                            <th>Resource</th>
+                            <th>Description</th> 
+                          </tr>
+                          <tr>
+                            <td>Get started with AWS CodeDeploy</td>
+                            <td>Click <strong>Sample deployment</strong> radio button</td> 
+                          </tr>
+                          <tr>
+                            <td>Choose a deployment type</td>
+                            <td>Click <strong>Blue/green deployment</strong> radio button</td>
+                          </tr>
+                          <tr>
+                            <td>Create blue/green deployment</td>
+                            <td>(Use defaults and choose a <strong>Key pair name</strong>); <strong>Launch environment</strong></td>
+                          </tr>
+                          <tr>
+                            <td>Congratulations! Your environment is ready</td>
+                            <td>Click on the ELB URL (Note the blue background)</td>
+                          </tr>
+                          <tr>
+                            <td>Create blue/green deployment</td>
+                            <td>Click <strong>Start blue/green deployment</strong></td>
+                          </tr>
+                          <tr>
+                            <td>After blue/green deployment completes</td>
+                            <td>Click on the ELB URL (Note the blue background)</td>
+                          </tr>
+                        </table>
+
+                    </div> 
+                    <p>For more info: <a href="http://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-example.html">AppSpec File Example</p>
+                 </div>  
+
+
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Congratulations! Your environment is ready</h4>
+                    <p>Congratulations! Your environment is ready.
+<p>Sample environment:
+We launched a Classic load balancer (BlueGreenLoadBalancer-8ilk6o4) and an Auto Scaling group (CodeDeployBGStack-8ilk6o4-BlueGreenAutoScalingGroup-1N71ZQXAM6F4P) of three t2.micro EC2 instances.</p>
+
+<p>Sample application:
+We installed a sample application using an AWS CodeDeploy in-place deployment.</p>
+
+<p>You can download the application code:
+https://s3.amazonaws.com/aws-codedeploy-us-east-1/samples/latest/SampleApp_Linux.zip</p>
+
+<p>You can view the sample web page using your web browser:
+http://BlueGreenLoadBalancer-8ilk6o4-1182982190.us-east-1.elb.amazonaws.com</p>
+
+</p>Sample blue/green deployment:
+This is the new application revision that will be installed by the blue/green deployment.</p>
+You can download the application code:
+https://s3.amazonaws.com/aws-codedeploy-us-east-1/samples/latest/SampleApp2_Linux.zip
+
+</p>After the application revision is installed, you can view it using your web browser:
+http://BlueGreenLoadBalancer-8ilk6o4-1182982190.us-east-1.elb.amazonaws.com</p>
+
+</p>Cleanup:
+After you finish examining the sample application, you can clean up your sample environment resources. In the Auto Scaling console, delete the Auto Scaling group prefixed with CodeDeploy_BlueGreenDemoFleet-8ilk6o4. In the AWS CloudFormation console, delete the stack named CodeDeployBGStack-8ilk6o4.
+To continue the sample deployment, choose Start blue/green deployment.</p>
+                 </div>  

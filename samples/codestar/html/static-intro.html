@@ -1,0 +1,33 @@
+        <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: Introduction </h2>
+                   <!-- inner body -->
+                    <div class="inner-body panel">
+                        <h4 class="sub-heading">Learning Objectives</h4>
+                        <p>By the end of this lesson you will be able to -</p>
+                        <ul class="edited-ul">
+                            <li>Click one button to launch all AWS resources in this solution</li>
+                            <li>Identify the AWS CloudFormation resources that compose this solution</li>
+                            <li>Identify the basic AWS CodePipeline constructs</li>
+                            <li>Describe the basic condtructs of the AWS CodeBuild service</li>
+                            <li>Setup your local environment for regularly committing code to a GitHub repository</li>
+                            <li>Run a static website</li>
+                        </ul>
+                    </div>  
+                </div>
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Narrative</h4>
+                    <div class="inner-body panel">
+                        <p>In this lesson, we're going to use the website I'm using to walkthrough this course to demonstrate how to use Continuous Delivery and AWS tools to deploy changes to production based on recent code commits. Other lessons in this course will build on this example add additional use cases and complexity to this solution. So, this is going to be rather "meta" as I'm going to walkthrough the course website in this video and you'll see how to make code changes that go through a deployment pipelines composed of stages and actions in CodePipeline to update the course website itself. All of the code to do this will be provided to you and regularly updated.</p>
+                        <p>To start things off, you will click on a <strong>Launch Stack</strong> button to launch a stack based on a CloudFormation template. This CloudFormation template is committed as code in my GitHub repository.</p>
+                        <p>Next, we will go through the resources in the CloudFormation template that automates the provisioning of several resources including an AWS CodePipeline pipeline, an AWS CodeBuild project, some AWS IAM Roles, and an AWS S3 Bucket. CodePipeline is also configured to integrate with various providers such as GitHub and CodeBuild.</p>
+                    </div>  
+                 </div>  
+
+                 
+            </div>
+        </div>  

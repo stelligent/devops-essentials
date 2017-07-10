@@ -1,0 +1,173 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: CodePipeline</h2>
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <div class="inner-body panel">
+                        <p>Before we do that, though, let's have a look at AWS CodePipeline in a bit more detail. In CodePipeline, Stages are composed of a collection of Actions. Actions actually perform the work in a pipeline. Within Actions, you'll see integration with other tools, running commands to build, test, deploy, and release your service. Currently, there are six Action types: Source, Build, Test, Deploy, Invoke, and Approval. In this sample, we're just using two types: Source and Build. You can run actions in parallel. A stage is not complete until all actions are successful.</p>
+                        <p>You can enable and disable transitions to acts as gates between stages and several other features but let's not get ahead of ourselves as you'll be learning more about this and other features of CodePipeline in other lessons.</p>
+                        <p>With CodePipeline, you can - </p>
+                        <ul class="edited-ul">
+                            <li>"<strong>Automate your release processes</strong> - AWS CodePipeline fully automates your release process from end to end, starting from your source repository through build, test, and deployment. You can prevent changes from moving through a pipeline by including a manual approval action in any stage except a Source stage. You can automatically release when you want, in the way you want, on the systems of your choice, across one instance or multiple instances.</li>
+                            <li><strong>Establish a consistent release process:</strong> - Define a consistent set of steps for every code change. AWS CodePipeline runs each stage of your release according to your criteria.</li>
+                            <li><strong>Speed up delivery while improving quality:</strong> - You can automate your release process to allow your developers to test and release code incrementally and speed up the release of new features to your customers.</li>
+                            <li><strong>Use your favorite tools</strong> - You can incorporate your existing source, build, and deployment tools into your pipeline. For a full list of AWS services and third-party tools currently supported by AWS CodePipeline, see <a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/integrations.html">Product and Service Integrations</a>.</li>
+                            <li><strong>View progress at-a-glance:</strong> - You can review real-time status of your pipelines, check the details of any alerts, retry failed actions, view details about the source revisions used in the latest pipeline execution in each stage, and manually rerun any pipeline." (<a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html">Source</a>)</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Create a Pipeline using the AWS CodePipeline Console</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                        For more information, see: <em><a href="https://stelligent.com/2016/03/08/create-a-pipeline-using-the-aws-codepipeline-console/">Create a Pipeline using the AWS CodePipeline Console</a></em>
+                    </div>  
+                 </div> 
+
+                        <div class="inner-body panel">
+                        <h4 class="sub-heading">Stages</h4>
+                        <p>Each stage has a unique name within a pipeline, and contains a sequence of actions as part of its workflow. A stage can only process one revision at a time. A revision must run through a stage before the next revision can run through it. All actions configured for a stage must be completed successfully before the stage is considered complete. After a stage is complete, the pipeline will automatically transition the revision and its artifacts created by the actions in that stage to the next stage in the pipeline (<em><a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/concepts.html">Source</a></em>)</p>
+                        <p>While there are many different types of limits in CodePipeline. Here are a few of the most salient: </p>
+                        <ul class="edited-ul">
+                            <li><strong>Number of stages in a pipeline </strong> - Minimum of 2, maximum of 10</li>
+                            <li><strong>Number of actions in a stage</strong> - Minimum of 1, maximum of 20</li>
+                            <li><strong>Maximum number of parallel actions in a stage</strong> - Maximum of 5</li>
+                            <li><strong>Maximum number of sequential actions in a stage</strong> - Maximum of 10</li>
+                        </ul>
+                        <p>For more information see <a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/limits.html">Limits in AWS CodePipeline</a> and <a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html">Action Structure Requirements in AWS CodePipeline</a>.</p>
+                    </div>  
+
+                    <div class="inner-body panel">
+                        <h4 class="sub-heading">Actions</h4>
+                        <p>@todo: Introduce</p>
+                        <ul class="edited-ul">
+                            <li><strong>Source</strong> - Supported built-in providers: Amazon S3, AWS CodeCommit, GitHub</li>
+                            <li><strong>Build</strong> - Supported built-in providers: CodeBuild</li>
+                            <li><strong>Test</strong> - Supported built-in providers: CodeBuild</li>
+                            <li><strong>Deploy</strong> - Supported built-in providers: CodeDeploy, CloudFormation, ElasticBeanstalk, OpsWorks</li>
+                            <li><strong>Invoke</strong> - Supported built-in providers: Lambda</li>
+                            <li><strong>Approval</strong> - Supported built-in providers: Manual</li>
+                        </ul>
+                        <p>@todo: Custom Actions </p>
+                    </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Edit a pipeline</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">View a pipeline</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Delete a Pipeline</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div> 
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Revision</h4>
+                    <div class="inner-body panel">
+                        <p>"A revision is a change made to a source that is configured in a source action for AWS CodePipeline, such as a pushed commit to a GitHub repository or an update to a file in a versioned Amazon S3 bucket." (<em><a href="http://docs.aws.amazon.com/codepipeline/latest/userguide/concepts.html">Source</a></em>)</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Transitions and Gates</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>   
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Export a Pipeline</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <figure class="highlight">
+                            <pre>
+                                <code class="language-html" data-lang="html">aws codepipeline get-pipeline --name YOUR_PIPELINE_NAME > my-pipeline.json</code>
+                            </pre>
+                        </figure>
+                        <p>For more information, see <a href="http://docs.aws.amazon.com/cli/latest/reference/codepipeline/get-pipeline.html">get-pipeline</a>.</p>
+                    </div>  
+                 </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Convert JSON to YAML</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Custom Actions</h4>
+                    <div class="inner-body panel">
+                        <p>Introduction -</p>
+                        <ul class="edited-ul">
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+
+
+                    <div class="inner-body panel">
+                        <h4 class="sub-heading">Deployment Pipeline Archetype</h4>
+                         <p>In the list below, you see a deployment pipeline that this course will use as its archetype for the sample solutions herein.</p>
+                        <ul class="edited-ul">
+                            <li><strong>Source</strong> - Poll for version-control repo changes and store built artifacts.</li>
+                            <li><strong>Build</strong> - builds code, runs unit tests, static analysis, etc.</li>
+                            <li><strong>Dev</strong> - runs deployment and integration tests used to test the running service.</li>
+                            <li><strong>PreProd</strong> - runs deployment and integration tests used to test the combination of new software and production config. Looks like prod, uses prod configuration, but doesn't receive customer traffic.</li>
+                            <li><strong>Canary</strong> - runs a deployment in a production environment on one node and monitors the results.</li>
+                            <li><strong>Production</strong> - Deploy software application/service to production envirionment</li>
+                        </ul>
+                    </div> 
+
+
+
+                 

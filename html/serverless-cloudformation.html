@@ -1,0 +1,373 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Serverless: CloudFormation </h2>
+                  
+   <!-- inner body -->
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <p>In this sublesson, we will walk through the CloudFormation template that launches the application. We'll cover some of the basics of CloudFormation while reviewing the AWS resources that are provisioned as part of this solution. A link to the CloudFormation template is provided below.</p>
+                    <ul class="edited-ul">
+                        <li><a href="https://github.com/stelligent/devops-essentials/blob/master/samples/serverless/pipeline.yml" target="_blank">CloudFormation Template for Deploying using Serverless tools</a></li>
+                    </ul>
+                  
+                       </div>  
+                     </div>
+                     </div>
+                 </div>  
+
+                <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Parameters</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">parameters</a> defined in this <a href="https://github.com/stelligent/devops-essentials/blob/master/samples/serverless/pipeline.yml#LL4-LL35">CloudFormation template</a>.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">Parameters:
+    ServiceName:
+        Type: String
+        Default: ServerlessApp
+        Description: Name for the service, used in the code repository, Lambda function, and pipeline names</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>   
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">AWS::Lambda::Function</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html" target="_blank">AWS::Lambda::Function</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    StartTestsFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        FunctionName: !Sub '${ServiceName}_start_tests'
+        Description: !Sub 'Starts integration tests function ${ServiceName}'
+        Handler: index.lambda_handler
+        MemorySize: 128
+        Role: !GetAtt StartTestsFunctionExecutionRole.Arn
+        Runtime: python2.7
+        Timeout: 10
+        Code:
+          ZipFile: >
+            import json
+
+            import boto3
+
+            import uuid
+
+            cp = boto3.client("codepipeline")
+
+            cf = boto3.client("cloudformation")
+
+            lambda_client = boto3.client("lambda")
+
+            def lambda_handler(event, context):
+                print json.dumps(event, sort_keys=True, indent=4, separators=(',', ': '))
+
+                job_id = event["CodePipeline.job"]["id"] 
+                user_parameters = event["CodePipeline.job"]["data"]["actionConfiguration"]["configuration"]["UserParameters"]
+                stack_name = user_parameters.split("|")[0]
+                test_stack_name = user_parameters.split("|")[1]
+                stage = user_parameters.split("|")[2]
+
+                print("looking for ApiUrl in {} Stack".format(stack_name))
+                api_url, error = _get_property_from_stack(stack_name, "ApiUrl")
+                if not api_url:
+                    _fail_job(job_id, error)
+                    return
+
+                print("looking for TestFunction in {} Stack".format(test_stack_name))
+                test_function, error = _get_property_from_stack(test_stack_name, "TestFunction")
+                if not test_function:
+                    _fail_job(job_id, error)
+                    return
+
+                lambda_client.invoke_async(
+                  FunctionName=test_function,
+                  InvokeArgs=json.dumps({
+                    "job_id": job_id,
+                    "api_url": api_url
+                  })
+                )
+
+            def _get_property_from_stack(stack_name, property_key):
+                stack_data = cf.describe_stacks(StackName=stack_name)
+
+                if not stack_data or len(stack_data["Stacks"]) == 0:
+                    return None, "Could not find stack"
+                    
+                current_stack = stack_data["Stacks"][0]
+
+                if "Outputs" not in current_stack:
+                    return None, "Could not find outputs in stack"
+                    
+                for cur_output in current_stack["Outputs"]:
+                    if cur_output["OutputKey"] == property_key:
+                        return cur_output["OutputValue"], None
+                
+                return None, "Could not find {} output property in stack".format(property_key)
+
+            def _complete_job(job_id):
+                cp.put_job_success_result(jobId=job_id)
+
+            def _fail_job(job_id, failure_reason):
+                cp.put_job_failure_result(
+                        jobId=job_id,
+                        failureDetails={
+                            'type': 'JobFailed',
+                            'message': failure_reason,
+                            'externalExecutionId': uuid.uuid4().hex
+                        }
+                    )</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">AWS::CodePipeline::Pipeline</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codecommit-repository.html" target="_blank">AWS::CodePipeline::Pipeline"</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    Pipeline:
+        Type: AWS::CodePipeline::Pipeline
+        Properties:
+            ArtifactStore: 
+                Location: !Ref BuildArtifactsBucket
+                Type: S3
+            Name: !Sub ${ServiceName}_pipeline
+            RoleArn: !GetAtt PipelineExecutionRole.Arn
+            Stages:
+                - Name: Source
+                  Actions:
+                    - Name: CodeCommitRepo
+                      ActionTypeId:
+                        Category: Source
+                        Owner: AWS
+                        Provider: CodeCommit
+                        Version: 1
+                      Configuration:
+                        RepositoryName: !Sub '${ServiceName}_repo'
+                        BranchName: master
+                      OutputArtifacts:
+                        - Name: SourceZip
+                      RunOrder: 1
+                - Name: Build
+                  Actions:
+                    - Name: CodeBuild
+                      ActionTypeId:
+                        Category: Build
+                        Owner: AWS
+                        Provider: CodeBuild
+                        Version: 1
+                      Configuration:
+                        ProjectName: !Ref CodeBuildProject
+                      InputArtifacts:
+                        - Name: SourceZip
+                      OutputArtifacts:
+                        - Name: BuiltZip
+                - Name: DeployTests
+                  Actions:
+                    - Name: CreateChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_REPLACE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Tests'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Tests'
+                        TemplatePath: BuiltZip::test-output_sam.yaml
+                        Capabilities: CAPABILITY_IAM
+                      InputArtifacts:
+                        - Name: BuiltZip
+                      OutputArtifacts:
+                        - Name: TestChangeSet
+                      RunOrder: 1
+                    - Name: ExecuteChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_EXECUTE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Tests'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Tests'
+                      OutputArtifacts:
+                        - Name: ExecutedTestChangeSet
+                      RunOrder: 2
+                - Name: Beta
+                  Actions:
+                    - Name: CreateChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_REPLACE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Beta'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Beta'
+                        TemplatePath: BuiltZip::app-output_sam.yaml
+                        Capabilities: CAPABILITY_IAM
+                        ParameterOverrides: '{ "Stage": "beta" }'
+                      InputArtifacts:
+                        - Name: BuiltZip
+                      RunOrder: 1
+                    - Name: ExecuteChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_EXECUTE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Beta'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Beta'
+                      OutputArtifacts:
+                        - Name: !Sub '${ServiceName}BetaChangeSet'
+                      RunOrder: 2
+                    - Name: IntegrationTests
+                      ActionTypeId:
+                        Category: Invoke
+                        Owner: AWS
+                        Provider: Lambda
+                        Version: 1
+                      Configuration:
+                        FunctionName: !Ref StartTestsFunction
+                        UserParameters: !Sub '${ServiceName}-Stack-Beta|${ServiceName}-Stack-Tests|beta'
+                      InputArtifacts:
+                        - Name: !Sub '${ServiceName}BetaChangeSet'
+                      RunOrder: 3
+                - Name: Gamma
+                  Actions:
+                    - Name: CreateChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_REPLACE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Gamma'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Gamma'
+                        TemplatePath: BuiltZip::app-output_sam.yaml
+                        Capabilities: CAPABILITY_IAM
+                        ParameterOverrides: '{ "Stage": "gamma" }'
+                      InputArtifacts:
+                        - Name: BuiltZip
+                      RunOrder: 1
+                    - Name: ExecuteChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_EXECUTE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Gamma'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Gamma'
+                      OutputArtifacts:
+                        - Name: !Sub '${ServiceName}GammaChangeSet'
+                      RunOrder: 2
+                    - Name: IntegrationTests
+                      ActionTypeId:
+                        Category: Invoke
+                        Owner: AWS
+                        Provider: Lambda
+                        Version: 1
+                      Configuration:
+                        FunctionName: !Ref StartTestsFunction
+                        UserParameters: !Sub '${ServiceName}-Stack-Gamma|${ServiceName}-Stack-Tests|gamma'
+                      InputArtifacts:
+                        - Name: !Sub '${ServiceName}GammaChangeSet'
+                      RunOrder: 3
+                - Name: Prod
+                  Actions:
+                    - Name: DeploymentApproval
+                      ActionTypeId:
+                        Category: Approval
+                        Owner: AWS
+                        Provider: Manual
+                        Version: 1
+                      RunOrder: 1
+                    - Name: CreateChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_REPLACE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Prod'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Prod'
+                        TemplatePath: BuiltZip::app-output_sam.yaml
+                        Capabilities: CAPABILITY_IAM
+                        ParameterOverrides: '{ "Stage": "prod" }'
+                      InputArtifacts:
+                        - Name: BuiltZip
+                      RunOrder: 2
+                    - Name: ExecuteChangeSet
+                      ActionTypeId:
+                        Category: Deploy
+                        Owner: AWS
+                        Provider: CloudFormation
+                        Version: 1
+                      Configuration:
+                        ActionMode: CHANGE_SET_EXECUTE
+                        RoleArn: !GetAtt CloudFormationExecutionRole.Arn
+                        StackName: !Sub '${ServiceName}-Stack-Prod'
+                        ChangeSetName: !Sub '${ServiceName}-ChangeSet-Prod'
+                      OutputArtifacts:
+                        - Name: !Sub '${ServiceName}ProdChangeSet'
+                      RunOrder: 3</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+

@@ -1,0 +1,73 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Serverless Deployments: Serverless Application Model</h2>
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Key Features</h4>    
+                    <ul class="edited-ul">
+                        <li><strong>Serverless::Api</strong> - specify Swagger inline using the new definitionBody property instead of having to include a separate Swagger file with your SAM file.</li>
+                        <li><strong>Serverless::Function</strong> - Customize your function’s name with SAM instead of using the default function name created by CloudFormation.</li>
+                        <li><strong>Intrinsic functions support</strong> - SAM can now resolve a subset of CloudFormation intrinsic functions which allow you to reference resources within your SAM template. Use intrinsic functions to specify URIs</li>
+                    </ul>
+                    <p>For more information, see <a href="https://aws.amazon.com/about-aws/whats-new/2017/02/aws-serverless-application-model-aws-sam-supports-inline-swagger-and-aws-cloudformation-intrinsic-functions/">AWS Serverless Application Model (AWS SAM) Supports Inline Swagger and AWS CloudFormation Intrinsic Functions</a>
+                 </div> 
+
+
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="inner-body panel">
+                              <p>
+                                <ul class="ul-listed">
+                                   <li>Below is an example of using the Serverless Application Model as described at: <a href="https://aws.amazon.com/blogs/compute/continuous-deployment-for-serverless-applications/">Continuous Deployment for Serverless Applications</a>
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues:
+      - beta
+      - gamma
+      - prod
+    Default: beta
+    Description: Stage that can be added to resource names
+
+Resources:
+  TimeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      CodeUri: app/
+      Runtime: nodejs4.3
+      Policies: AWSLambdaBasicExecutionRole
+      Events:
+        ApiEventSource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
+    Export:
+      Name: !Sub 'ApiUrl-${Stage}'
+</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  

@@ -1,0 +1,64 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: CodeBuild</h2>
+
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Create a CodeBuild Project</h4>
+                    <p><a href="https://console.aws.amazon.com/codebuild/">CodeBuild console</a></p>
+                    <div class="inner-body panel">
+                        <table style="width:100%" border="1">
+                          <tr>
+                            <th>Resource</th>
+                            <th>Description</th> 
+                          </tr>
+                          <tr>
+                            <td>Use GitHub as Source</td>
+                            <td><a href="https://github.com/stelligent/aws-codedeploy-sample-tomcat">https://github.com/stelligent/aws-codedeploy-sample-tomcat</a></td>
+                          </tr>
+                          <tr>
+                            <td>Project Configuration</td>
+                            <td>Create a unique name</td> 
+                          </tr>
+                          <tr>
+                            <td>Source: What to Build</td>
+                            <td>GitHub; https://github.com/stelligent/aws-codedeploy-sample-tomcat</td> 
+                          </tr>
+                          <tr>
+                            <td>Environment: How to Build</td>
+                            <td>Use an image managed by AWS CodeBuild for the Environment image; Ubuntu; Java</td> 
+                          </tr>
+                          <tr>
+                            <td>Version/Current Image</td>
+                            <td><em>aws/codebuild/java:openjdk-8</em></td> 
+                          </tr>
+                          <tr>
+                            <td>Build specification</td>
+                            <td><em>Use the buildspec.yml in the source code root directory</em> (<a href="https://github.com/stelligent/aws-codedeploy-sample-tomcat/blob/master/buildspec.yml">buildspec.yml</a>)</td> 
+                          </tr>
+                          <tr>
+                            <td>Artifacts Type</td>
+                            <td><strong>Amazon S3</strong></td> 
+                          </tr>
+                          <tr>
+                            <td>Artifacts Type</td>
+                            <td><strong>CodeBuildJava</strong></td> 
+                          </tr>
+                          <tr>
+                            <td>Bucket name</td>
+                            <td><em>Same as first step<em></td> 
+                          </tr>
+                          <tr>
+                            <td>Service Role</td>
+                            <td><strong>Create a new service role in your account</strong></td> 
+                          </tr>
+                         <tr>
+                            <td>Select</td>
+                            <td>Save and Build; Start build</td> 
+                          </tr>
+                        </table>
+                    </div> 
+                    <p>For more info: <a href="http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec-ref-syntax">Build Spec Syntax</p>
+                 </div>  

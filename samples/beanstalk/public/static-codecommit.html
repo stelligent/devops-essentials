@@ -1,0 +1,47 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: CodeCommit</h2>
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <div class="inner-body panel">
+                        <p>"AWS CodeCommit is a fully-managed source control service that makes it easy for companies to host secure and highly scalable private Git repositories. CodeCommit eliminates the need to operate your own source control system or worry about scaling its infrastructure. You can use CodeCommit to securely store anything from source code to binaries, and it works seamlessly with your existing Git tools." (<a href="https://aws.amazon.com/codecommit/">Source</a>)</p>
+                        <p>In this sublesson, you will create a new CodeCommit repository using the AWS Console.</p>
+                    </div>  
+                 </div>  
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">Create a CodeCommit Repository and configure Git credentials</h4>
+                    <div class="inner-body panel">
+                        <p>Follow the steps below to configure Git credentials so that you can connect to the CodeCommit repository that you will create later this sublesson -</p>
+                        <ul class="ul-listed">
+                            <li>Go to the <a href="https://console.aws.amazon.com/codecommit/">AWS CodeCommit Console</a></li>
+                            <li>Select <strong>US East (N. Virginia)</strong> from the region menu</li>
+                            <li>Select <strong>Create repository</strong></li>
+                            <li>Enter a unique <strong>Repository name</strong> and provide a description and Click <strong>Create repository</strong></li>
+                            <li>A window named <em>Connect to your repository</em> will display. Ensure that the <em>HTTPS</em> radio button is selected for the <em>Connection type</em>. Under the <strong>Steps to clone your repository</strong> section, click on the <strong>IAM user</strong> link.</li>
+                            <li>Go to the <strong>Permissions</strong> tab and add ensure the following policies have been assigned to your IAM user by selecting <strong>Add permissions</strong> and going through the steps to select the policies listed below - </li>
+                            <ul class="ul-listed">
+                                <li><strong>AWSCodeCommitPowerUser</strong> (or an appropriate CodeCommit managed policy)</li>
+                                <li><strong>IAMSelfManageServiceSpecificCredentials</strong></li>
+                                <li><strong>IAMReadOnlyAccess</strong></li>
+                            </ul>
+                            <li>Select the <strong>Security credentials</strong> tab and choose the <strong>Generate</strong> from the <em>HTTPS Git credentials for AWS CodeCommit</em> section. Choose <strong>Download credentials</strong> and save the file on your computer for future reference.</li>
+                            <li>Go back to the <a href="https://console.aws.amazon.com/codecommit/">AWS CodeCommit Console</a> and copy the contents of the Git command and paste into your Terminal window</li>
+                            <li>When prompted, enter the username and password from the credentials file you downloaded. You should have successfully cloned your newly-create CodeCommit Git repository.</li>
+                        </ul>
+                        <p>See <a href="https://aws.amazon.com/blogs/devops/introducing-git-credentials-a-simple-way-to-connect-to-aws-codecommit-repositories-using-a-static-user-name-and-password/">Introducing Git Credentials</a> for more information.</p>
+                    </div>  
+                 </div> 
+
+
+ 
+
+
+
+
+                 

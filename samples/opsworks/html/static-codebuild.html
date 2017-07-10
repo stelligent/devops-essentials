@@ -1,0 +1,101 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static Website: CodeBuild</h2>
+
+
+                 <div class="inner-body panel">
+                    <h4 class="sub-heading">CodeBuild [UNDER DEVELOPMENT]</h4>
+                    <p>CodeBuild is a building block service you can use for executing build, static analysis, and test actions that you can integrate into your deployment pipelines. See <a href="https://aws.amazon.com/blogs/apn/an-introduction-to-aws-codebuild/">An Introduction to CodeBuild</a></p>
+                    <div class="inner-body panel">
+                        <p>TBD-</p>
+                        <ul class="edited-ul">
+                            <li>Download this GitHub package: https://github.com/stelligent/aws-codedeploy-sample-tomcat and upload the zip to an S3 Bucket. Be sure that S3 versioning is enabled for the bucket. Take note of the S3 bucket name and the name of the zip file. You will be needing these later.</li>
+                            <li>Launch CodeBuild by going to https://console.aws.amazon.com/codebuild/ and click Create project (or Get Started and then Create project if this is your first time using CodeBuild). Once you’ve clicked this, you will be see a page where you can enter the settings for your build project.</li>
+                            <li>Project Configuration – Add a project name. Pick one that makes sense. This is what you will see on your CodeBuild page and in your logs.</li>
+                            <li>Source: What to Build – Add the source for your code. Here we select S3 as a source and then enter the name of the S3 bucket that we created earlier in Step 1. You’ll enter aws-codedeploy-sample-tomcat-master.zip as the S3 object key. Although we are using S3 in this example we could also use GitHub or CodeCommit as well.</li>
+                            <li>Environment: How to Build – Right after the source we want to tell CodeBuild how to build the file. The first step is to select Use an image managed by AWS CodeBuild for the Environment image*. This way we do not need to create our own Docker image. Next select the Operating system*. Here we use Ubuntu and then we select Java as our run time – since the source we are trying to build is a Java project.</li>
+                            <li>In the version selection, we tell CodeBuild what version of Java we want to use. We are using <strong>aws/codebuild/java:openjdk-8</strong>.</li>
+                            <li>For the Build specification section, select Insert build commands. Under the Build command* section, type: <strong>mvn package</strong></li>
+                            <li>TBD</li>
+                            <li>TBD</li>
+                            <li>TBD</li>
+                            <li>TBD</li>
+                        </ul>
+                    </div>  
+                 </div>  
+
+
+
+
+
+
+
+
+We use this build command because CodeBuild actually extracts the Zip file from S3 and uses the specific folder name. Once in that folder, we want to build from the Maven package in the source code.
+
+buildspec.yml
+While the above example demonstrates the use of running a simple build command, you can also provide a more expressive description of a build using a buildspec.yml file. In this YAML file you can configure the commands that occur in each of the build phases along with the name and type of the artifact file(s). The buildspec.yml file needs to reside in the root directory of the source repository. A snippet of the buildspec.yml is shown below:
+
+YAML
+version: 0.1
+phases:
+  build:
+    commands:
+      - mvn package
+artifacts:
+  files:
+    - appspec.yml
+    - target/SampleMavenTomcatApp.war
+    - scripts/*
+ 
+
+
+
+d. Artifacts: Where to Put the Artifacts from this Build Project – Now that we have told CodeBuild where to find the source code and how to build the artifact, we are going to tell it where to store the built artifact (i.e. a WAR file, in this case).
+
+Under the Output Files section, enter:
+
+appspec.yml, target/SampleMavenTomcatApp.war, scripts/*
+We are going to store the artifact in S3, with the name CodeBuildTomcat, and in the same bucket we used to store the source code.
+
+
+
+e. Service Role – Create a new Service Role in IAM for this CodeBuild project.
+
+
+
+f. Click Continue
+
+2. View the review page and then click Save and Build.
+
+3. Now on the Start new build page just click Start build.
+
+4.  On the next page wait for the build to succeed.
+
+
+
+5. Once it has completed, you can open the S3 bucket you specified for the artifact and view the S3 bucket with the SampleMavenTomcatApp.war file.
+
+CodeBuild Phases
+As CodeBuild is building artifacts, it goes through several distinct phases that are logged in AWS CloudWatch Logs (and accessible from the CodeBuild console). Each of these phases are described in some more detail below:
+
+SUBMITTED – This is the initial phase that indicates that the build process initiated and configuration has been received
+PROVISIONING – In this phase, CodeBuild launches a build container using a Docker image as defined
+DOWNLOAD_SOURCE – Downloads the source from S3, CodeCommit or GitHub
+INSTALL – Installs the source onto the container
+PRE_BUILD – Any actions that need to occur prior to the build
+BUILD – Executes the commands defined in the build specification
+POST_BUILD – Runs any cleanup actions
+UPLOAD_ARTIFACTS – Uploads the build artifacts to S3
+FINALIZING – Completing the build process
+COMPLETED – The build process is complete
+6. Congratulations! Now you have used CodeBuild to build a sample application.
+
+
+
+
+
+                 

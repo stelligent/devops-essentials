@@ -1,0 +1,36 @@
+        <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                    <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">3.0 Deploying a Java application</h2>
+                   <!-- inner body -->
+                    <div class="inner-body panel">
+                        <h4 class="sub-heading">Tools</h4>
+                        <ul class="edited-ul">
+                            <li>[Walk through pipeline in CodePipeline touching on the various tools and services being used]</li>
+                            <li><strong>CloudFormation</strong> - Provisions CodePipeline, CodeCommit, CodeBuild, CodeDeploy, and Lambda resources </li>
+                            <li><strong>VPC</strong> - TBD</li>
+                            <li><strong>CodePipeline</strong> - Defines the stages, actions, gates and transitions in the software delivery workflow</li>
+                            <li><strong>CodeCommit</strong> - Stores the source code and used to download source via CodePipeline</li>
+                            <li><strong>CodeBuild</strong> - Run build, unit tests, and static analysis for Java application</li>
+                            <li><strong>CodeDeploy</strong> - Use Blue/Green Deployment with CodeDeploy</li>
+                            <li><strong>Lambda</strong> - Running tests, CodePipeline gates/transitions</li>
+                            <li><strong>AWS Certificate Manager (ACM)</strong> - TBD</li>
+                            <li><strong>Route 53</strong> - TBD</li>
+                        </ul>
+                    </div>  
+                    <div class="inner-body panel">
+                        <h4 class="sub-heading">Stages</h4>
+                        <ul class="edited-ul">
+                            <li><strong>Source Stage</strong> - Version-Control Repository. Native Support for S3, CodeCommit, and GitHub. Will be using GitHub and CodeCommit in this course</li>
+                            <li><strong>Build Stage</strong> - with unit tests, style checkers, etc.</li>
+                            <li><strong>Dev Stage</strong> - deploy and integration tests) - used to test the running service.</li>
+                            <li><strong>PreProd Stage</strong> - PreProd (deploy and integration tests) - used to test the combination of new software and production config. Looks like prod, uses prod config, but doesn't receive customer traffic.</li>
+                            <li><strong>Canary Stage</strong> - (OneBox) Deployment (deploy and monitor).</li>
+                            <li><strong>Production Stage</strong> - deploy.</li>
+                        </ul>
+                    </div> 
+                </div>
+            </div>
+        </div>

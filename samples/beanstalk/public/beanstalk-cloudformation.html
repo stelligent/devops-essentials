@@ -1,0 +1,335 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Deploying with Elastic Beanstalk: CloudFormation </h2>
+                  
+   <!-- inner body -->
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <p>In this sublesson, we will walk through the CloudFormation template that launches the static website solution. We'll cover some of the basics of CloudFormation while reviewing the AWS resources that are provisioned as part of this solution. A link to the CloudFormation template is provided below.</p>
+                    <ul class="edited-ul">
+                        <li><a href="https://github.com/stelligent/devops-essentials/blob/master/samples/ec2/pipeline.yml" target="_blank">CloudFormation Template for Deploying to EC2</a></li>
+                    </ul>
+                    <p>The <strong>pipeline.yml</strong> provisions the following AWS resources in its CloudFormation template are: </p>
+                    <ul class="edited-ul">
+                        <li><a href="URL" target="_blank">AWS::S3::Bucket</a></li>
+                        <li><a href="URL" target="_blank">AWS::IAM::Role</a></li>
+                        <li><a href="URL" target="_blank">AWS::ElasticBeanstalk::Application</a></li>
+                        <li><a href="URL" target="_blank">AWS::ElasticBeanstalk::ApplicationVersion</a></li>
+                        <li><a href="URL" target="_blank">AWS::ElasticBeanstalk::ConfigurationTemplateD</a></li>
+                        <li><a href="URL" target="_blank">AWS::ElasticBeanstalk::Environment</a></li>
+                        <li><a href="URL" target="_blank">AWS::CodePipeline::Pipeline</a></li>
+                    </ul>
+
+                       </div>  
+                     </div>
+                     </div>
+                 </div>  
+
+                <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Parameters</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html" target="_blank">parameters</a> defined in this <a href="https://github.com/stelligent/devops-essentials/blob/master/samples/beanstalk/pipeline.yml#LL7-LL31">CloudFormation template</a>.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">Parameters:
+  RepositoryName:
+    Description: The name of your CodeCommit repo. Go to https://console.aws.amazon.com/codecommit.
+    Type: String
+    Default: devops-essentials-eb
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  RepositoryBranch:
+    Description: The name of the branch for the CodeCommit repo
+    Type: String
+    Default: master
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  S3Bucket:
+    Description: S3 Bucket that hosts the application code
+    Type: String
+    Default: pmd-eb-samples
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  S3Key:
+    Description: S3 Bucket that hosts the application code
+    Type: String
+    Default: html.zip
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>   
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header"> ElasticBeanstalk Application</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-beanstalk.html" target="_blank">AWS::ElasticBeanstalk::Application</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  nodeApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      Description: AWS Elastic Beanstalk Sample Application</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+                  <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">ElasticBeanstalk ApplicationVersion</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-beanstalk-version.html" target="_blank">AWS::ElasticBeanstalk::ApplicationVersion</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  nodeApplicationVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      ApplicationName:
+        Ref: nodeApplication
+      Description: AWS ElasticBeanstalk Sample Application Version
+      SourceBundle:
+        S3Bucket:
+          Ref: S3Bucket
+        S3Key:
+          Ref: S3Key</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+
+                  <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">ElasticBeanstalk ConfigurationTemplate</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-beanstalk-configurationtemplate.html" target="_blank">AWS::ElasticBeanstalk::ConfigurationTemplate</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  nodeConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName:
+        Ref: nodeApplication
+      Description: AWS ElasticBeanstalk Sample Configuration Template
+      OptionSettings:
+      - Namespace: aws:autoscaling:asg
+        OptionName: MinSize
+        Value: '2'
+      - Namespace: aws:autoscaling:asg
+        OptionName: MaxSize
+        Value: '6'
+      - Namespace: aws:elasticbeanstalk:environment
+        OptionName: EnvironmentType
+        Value: LoadBalanced
+      SolutionStackName: <strong>64bit Amazon Linux 2015.09 v2.0.5 running Node.js</strong></code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+                  <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">ElasticBeanstalk Environment</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-beanstalk-environment.html" target="_blank">AWS::ElasticBeanstalk::Environment</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  nodeEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    DependsOn:
+    - nodeApplication
+    - nodeConfigurationTemplate
+    - nodeApplicationVersion
+    Properties:
+      ApplicationName:
+        Ref: nodeApplication
+      Description: AWS ElasticBeanstalk Sample Node Environment
+      TemplateName:
+        Ref: nodeConfigurationTemplate
+      VersionLabel:
+        Ref: nodeApplicationVersion</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+                  <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CodePipeline Pipeline</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html" target="_blank">AWS::CodePipeline::Pipeline</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  CodePipelineStack:
+    Type: AWS::CodePipeline::Pipeline
+    DependsOn:
+    - nodeApplication
+    - nodeEnvironment
+    Properties:
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      Stages:
+      - Name: Source
+        Actions:
+        - InputArtifacts: []
+          Name: Source
+          ActionTypeId:
+            Category: Source
+            Owner: AWS
+            Version: '1'
+            Provider: CodeCommit
+          OutputArtifacts:
+          - Name: MyApp
+          Configuration:
+            BranchName:
+              Ref: RepositoryBranch
+            RepositoryName:
+              Ref: RepositoryName
+          RunOrder: 1
+      - Name: Production
+        Actions:
+        - InputArtifacts:
+          - Name: MyApp
+          Name: Deploy
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Version: '1'
+            Provider: ElasticBeanstalk
+          OutputArtifacts: []
+          Configuration:
+            ApplicationName:
+              Ref: nodeApplication
+            EnvironmentName:
+              Ref: nodeEnvironment
+          RunOrder: 1
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+
+                  <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CloudFormation Outputs</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html" target="_blank">Outputs</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">Outputs:
+  AppURL:
+    Value:
+      Fn::Join:
+      - ''
+      - - http://
+        - Fn::GetAtt:
+          - nodeEnvironment
+          - EndpointURL
+        - "/"
+    Description: URL for the working Node application
+  CodePipelineURL:
+    Value:
+      Fn::Join:
+      - ''
+      - - https://console.aws.amazon.com/codepipeline/home?region=
+        - Ref: AWS::Region
+        - "#/view/"
+        - Ref: CodePipelineStack
+    Description: Pipeline URL
+  nodeApplication:
+    Value:
+      Ref: nodeApplication
+  nodeApplicationVersion:
+    Value:
+      Ref: nodeApplicationVersion
+    Description: The Elastic Beanstalk application
+  nodeConfigurationTemplate:
+    Value:
+      Ref: nodeConfigurationTemplate
+    Description: The Elastic Beanstalk configuration
+  nodeEnvironment:
+    Value:
+      Ref: nodeEnvironment
+    Description: The Elastic Beanstalk environment on which the application runs
+  CodePipelineRole:
+    Value:
+      Ref: CodePipelineRole
+    Description: The IAM role associated with CodePipeline pipeline</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  

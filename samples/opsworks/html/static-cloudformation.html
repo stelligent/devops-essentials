@@ -1,0 +1,319 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">Static: CloudFormation </h2>
+                   <!-- inner body -->
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <p>In this sublesson, we will walk through the CloudFormation template that launches the static website solution. We'll cover some of the basics of CloudFormation while reviewing the AWS resources that are provisioned as part of this solution. A link to the CloudFormation template is provided below.</p>
+                    <ul class="edited-ul">
+                        <li><a href="https://github.com/stelligent/devops-essentials/blob/master/samples/static/pipeline.yml" target="_blank">CloudFormation Template for Static Website</a></li>
+                    </ul>
+                    <p>The four key AWS resources defined in this CloudFormation template are: </p>
+                    <ul class="edited-ul">
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">IAM Role</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html" target="_blank">S3 Bucket</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-project.html" target="_blank">CodeBuild</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html" target="_blank">CodePipeline</a></li>
+                    </ul>
+
+                    <p>@todo: Provide a high-level overview of CloudFormation (e.g. automated provisioning, launch stack, AWS resources, JSON/YAML, etc.)</p>
+
+                       </div>  
+                     </div>
+                     </div>
+                 </div>  
+
+                <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Parameters</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html" target="_blank">parameters</a> defined in this <a href="https://github.com/stelligent/devops-essentials/blob/master/samples/static/pipeline.yml#LL4-LL35">CloudFormation template</a>.
+                                  <li><strong>Parameter Names</strong> - Unique names to use when passing in values to the CloudFormation template</li>
+                                  <li><strong>Parameter Types</strong> - Supports data types such as String, Number, List<Number>, and CommaDelimitedList. There are also AWS-Specific Parameter Types types such as AWS::EC2::Instance, AWS::EC2::AvailabilityZone::Name, and AWS::EC2::KeyPair::KeyName </li>
+                                  <li><strong>Default</strong> - the parameter value provided when none is given</li>
+                                  <li><strong>NoEcho</strong> - Whether to mask the parameter value whenever anyone makes a call that describes the stack. If you set the value to true, the parameter value is masked with asterisks (*****).</li>
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">Parameters:
+  SiteBucketName:
+    Type: String
+    Description: Name of bucket to create to host the website
+  GitHubUser:
+    Type: String
+    Description: GitHub User
+    Default: "stelligent"
+  GitHubRepo:
+    Type: String
+    Description: GitHub Repo to pull from. Only the Name. not the URL
+    Default: "devops-essentials"
+  GitHubBranch:
+    Type: String
+    Description: GitHub Branch
+    Default: "master"
+  GitHubToken:
+    NoEcho: true
+    Type: String
+    Description: Secret. It might look something like 9b189a1654643522561f7b3ebd44a1531a4287af OAuthToken with access to Repo. Go to https://github.com/settings/tokens
+  BuildType:
+    Type: String
+    Default: "LINUX_CONTAINER"
+    Description: The build container type to use for building the app
+  BuildComputeType:
+    Type: String
+    Default: "BUILD_GENERAL1_SMALL"
+    Description: The build compute type to use for building the app
+  BuildImage:
+    Type: String
+    Default: "aws/codebuild/ubuntu-base:14.04"
+    Description: The build image to use for building the app</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>     
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">S3 Buckets</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html" target="_blank">AWS::S3::Bucket</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  SiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Ref SiteBucketName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+  PipelineBucket:
+    Type: AWS::S3::Bucket</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">IAM Role for CodePipeline</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">AWS::IAM::Role</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  CodePipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - codepipeline.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: codepipeline-service
+        PolicyDocument:
+          Statement:
+          - Action:
+            - codebuild:*
+            Resource: "*"
+            Effect: Allow
+          - Action:
+            - s3:GetObject
+            - s3:GetObjectVersion
+            - s3:GetBucketVersioning
+            Resource: "*"
+            Effect: Allow
+          - Action:
+            - s3:PutObject
+            Resource:
+            - arn:aws:s3:::codepipeline*
+            Effect: Allow
+          - Action:
+            - s3:*
+            - cloudformation:*
+            - ecs:*
+            - iam:PassRole
+            Resource: "*"
+            Effect: Allow
+          Version: '2012-10-17'</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CodeBuild Project for building website</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-project.html" target="_blank">AWS::CodeBuild::Project</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  CodeBuildDeploySite:
+    Type: AWS::CodeBuild::Project
+    DependsOn: CodeBuildRole
+    Properties:
+      Name: !Sub ${AWS::StackName}-DeploySite
+      Description: Deploy site to S3
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: !Ref BuildType
+        ComputeType: !Ref BuildComputeType
+        Image: !Sub ${BuildImage}
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: !Sub |
+          version: 0.1
+          phases:
+            post_build:
+              commands:
+                - aws s3 cp --recursive --acl public-read ./samples s3://${SiteBucketName}/samples 
+                - aws s3 cp --recursive --acl public-read ./html s3://${SiteBucketName}/ 
+          artifacts:
+            type: zip
+            files:
+              - ./html/index.html
+      TimeoutInMinutes: 10</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>              
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Deployment Pipeline via CodePipeline</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html" target="_blank">AWS::CodePipeline::Pipeline</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      Stages:
+      - Name: Source
+        Actions:
+        - InputArtifacts: []
+          Name: Source
+          ActionTypeId:
+            Category: Source
+            Owner: ThirdParty
+            Version: '1'
+            Provider: GitHub
+          OutputArtifacts:
+          - Name: SourceOutput
+          Configuration:
+            Owner: !Ref GitHubUser
+            Repo: !Ref GitHubRepo
+            Branch: !Ref GitHubBranch
+            OAuthToken: !Ref GitHubToken
+          RunOrder: 1
+      - Name: Deploy
+        Actions:
+        - Name: Artifact
+          ActionTypeId:
+            Category: Build
+            Owner: AWS
+            Version: '1'
+            Provider: CodeBuild
+          InputArtifacts:
+          - Name: SourceOutput
+          OutputArtifacts:
+          - Name: DeployOutput
+          Configuration:
+            ProjectName: !Ref CodeBuildDeploySite
+          RunOrder: 1
+      ArtifactStore:
+        Type: S3
+        Location: !Ref <strong>PipelineBucket</strong></code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CloudFormation Outputs</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html" target="_blank">CloudFormation Outputs</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">Outputs:
+  CodePipelineUrl:
+    Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}
+    Description: CodePipeline URL
+  SiteUrl:
+    Value: !GetAtt [SiteBucket, WebsiteURL]
+    Description: S3 Website URL</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>          

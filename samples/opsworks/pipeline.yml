@@ -1,0 +1,406 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: OpsWorks stack and Deployment Pipeline in CodePipeline
+Parameters:
+  EmailAddress:
+    Description: Email Address for sending SNS notifications for CodeCommit
+    Type: String
+  KeyName:
+    Description: Name of an existing EC2 KeyPair for SSH access to the instances.
+    Type: AWS::EC2::KeyPair::KeyName
+  RepositoryBranch:
+    Description: The name of the branch for the CodeCommit repo
+    Type: String
+    Default: master
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: Dynamic Configuration
+      Parameters:
+      - KeyName
+    - Label:
+        default: CodeCommit Configuration
+      Parameters:
+      - RepositoryBranch
+Mappings:
+  Region2Principal:
+    us-east-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    us-west-2:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    us-west-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    eu-west-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    ap-southeast-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    ap-northeast-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    ap-northeast-2:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    ap-southeast-2:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    sa-east-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+    cn-north-1:
+      EC2Principal: ec2.amazonaws.com.cn
+      OpsWorksPrincipal: opsworks.amazonaws.com.cn
+    eu-central-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+  AWSInstanceType2Virt:
+    t2.micro:
+      Virt: HVM
+    t2.small:
+      Virt: HVM
+    t2.medium:
+      Virt: HVM
+    t2.large:
+      Virt: HVM
+  AWSInstanceType2EBSOpt:
+    t2.micro:
+      EBSOpt: 'false'
+    t2.small:
+      EBSOpt: 'false'
+    t2.medium:
+      EBSOpt: 'false'
+    t2.large:
+      EBSOpt: 'false'
+  AWSRegionVirt2AMI:
+    us-east-1:
+      HVM: ami-8fcee4e5
+    us-west-2:
+      HVM: ami-63b25203
+  AWSRegionToAMI:
+    us-east-1:
+      AMIID: ami-2b3b6041
+    us-west-2:
+      AMIID: ami-ac6872cd
+    eu-west-1:
+      AMIID: ami-03238b70
+    ap-northeast-1:
+      AMIID: ami-fb2f1295
+    ap-southeast-2:
+      AMIID: ami-43547120
+    us-west-1:
+      AMIID: ami-bfe095df
+    ap-southeast-1:
+      AMIID: ami-c78f43a4
+    eu-central-1:
+      AMIID: ami-e1e6f88d
+Resources:
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint:
+          Ref: EmailAddress
+        Protocol: email
+  CodeCommitJavaRepo:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName:
+        Ref: AWS::StackName
+      RepositoryDescription: CodeCommit Repository
+      Triggers:
+      - Name: MasterTrigger
+        CustomData:
+          Ref: AWS::StackName
+        DestinationArn:
+          Ref: MySNSTopic
+        Events:
+        - all
+  CPOpsDeploySecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Lets you manage OpsWorks instances deployed to by CodePipeline
+  CPOpsDeploySecGroupIngressHTTP:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: '80'
+      ToPort: '80'
+      CidrIp: 0.0.0.0/0
+      GroupId:
+        Fn::GetAtt:
+        - CPOpsDeploySecGroup
+        - GroupId
+  CPOpsDeploySecGroupIngressSSH:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: '22'
+      ToPort: '22'
+      CidrIp: 0.0.0.0/0
+      GroupId:
+        Fn::GetAtt:
+        - CPOpsDeploySecGroup
+        - GroupId
+  MyStack:
+    Type: AWS::OpsWorks::Stack
+    Properties:
+      Name:
+        Ref: AWS::StackName
+      ServiceRoleArn:
+        Fn::GetAtt:
+        - OpsWorksServiceRole
+        - Arn
+      ConfigurationManager:
+        Name: Chef
+        Version: '11.10'
+      DefaultOs: Amazon Linux 2017.03
+      DefaultInstanceProfileArn:
+        Fn::GetAtt:
+        - OpsWorksInstanceProfile
+        - Arn
+  MyLayer:
+    Type: AWS::OpsWorks::Layer
+    Properties:
+      StackId:
+        Ref: MyStack
+      Name: MyLayer
+      Type: web
+      Shortname: web
+      EnableAutoHealing: 'true'
+      AutoAssignElasticIps: 'false'
+      AutoAssignPublicIps: 'true'
+      CustomSecurityGroupIds:
+      - Fn::GetAtt:
+        - CPOpsDeploySecGroup
+        - GroupId
+    DependsOn:
+    - MyStack
+    - CPOpsDeploySecGroup
+  OpsWorksServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - Fn::FindInMap:
+              - Region2Principal
+              - Ref: AWS::Region
+              - OpsWorksPrincipal
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: opsworks-service
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action:
+            - ec2:*
+            - iam:PassRole
+            - cloudwatch:GetMetricStatistics
+            - elasticloadbalancing:*
+            Resource: "*"
+  OpsWorksInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: OpsWorksInstanceRole
+  OpsWorksInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - Fn::FindInMap:
+              - Region2Principal
+              - Ref: AWS::Region
+              - EC2Principal
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: s3-get
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:GetObject
+            Resource: "*"
+  MyInstance:
+    Type: AWS::OpsWorks::Instance
+    Properties:
+      LayerIds:
+      - Ref: MyLayer
+      StackId:
+        Ref: MyStack
+      InstanceType: c3.large
+      SshKeyName:
+        Ref: KeyName
+  CodePipelineTrustRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Sid: '1'
+          Effect: Allow
+          Principal:
+            Service:
+            - codepipeline.amazonaws.com
+          Action: sts:AssumeRole
+      Path: "/"
+  CodePipelineRolePolicies:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CodePipelinePolicy
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:*
+          Resource:
+          - "*"
+          Effect: Allow
+        - Action:
+          - s3:PutBucketPolicy
+          - s3:PutObject
+          Resource:
+          - Fn::Join:
+            - ''
+            - - arn:aws:s3:::demo-
+              - Ref: AWS::Region
+              - "-"
+              - Ref: AWS::AccountId
+              - "-"
+              - Ref: AWS::StackName
+          Effect: Allow
+        - Action:
+          - codecommit:GetBranch
+          - codecommit:GetCommit
+          - codecommit:UploadArchive
+          - codecommit:GetUploadArchiveStatus
+          - codecommit:CancelUploadArchive
+          Resource: "*"
+          Effect: Allow
+        - Action:
+          - codepipeline:*
+          - iam:ListRoles
+          - iam:PassRole
+          - sns:*
+          - opsworks:*
+          - elasticbeanstalk:DescribeApplications
+          - elasticbeanstalk:DescribeEnvironments
+          - lambda:GetFunctionConfiguration
+          - lambda:ListFunctions
+          Resource: "*"
+          Effect: Allow
+      Roles:
+      - Ref: CodePipelineTrustRole
+  MyOpsWorksApp:
+    Type: AWS::OpsWorks::App
+    Properties:
+      StackId:
+        Ref: MyStack
+      Type: static
+      Shortname: static
+      Name:
+        Ref: AWS::StackName
+      AppSource:
+        Type: other
+  MyPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    DependsOn:
+    - MyStack
+    - MyOpsWorksApp
+    - MyLayer
+    - MyInstance
+    Properties:
+      Name:
+        Fn::Join:
+        - ''
+        - - Ref: AWS::StackName
+          - "-Pipeline"
+      RoleArn:
+        Fn::GetAtt:
+        - CodePipelineTrustRole
+        - Arn
+      Stages:
+      - Name: Source
+        Actions:
+        - InputArtifacts: []
+          Name: Source
+          ActionTypeId:
+            Category: Source
+            Owner: AWS
+            Version: '1'
+            Provider: CodeCommit
+          OutputArtifacts:
+          - Name: MyApp
+          Configuration:
+            BranchName:
+              Ref: RepositoryBranch
+            RepositoryName:
+              Ref: AWS::StackName
+          RunOrder: 1
+      - Name: Approval
+        Actions:
+        - InputArtifacts: []
+          Name: Approval
+          ActionTypeId:
+            Category: Approval
+            Owner: AWS
+            Version: '1'
+            Provider: Manual
+          OutputArtifacts: []
+          Configuration:
+            NotificationArn:
+              Ref: MySNSTopic
+            CustomData: Approval or Reject this change after running Exploratory Tests
+          RunOrder: 1
+      - Name: Deploy
+        Actions:
+        - InputArtifacts:
+          - Name: MyApp
+          Name: Deploy
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Version: '1'
+            Provider: OpsWorks
+          OutputArtifacts: []
+          Configuration:
+            StackId:
+              Ref: MyStack
+            AppId:
+              Ref: MyOpsWorksApp
+            DeploymentType: deploy_app
+            LayerId:
+              Ref: MyLayer
+          RunOrder: 1
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket
+Outputs:
+  PipelineUrl:
+    Value:
+      Fn::Join:
+      - ''
+      - - https://console.aws.amazon.com/codepipeline/home?region=
+        - Ref: AWS::Region
+        - "#/view/"
+        - Ref: MyPipeline
+    Description: Pipeline Url

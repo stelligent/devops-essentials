@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - yum -y install jq
+      - gem install cfn-nag
+      - cfn_nag --input-json-path pipeline-cfn-nag-fail.json
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'

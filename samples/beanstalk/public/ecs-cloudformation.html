@@ -1,0 +1,635 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">ECS: CloudFormation </h2>
+                  
+   <!-- inner body -->
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Introduction</h4>
+                    <p>In this sublesson, we will walk through the CloudFormation template that launches the static website solution. We'll cover some of the basics of CloudFormation while reviewing the AWS resources that are provisioned as part of this solution. A link to the CloudFormation template is provided below.</p>
+                    <ul class="edited-ul">
+                        <li><a href="https://github.com/stelligent/devops-essentials/blob/master/samples/ec2/pipeline.yml" target="_blank">CloudFormation Template for Deploying to EC2</a></li>
+                    </ul>
+                    <p>The <strong>pipeline.yml</strong> provisions the following AWS resources in its CloudFormation template are: </p>
+                    <ul class="edited-ul">
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-project.html" target="_blank">AWS::CodeBuild::Project</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codecommit-repository.html" target="_blank">AWS::CodeCommit::Repository</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html" target="_blank">AWS::CloudFormation::Stack</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">AWS::IAM::Role</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html" target="_blank">AWS::CodePipeline::Pipeline</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codedeploy-application.html" target="_blank">AWS::CodeDeploy::Application</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codedeploy-deploymentgroup.html" target="_blank">AWS::CodeDeploy::DeploymentGroup</a></li>
+                        <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html" target="_blank">AWS::SNS::Topic</a></li>
+                    </ul>
+                    <p>In addition, the pipeline.yml makes a call to a CloudFormation template provided by AWS that provisons EC2 instance(s) and installs the CodeDeploy on these instances. This template provisions the following AWS resources: </p>
+                        <ul class="edited-ul">
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html" target="_blank">AWS::IAM::Policy</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">AWS::IAM::Role</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-instanceprofile.html" target="_blank">AWS::IAM::InstanceProfile</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html" target="_blank">AWS::EC2::Instance</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html" target="_blank">AWS::EC2::SecurityGroup</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-waitcondition.html" target="_blank">AWS::CloudFormation::WaitCondition</a></li>
+                            <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-waitconditionhandle.html" target="_blank">AWS::CloudFormation::WaitConditionHandle</a></li>
+                        </ul>
+                       </div>  
+                     </div>
+                     </div>
+                 </div>  
+
+                <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Parameters</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html" target="_blank">parameters</a> defined in this <a href="https://github.com/stelligent/devops-essentials/blob/master/samples/ec2/pipeline.yml#LL4-LL35">CloudFormation template</a>.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  "Parameters":{
+    "EmailAddress":{
+      "Description":"Email Address for sending SNS notifications for CodeCommit",
+      "Type":"String"
+    },
+    "RepositoryBranch":{
+      "Description":"The name of the branch for the CodeCommit repo",
+      "Type":"String",
+      "Default":"master",
+      "AllowedPattern":"[\\x20-\\x7E]*",
+      "ConstraintDescription":"Can contain only ASCII characters."
+    },
+    "TagKey":{
+      "Type":"String",
+      "Default":"Name",
+      "Description":"The tag name that is associated with EC2 instances on which CodeDeploy agent is installed"
+    },
+    "TagValue":{
+      "Description":"The tag value that identifies this as a target for deployments.",
+      "Type":"String",
+      "Default":"CodeDeployEC2Tag",
+      "AllowedPattern":"[\\x20-\\x7E]*",
+      "ConstraintDescription":"Can contain only ASCII characters."
+    },
+    "EC2KeyPairName":{
+      "Description":"Name of an existing Amazon EC2 key pair to enable SSH access to the instances.",
+      "Type":"AWS::EC2::KeyPair::KeyName",
+      "MinLength":"1",
+      "MaxLength":"255",
+      "AllowedPattern":"[\\x20-\\x7E]*",
+      "ConstraintDescription":"Can contain only ASCII characters."
+    }
+  },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>   
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">SNS Topic</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html" target="_blank">AWS::SNS::Topic</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "MySNSTopic":{
+      "Type":"AWS::SNS::Topic",
+      "Properties":{
+        "Subscription":[
+          {
+            "Endpoint":{
+              "Ref":"EmailAddress"
+            },
+            "Protocol":"email"
+          }
+        ]
+      }
+    },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CodeCommit</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codecommit-repository.html" target="_blank">AWS::CodeCommit::Repository"</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "CodeCommitRepo":{
+      "Type":"AWS::CodeCommit::Repository",
+      "Properties":{
+        "RepositoryName":{
+          "Ref":"AWS::StackName"
+        },
+        "RepositoryDescription":"CodeCommit Repository",
+        "Triggers":[
+          {
+            "Name":"MasterTrigger",
+            "CustomData":{
+              "Ref":"AWS::StackName"
+            },
+            "DestinationArn":{
+              "Ref":"MySNSTopic"
+            },
+            "Events":[
+              "all"
+            ]
+          }
+        ]
+      }
+    },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CodeBuild Project for building website</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codebuild-project.html" target="_blank">AWS::CodeBuild::Project</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "CodeBuildProject":{
+      "Type":"AWS::CodeBuild::Project",
+      "DependsOn":"CodeBuildRole",
+      "Properties":{
+        "Name":{
+          "Ref":"AWS::StackName"
+        },
+        "Description":"Build application",
+        "ServiceRole":{
+          "Fn::GetAtt":[
+            "CodeBuildRole",
+            "Arn"
+          ]
+        },
+        "Artifacts":{
+          "Type":"no_artifacts"
+        },
+        "Environment":{
+          "Type":"LINUX_CONTAINER",
+          "ComputeType":"BUILD_GENERAL1_SMALL",
+          "Image":"aws/codebuild/java:openjdk-8"
+        },
+        "Source":{
+          "Location":{
+            "Fn::Join":[
+              "",
+              [
+                "https://git-codecommit.",
+                {
+                  "Ref":"AWS::Region"
+                },
+                ".amazonaws.com/v1/repos/",
+                {
+                  "Ref":"AWS::StackName"
+                }
+              ]
+            ]
+          },
+          "Type":"CODECOMMIT"
+        },
+        "TimeoutInMinutes":10,
+        "Tags":[
+          {
+            "Key":"Owner",
+            "Value":"JavaTomcatProject"
+          }
+        ]
+      }
+    },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>   
+
+
+             <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CloudFormation Nested Stack</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html" target="_blank">AWS::CloudFormation::Stack</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "CodeDeployEC2InstancesStack":{
+      "Type":"AWS::CloudFormation::Stack",
+      "Properties":{
+        "TemplateURL":"https://s3.amazonaws.com/stelligent-public/cloudformation-templates/github/labs/codebuild/CodeDeploy_SampleCF_Template.json",
+        "TimeoutInMinutes":"60",
+        "Parameters":{
+          "TagValue":{
+            "Ref":"TagValue"
+          },
+          "KeyPairName":{
+            "Ref":"EC2KeyPairName"
+          }
+        }
+      }
+    },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CodeDeploy Application and Deployment Group</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codedeploy-application.html" target="_blank">AWS::CodeDeploy::Application</a></strong> and <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codedeploy-deploymentgroup.html" target="_blank">AWS::CodeDeploy::DeploymentGroup</a></strong> as defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "MyApplication":{
+      "Type":"AWS::CodeDeploy::Application",
+      "DependsOn":"CodeDeployEC2InstancesStack"
+    },
+    "MyDeploymentGroup":{
+      "Type":"AWS::CodeDeploy::DeploymentGroup",
+      "DependsOn":"MyApplication",
+      "Properties":{
+        "ApplicationName":{
+          "Ref":"MyApplication"
+        },
+        "DeploymentConfigName":"CodeDeployDefault.AllAtOnce",
+        "Ec2TagFilters":[
+          {
+            "Key":{
+              "Ref":"TagKey"
+            },
+            "Value":{
+              "Ref":"TagValue"
+            },
+            "Type":"KEY_AND_VALUE"
+          }
+        ],
+        "ServiceRoleArn":{
+          "Fn::GetAtt":[
+            "CodeDeployEC2InstancesStack",
+            "Outputs.CodeDeployTrustRoleARN"
+          ]
+        }
+      }
+    },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>             
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">Deployment Pipeline via CodePipeline</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codepipeline-pipeline.html" target="_blank">AWS::CodePipeline::Pipeline</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">    "CodePipelineStack":{
+      "Type":"AWS::CodePipeline::Pipeline",
+      "DependsOn":"CodeBuildJavaProject",
+      "Properties":{
+        "RoleArn":{
+          "Fn::Join":[
+            "",
+            [
+              "arn:aws:iam::",
+              {
+                "Ref":"AWS::AccountId"
+              },
+              ":role/",
+              {
+                "Ref":"CodePipelineRole"
+              }
+            ]
+          ]
+        },
+        "Stages":[
+          {
+            "Name":"Source",
+            "Actions":[
+              {
+                "InputArtifacts":[
+
+                ],
+                "Name":"Source",
+                "ActionTypeId":{
+                  "Category":"Source",
+                  "Owner":"AWS",
+                  "Version":"1",
+                  "Provider":"CodeCommit"
+                },
+                "OutputArtifacts":[
+                  {
+                    "Name":"MyApp"
+                  }
+                ],
+                "Configuration":{
+                  "BranchName":{
+                    "Ref":"RepositoryBranch"
+                  },
+                  "RepositoryName":{
+                    "Ref":"AWS::StackName"
+                  }
+                },
+                "RunOrder":1
+              }
+            ]
+          },
+          {
+            "Name":"Build",
+            "Actions":[
+              {
+                "InputArtifacts":[
+                  {
+                    "Name":"MyApp"
+                  }
+                ],
+                "Name":"Build",
+                "ActionTypeId":{
+                  "Category":"Build",
+                  "Owner":"AWS",
+                  "Version":"1",
+                  "Provider":"CodeBuild"
+                },
+                "OutputArtifacts":[
+                  {
+                    "Name":"MyAppBuild"
+                  }
+                ],
+                "Configuration":{
+                  "ProjectName":{
+                    "Ref":"CodeBuildJavaProject"
+                  }
+                },
+                "RunOrder":1
+              }
+            ]
+          },
+          {
+            "Name":"Deploy",
+            "Actions":[
+              {
+                "InputArtifacts":[
+                  {
+                    "Name":"MyAppBuild"
+                  }
+                ],
+                "Name":"DemoFleet",
+                "ActionTypeId":{
+                  "Category":"Deploy",
+                  "Owner":"AWS",
+                  "Version":"1",
+                  "Provider":"CodeDeploy"
+                },
+                "OutputArtifacts":[
+
+                ],
+                "Configuration":{
+                  "ApplicationName":{
+                    "Ref":"MyApplication"
+                  },
+                  "DeploymentGroupName":{
+                    "Ref":"MyDeploymentGroup"
+                  }
+                },
+                "RunOrder":1
+              }
+            ]
+          }
+        ],
+        "ArtifactStore":{
+          "Type":"S3",
+          "Location":{
+            "Fn::Join":[
+              "",
+              [
+                "codepipeline-",
+                {
+                  "Ref":"AWS::Region"
+                },
+                "-",
+                {
+                  "Ref":"AWS::AccountId"
+                }
+              ]
+            ]
+          }
+        }
+      }
+    }
+  },</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>    
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">CloudFormation Outputs</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html" target="_blank">CloudFormation Outputs</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">  "Outputs":{
+    "CodeBuildURL":{
+      "Value":{
+        "Fn::Join":[
+          "",
+          [
+            "https://console.aws.amazon.com/codebuild/home?region=",
+            {
+              "Ref":"AWS::Region"
+            },
+            "#/projects/",
+            {
+              "Ref":"CodeBuildJavaProject"
+            },
+            "/view"
+          ]
+        ]
+      },
+      "Description":"CodeBuild URL"
+    },
+    "CodeCommitURL":{
+      "Value":{
+        "Fn::Join":[
+          "",
+          [
+            "https://console.aws.amazon.com/codecommit/home?region=",
+            {
+              "Ref":"AWS::Region"
+            },
+            "#/repository/",
+            {
+              "Ref":"AWS::StackName"
+            },
+            "/browse/HEAD/--/"
+          ]
+        ]
+      },
+      "Description":"Git Repository URL"
+    },
+    "CodeDeployURL":{
+      "Value":{
+        "Fn::Join":[
+          "",
+          [
+            "https://console.aws.amazon.com/codedeploy/home?region=",
+            {
+              "Ref":"AWS::Region"
+            },
+            "#/deployments/"
+          ]
+        ]
+      },
+      "Description":"CodeDeploy URL"
+    },
+    "CloneUrlSsh":{
+      "Value":{
+        "Fn::Join":[
+          "",
+          [
+            "git clone ",
+            {
+              "Fn::GetAtt":[
+                "CodeCommitJavaRepo",
+                "CloneUrlSsh"
+              ]
+            },
+            ""
+          ]
+        ]
+      },
+      "Description":"Git command for CodeCommit repository"
+    },
+    "CodePipelineURL":{
+      "Value":{
+        "Fn::Join":[
+          "",
+          [
+            "https://console.aws.amazon.com/codepipeline/home?region=",
+            {
+              "Ref":"AWS::Region"
+            },
+            "#/view/",
+            {
+              "Ref":"CodePipelineStack"
+            }
+          ]
+        ]
+      },
+      "Description":"CodePipeline URL"
+    }
+  }</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>      
+
+
+
+
+
+               <!-- container-fluid start here -->
+                <div class="container-fluid">        
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">S3 Buckets</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                   <li>Review the use of <strong><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-s3-bucket.html" target="_blank">AWS::S3::Bucket</a></strong> defined in this CloudFormation template.
+                                   <!-- code block -->
+                                    <figure class="highlight">
+                                        <pre>
+                                            <code class="language-html" data-lang="html">CODE</code>
+                                           </pre>
+                                    </figure>
+                                    <!--code block ends here-->
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            <!-- container-fluid ends here --> </div>  
+                  

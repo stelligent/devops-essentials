@@ -1,0 +1,6 @@
+node_modules
+bower_components
+*.iml
+js/*.min.js
+dist
+.DS_Store

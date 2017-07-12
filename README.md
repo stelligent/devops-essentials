@@ -2,7 +2,7 @@
 In *DevOps Essentials on AWS Complete Video Course*, you'll learn how to automate the infrastructure and deployment pipelines using AWS services and tools so if you're some type of software or DevOps-focused engineer or architect interested in learning how to use [AWS Developer Tools](https://aws.amazon.com/products/developer-tools/) to create a full-lifecycle software delivery solution, it's the course for you. The focus of the course is on deployment pipeline architectures and its implementations versus software architectures.
 
 # Overview
-This repo is a demonstration of Continuous Delivery of a website using CodePipeline, CloudFormation, and other AWS Developer and Management tools. 
+This repo is a demonstration of Continuous Delivery of a website using CodePipeline, CloudFormation, and other AWS [Developer](https://aws.amazon.com/products/developer-tools/) and [Management](https://aws.amazon.com/products/management/) tools. 
 
 # Launch Stack
 To launch the first solution (i.e. a static website to S3), you'll need to specify a unique S3 bucket name for the website bucket that will be created along with a GitHub token. Review and ensure you've configured the [Prerequisites](http://www.devopsessentialsaws.com/) before launching the stack below.

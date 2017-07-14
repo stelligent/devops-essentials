@@ -1,0 +1,95 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  StackTTL:
+    Description: Duration in minutes after which the stack should be deleted
+    Type: Number
+    MinValue: '2'
+    MaxValue: '1440'
+    Default: '2'
+  SiteBucketName:
+    Type: String
+    Description: Name of bucket to create to host the website
+  GitHubUser:
+    Type: String
+    Description: GitHub User
+    Default: "stelligent"
+  GitHubRepo:
+    Type: String
+    Description: GitHub Repo to pull from. Only the Name. not the URL
+    Default: "devops-essentials"
+  GitHubBranch:
+    Type: String
+    Description: GitHub Branch
+    Default: "master"
+  GitHubToken:
+    NoEcho: true
+    Type: String
+    Description: Secret. It might look something like 9b189a1654643522561f7b3ebd44a1531a4287af OAuthToken with access to Repo. Go to https://github.com/settings/tokens
+  BuildType:
+    Type: String
+    Default: "LINUX_CONTAINER"
+    Description: The build container type to use for building the app
+  BuildComputeType:
+    Type: String
+    Default: "BUILD_GENERAL1_SMALL"
+    Description: The build compute type to use for building the app
+  BuildImage:
+    Type: String
+    Default: "aws/codebuild/ubuntu-base:14.04"
+    Description: The build image to use for building the app
+  EmailAddress:
+    Description: Email Address for sending SNS notifications for CodeCommit
+    Type: String
+  RepositoryBranch:
+    Description: The name of the branch for the CodeCommit repo
+    Type: String
+    Default: master
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  TagKey:
+    Type: String
+    Default: Name
+    Description: The tag name that is associated with EC2 instances on which CodeDeploy
+      agent is installed
+  TagValue:
+    Description: The tag value that identifies this as a target for deployments.
+    Type: String
+    Default: CodeDeployEC2Tag
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  EC2KeyPairName:
+    Description: Name of an existing Amazon EC2 key pair to enable SSH access to the
+      instances.
+    Type: AWS::EC2::KeyPair::KeyName
+    MinLength: '1'
+    MaxLength: '255'
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+Resources:
+  staticStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/static/pipeline.yml
+      TimeoutInMinutes: '60'
+      Parameters:
+        SiteBucketName: !Ref SiteBucketName
+        GitHubToken: !Ref GitHubToken
+        StackTTL: !Ref StackTTL
+        GitHubUser: !Ref GitHubUser
+        GitHubRepo: !Ref GitHubRepo
+        GitHubBranch: !Ref GitHubBranch
+        BuildType: !Ref BuildType
+        BuildComputeType: !Ref BuildComputeType
+        BuildImage: !Ref BuildImage
+  ec2Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/ec2/pipeline.yml
+      TimeoutInMinutes: '60'
+      Parameters:
+        EmailAddress: !Ref EmailAddress
+        RepositoryBranch: !Ref RepositoryBranch
+        TagKey: !Ref TagKey
+        TagValue: !Ref TagValue
+        EC2KeyPairName: !Ref EC2KeyPairName

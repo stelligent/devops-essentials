@@ -66,6 +66,17 @@ Parameters:
     MaxLength: '255'
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
+  S3Bucket:
+    Description: S3 Bucket that hosts the application code
+    Type: String
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
+  S3Key:
+    Description: S3 Bucket that hosts the application code
+    Type: String
+    Default: html.zip
+    AllowedPattern: "[\\x20-\\x7E]*"
+    ConstraintDescription: Can contain only ASCII characters.
 Resources:
   staticStack:
     Type: AWS::CloudFormation::Stack
@@ -93,3 +104,21 @@ Resources:
         TagKey: !Ref TagKey
         TagValue: !Ref TagValue
         KeyName: !Ref KeyName
+  elasticBeanstalkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml
+      TimeoutInMinutes: '60'
+      Parameters:
+        EmailAddress: !Ref EmailAddress
+        RepositoryBranch: !Ref RepositoryBranch
+        S3Bucket: !Ref S3Bucket
+        S3Key: !Ref S3Key
+  ecsStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/ecs/pipeline.yml
+      TimeoutInMinutes: '60'
+      Parameters:
+        EmailAddress: !Ref EmailAddress
+        RepositoryBranch: !Ref RepositoryBranch

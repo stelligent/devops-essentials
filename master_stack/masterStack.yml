@@ -58,7 +58,7 @@ Parameters:
     Default: CodeDeployEC2Tag
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
-  EC2KeyPairName:
+  KeyName:
     Description: Name of an existing Amazon EC2 key pair to enable SSH access to the
       instances.
     Type: AWS::EC2::KeyPair::KeyName
@@ -92,4 +92,4 @@ Resources:
         RepositoryBranch: !Ref RepositoryBranch
         TagKey: !Ref TagKey
         TagValue: !Ref TagValue
-        EC2KeyPairName: !Ref EC2KeyPairName
+        KeyName: !Ref KeyName

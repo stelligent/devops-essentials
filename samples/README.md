@@ -17,4 +17,4 @@ Solution | Launch Template
 # Changes
 
 1. Go to [Find a Color](http://htmlcolorcodes.com/)
-1. In the `css/bootstrap.min.css` within the `html` directories, search for `.bg-primary{color:#fff;background-color:` and update to the hexadecimal color immediately after `background-color:#` 
+1. In the `css/bootstrap.min.css` within the `html` directories of [samples](https://github.com/stelligent/devops-essentials/tree/master/samples), search for `.bg-primary{color:#fff;background-color:` and update to the hexadecimal color immediately after `background-color:#` 

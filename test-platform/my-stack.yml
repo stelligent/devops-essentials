@@ -1,0 +1,19 @@
+Description: >
+  Test stack for TTL
+
+Parameters:
+  StackTTL:
+    Description: Duration in minutes after which the stack should be deleted
+    Type: Number
+    MinValue: '2'
+    MaxValue: '1440'
+    Default: '2'
+
+Resources:
+  TTLStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/test-platform/stack-ttl.yml
+      Parameters:
+        StackTTL: !Ref StackTTL
+        StackId: !Ref AWS::StackId

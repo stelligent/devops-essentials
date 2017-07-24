@@ -5,14 +5,6 @@ Parameters:
   EmailAddress:
     Description: Email Address for sending SNS notifications for CodeCommit
     Type: String
-  ProjectId:
-    AllowedPattern: "^[a-z]([a-z0-9-])+$"
-    ConstraintDescription: Project IDs must be between 2 and 15 characters, begin
-      with a letter, and only contain lowercase letters, numbers, and hyphens (-).
-    Description: Project ID.
-    MaxLength: 15
-    MinLength: 2
-    Type: String
   RepositoryBranch:
     Description: The name of the branch for the CodeCommit repo
     Type: String
@@ -93,7 +85,7 @@ Resources:
         Fn::Join:
         - "-"
         - - stelligent
-          - Ref: ProjectId
+          - Ref: AWS::StackName
           - CloudFormation
     Type: AWS::IAM::Role
   LambdaTrustRole:

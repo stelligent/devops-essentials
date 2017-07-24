@@ -7,11 +7,11 @@ env:
     OPWORKS_TEMPLATE_URL: "https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/opsworks/pipeline.yml"
     BEANSTALK_TEMPLATE_URL: "https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml"
     ECS_TEMPLATE_URL: "https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/ecs/pipeline.yml"
-    EMAIL_ADDRESS: "paul.duvall@stelligent.com"
-    S3_BUCKET_BEANSTALK: "pmd-beanstalk"
+    EMAIL_ADDRESS: "timothy.leavey@gmail.com"
+    S3_BUCKET_BEANSTALK: "tleavey-host-html"
     # AVAILABILITY_ZONE: "us-east-1a"
-    GITHUB_USER: "paulduvall"
-    EC2_KEY_PAIR_NAME: "pmd-devops-us-east-1" # https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName
+    GITHUB_USER: "tleavey"
+    EC2_KEY_PAIR_NAME: "TLeavey-testing" # https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName
     # NOTE: GitHubToken is defined in SSM Parameter Store: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Parameters:sort=Name
 
 

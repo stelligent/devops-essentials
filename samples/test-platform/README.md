@@ -18,7 +18,7 @@ The following is typically configured one time per AWS account. The following ex
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
 1. Paste the command in your Terminal
-1. From this [samples](../) folder, copy the **[buildspec.yml](./buildspec.yml)** file to your locally cloned CodeCommit git repo
+1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec.yml](./buildspec.yml)** file to your locally cloned CodeCommit git repo
 1. From your Terminal, type `git add .`
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`

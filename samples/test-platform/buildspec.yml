@@ -8,9 +8,9 @@ env:
     BEANSTALK_TEMPLATE_URL: "https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml"
     ECS_TEMPLATE_URL: "https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/ecs/pipeline.yml"
     EMAIL_ADDRESS: "paul.duvall@stelligent.com"
-    S3_BUCKET_BEANSTALK: "pmd-beanstalk"
+    S3_BUCKET_BEANSTALK: "pmd-beanstalk" # Create an S3 bucket in us-east-1
     # AVAILABILITY_ZONE: "us-east-1a"
-    GITHUB_USER: "paulduvall"
+    GITHUB_USER: "paulduvall" # Modify to the name of the user that forked the GitHub repo
     EC2_KEY_PAIR_NAME: "pmd-devops-us-east-1" # https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName
     # NOTE: GitHubToken is defined in SSM Parameter Store: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Parameters:sort=Name
 
@@ -32,8 +32,12 @@ phases:
       - MY_GITHUB_TOKEN=$(cat json.txt | jq '.Parameters[0].Value')
       - echo MY_GITHUB_TOKEN is ${MY_GITHUB_TOKEN}
       - echo Here is Today ${TODAY}
+      - echo Here is EC2_PREFIX ${EC2_PREFIX}
+      - echo Here is EC2_TEMPLATE_URL ${EC2_TEMPLATE_URL}
+      - echo Here is EC2_KEY_PAIR_NAME ${EC2_KEY_PAIR_NAME}
+
       - aws cloudformation create-stack --stack-name ${STATIC_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${STATIC_TEMPLATE_URL} --parameters ParameterKey=SiteBucketName,ParameterValue=${PREFIX}${TODAY} ParameterKey=GitHubToken,ParameterValue=${MY_GITHUB_TOKEN}
-      - aws cloudformation create-stack --stack-name ${EC2_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${EC2_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=EC2KeyPairName,ParameterValue=${EC2_KEY_PAIR_NAME}
+      - aws cloudformation create-stack --stack-name ${EC2_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${EC2_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=KeyName,ParameterValue=${EC2_KEY_PAIR_NAME}
       - aws cloudformation create-stack --stack-name ${OPWORKS_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${OPWORKS_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=KeyName,ParameterValue=${EC2_KEY_PAIR_NAME}
       - aws cloudformation create-stack --stack-name ${BEANSTALK_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${BEANSTALK_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=S3Bucket,ParameterValue=${S3_BUCKET_BEANSTALK}
       - aws cloudformation create-stack --stack-name ${ECS_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${ECS_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS}

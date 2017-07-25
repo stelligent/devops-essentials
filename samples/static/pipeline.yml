@@ -2,12 +2,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Pipeline using CodePipeline and CodeBuild for continuous delivery of a single-page application to S3
 Parameters:
-  StackTTL:
-    Description: Duration in minutes after which the stack should be deleted
-    Type: Number
-    MinValue: '2'
-    MaxValue: '1440'
-    Default: '2'
   SiteBucketName:
     Type: String
     Description: Name of bucket to create to host the website
@@ -77,13 +71,6 @@ Metadata:
       BuildImage: 
         default: CodeBuild image
 Resources:
-  TTLStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/test-platform/stack-ttl.yml
-      Parameters:
-        StackTTL: !Ref StackTTL
-        StackId: !Ref AWS::StackId
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:

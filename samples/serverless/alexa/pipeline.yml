@@ -157,7 +157,7 @@ Resources:
             Action: "*"
             Resource: "*"
           Version: '2012-10-17'
-  CodeBuildWebsite:
+  CodeBuildAlexa:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
     Properties:
@@ -216,7 +216,7 @@ Resources:
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
     DependsOn:
-    - CodeBuildWebsite
+    - CodeBuildAlexa
     - LambdaTrustRole
     Properties:
       RoleArn:
@@ -258,7 +258,7 @@ Resources:
           - Name: alexa-BuildArtifact
           Configuration:
             ProjectName:
-              Ref: CodeBuildWebsite
+              Ref: CodeBuildAlexa
           RunOrder: 1
       - Name: Deploy
         Actions:

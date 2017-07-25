@@ -4,7 +4,7 @@ phases:
   build:
     commands:
       - npm install
-      - aws cloudformation package --template alexa-template.yml --s3-bucket $S3_BUCKET --output-template template-export.json
+      - aws cloudformation package --template sam-template.yml --s3-bucket $S3_BUCKET --output-template template-export.json
 
 artifacts:
   type: zip

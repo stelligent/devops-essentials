@@ -27,4 +27,4 @@ This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePi
 
 # Resources
 
-1. The CloudFormation template is available [here](https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/serverless/alexa/pipeline-alexa.yml).
+1. The CloudFormation template is available [here](https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/serverless/alexa/pipeline.yml).

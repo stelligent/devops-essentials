@@ -22,7 +22,8 @@ This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePi
 1. From your Terminal (and from the same locally-cloned Git repo directory), type `git commit -am "add new files"`
 1. From your Terminal (and from the same locally-cloned Git repo directory), type `git push`
 1. Go back to your pipeline in CodePipeline and see the changes flow through the pipeline
-1. Once the pipeline is complete, TBD
+1. Once the pipeline is complete, follow the **Test the Deployment** section at [Use AWS CodePipeline to deploy Amazon Alexa skill](https://stelligent.com/2017/07/25/use-aws-codepipeline-to-deploy-amazon-alexa-skill/
+).
 
 
 # Resources

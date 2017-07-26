@@ -1,7 +1,6 @@
 # Serverless Alexa Example
-Alexa Example. 
-
-Copy the contents of this folder and its subfolders to the CodeCommit repo 
+Example of deploying a Lambda function used by an Alexa skill. For more details on this solution, see [Use AWS CodePipeline to deploy Amazon Alexa skill](https://stelligent.com/2017/07/25/use-aws-codepipeline-to-deploy-amazon-alexa-skill/
+).
 
 # Overview
 This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePipeline, CodeCommit, CodeBuild, and CloudFormation. Ensure you've configured the [Prerequisites](https://github.com/stelligent/devops-essentials/wiki/Prerequisites) before launching the stack below.

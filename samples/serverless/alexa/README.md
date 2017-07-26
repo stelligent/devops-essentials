@@ -5,7 +5,7 @@ Example of deploying a Lambda function used by an Alexa skill. For more details 
 The solution is derived from https://github.com/alexa/skill-sample-nodejs-fact/ and AWS serverless deployment examples.
 
 # Overview
-This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePipeline, CodeCommit, CodeBuild, and CloudFormation. Ensure you've configured the [Prerequisites](https://github.com/stelligent/devops-essentials/wiki/Prerequisites) before launching the stack below.
+This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePipeline, CodeCommit, CodeBuild, and CloudFormation. Ensure you've configured the [Prerequisites](https://github.com/stelligent/devops-essentials/wiki/Prerequisites) before launching the stack below (particularly [AWS CodeStar](https://aws.amazon.com/codestar/) for Alexa project template).
 
 # Launch Stack
 

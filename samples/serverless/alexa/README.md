@@ -18,9 +18,9 @@ This repo is a demonstration of Continuous Delivery of an Alexa skill via CodePi
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
 1. Paste the command in your Terminal
 1. From [this](../serverless/alexa) folder, copy **all files** to your locally cloned Git repo
-1. From your Terminal, type `git add .`
-1. From your Terminal, type `git commit -am "add new files"`
-1. From your Terminal, type `git push`
+1. From your Terminal, go to the directory of your locally cloned Git repo and type `git add .`
+1. From your Terminal (and from the same locally-cloned Git repo directory), type `git commit -am "add new files"`
+1. From your Terminal (and from the same locally-cloned Git repo directory), type `git push`
 1. Go back to your pipeline in CodePipeline and see the changes flow through the pipeline
 1. Once the pipeline is complete, TBD
 

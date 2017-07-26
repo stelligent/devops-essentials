@@ -179,7 +179,7 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/eb-nodejs-4.4.6-amazonlinux-64:2.1.3
       Source:
-        BuildSpec: buildspec-alexa.yml
+        BuildSpec: buildspec.yml
         Location:
           Fn::Join:
           - ''

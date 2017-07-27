@@ -5,7 +5,7 @@ console.log('Loading function');
 exports.handler = function(event, context) {
     var codepipeline = new AWS.CodePipeline();
     var params = {
-          name: 'pmd-alexa' /* required */
+          name: 'devops-essentials-test-platform-CodePipelineStack-134PYLG59OJJV' /* required */
     };
 
     codepipeline.startPipelineExecution(params, function(err, data) {

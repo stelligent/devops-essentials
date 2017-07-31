@@ -52,6 +52,9 @@ Resources:
             - lambda:GetFunctionConfiguration
             - lambda:UpdateFunctionConfiguration
             - lambda:RemovePermission
+            - lambda:ListTags
+            - lambda:TagResource
+            - lambda:UntagResource
             - apigateway:*
             - dynamodb:CreateTable
             - dynamodb:DeleteTable

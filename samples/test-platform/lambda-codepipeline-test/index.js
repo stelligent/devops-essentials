@@ -5,7 +5,7 @@ console.log('Loading function');
 exports.handler = function(event, context) {
     var codepipeline = new AWS.CodePipeline();
     var params = {
-          name: 'devops-essentials-test-platform-CodePipelineStack-134PYLG59OJJV' /* required */
+          name: 'tleavey-testing-CodePipelineStack-1B47WPDXYM039' /* required */
     };
 
     codepipeline.startPipelineExecution(params, function(err, data) {

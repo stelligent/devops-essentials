@@ -66,6 +66,7 @@ Resources:
             - sns:SetTopicAttributes
             - s3:CreateBucket
             - s3:DeleteBucket
+            - events:*
             Effect: Allow
             Resource: "*"
           - Action:

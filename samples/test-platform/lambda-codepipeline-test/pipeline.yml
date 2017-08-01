@@ -113,9 +113,7 @@ Resources:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
-            - lambda:InvokeFunction
-            - lambda:*
-            - events:*
+            - codepipeline:*
             Effect: Allow
             Resource: "*"
           Version: '2012-10-17'

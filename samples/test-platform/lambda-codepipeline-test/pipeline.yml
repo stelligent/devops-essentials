@@ -52,9 +52,10 @@ Resources:
             - lambda:GetFunctionConfiguration
             - lambda:UpdateFunctionConfiguration
             - lambda:RemovePermission
-            - lambda:ListTags
             - lambda:TagResource
+            - lambda:ListTags
             - lambda:UntagResource
+            - lambda:InvokeFunction
             - apigateway:*
             - dynamodb:CreateTable
             - dynamodb:DeleteTable
@@ -112,6 +113,9 @@ Resources:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
+            - lambda:InvokeFunction
+            - lambda:*
+            - events:*
             Effect: Allow
             Resource: "*"
           Version: '2012-10-17'

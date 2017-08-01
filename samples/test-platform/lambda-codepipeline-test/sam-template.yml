@@ -15,7 +15,7 @@ Resources:
             Fn::GetAtt: 
               - "AlexaSkillFunction"
               - "Arn"
-          Id: "TargetFunctionV1"
+          Id: "tleavey-testing-us-east-1-AlexaSkillFunction-DKMS7J49S5X5"
   PermissionForEventsToInvokeLambda: 
     Type: "AWS::Lambda::Permission"
     Properties: 

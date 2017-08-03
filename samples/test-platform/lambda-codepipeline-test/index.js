@@ -5,7 +5,7 @@ console.log('Loading function');
 exports.handler = function(event, context) {
     var codepipeline = new AWS.CodePipeline();
     var params = {
-          name: 'tleavey-alexa-changed-CodePipelineStack-VM9DPG68L5QA' /* required */
+          name: 'CHANGE_TO_CODEPIPELINE_NAME' /* required */
     };
 
     codepipeline.startPipelineExecution(params, function(err, data) {

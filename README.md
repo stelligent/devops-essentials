@@ -14,4 +14,4 @@ The CloudFormation template is available [here](https://s3.amazonaws.com/www.dev
 # Samples
 In the course, there are over seven DevOps on AWS solutions you can launch at the click of a button. To learn more, go to [Samples](https://github.com/stelligent/devops-essentials/tree/master/samples). 
 
-Here's the [course website](http://www.devopsessentialsaws.com/)
+Here's the [DevOps Essentials on AWS Complete Video Course website](http://www.devopsessentialsaws.com/)

@@ -5,7 +5,7 @@ In *DevOps Essentials on AWS Complete Video Course*, you'll learn how to automat
 This repo is a demonstration of Continuous Delivery of a website using AWS CodePipeline, AWS CloudFormation, and other AWS [Developer](https://aws.amazon.com/products/developer-tools/) and [Management](https://aws.amazon.com/products/management/) tools. 
 
 # Launch Stack
-To launch the first solution (i.e. a static website to S3), you'll need to specify a unique S3 bucket name for the website bucket that will be created along with a GitHub token. Review and ensure you've configured the [Prerequisites](http://www.devopsessentialsaws.com/) before launching the stack below.
+To launch the first solution (i.e. a static website to S3), you'll need to specify a unique S3 bucket name for the website bucket that will be created along with a GitHub token. Review and ensure you've configured the [Prerequisites (Section 2.1)](http://www.devopsessentialsaws.com/) before launching the stack below.
 
 [![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-static%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/static/pipeline.yml) 
 

@@ -202,8 +202,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
     Properties:
-      Name:
-        Ref: AWS::StackName
+      Name: CodeBuildTestCfn
       Description: Build application
       ServiceRole:
         Fn::GetAtt:

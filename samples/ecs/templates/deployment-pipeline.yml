@@ -40,11 +40,11 @@ Resources:
         - all
   Repository:
     Type: AWS::ECR::Repository
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
 
   CloudFormationExecutionRole:
     Type: AWS::IAM::Role
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       Path: /
       AssumeRolePolicyDocument: |

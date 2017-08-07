@@ -1,0 +1,14 @@
+/** Iphone CSS **/
+@media (max-width:479px) {
+body {padding: 0;} #menu-toggle span{display: none;} body.main-page #wrapper.toggled{ padding-left: 0%;} #wrapper{padding-left:100%;} #wrapper.toggled #page-content-wrapper{padding: 10px 0;} .row{margin: 0 -15px;} .container-fluid{width:100%; margin: 0; padding: 0 15px;} #wrapper.toggled #sidebar-wrapper{ width:0%; left: 0%; margin-left: 0;} #sidebar-wrapper{ left:300px; margin-left:-300px; width:300px;} a#menu-toggle.btn {position: fixed;left: 5px;font-size: 12px;opacity: 1;padding: 5px 10px;top: 5px;z-index: 1111;} h2.title-heading img{width:70px;} h2.title-heading{font-size: 21px; margin-top: 25px;} h2.page-title{line-height: 2; font-size: 18px;} h4.sub-heading{font-size: 16px;} ul.edited-ul{margin: 0 10px;} ul.edited-ul li{font-size: 13px;} footer.footer-bg{font-size: 12px;}
+}
+
+/*** Android CSS **/
+@media (min-width:460px) and (max-width:767px){
+body {padding: 0;} #menu-toggle span{display: none;} body.main-page #wrapper.toggled{ padding-left: 0%;} #wrapper{padding-left:100%;} #wrapper.toggled #page-content-wrapper{padding: 10px 0;} .row{margin: 0 -15px;} .container-fluid{width:100%; margin: 0; padding: 0 15px;} #wrapper.toggled #sidebar-wrapper{ width:0%; left: 0%; margin-left: 0;} #sidebar-wrapper{ left:300px; margin-left:-300px; width:300px;} a#menu-toggle.btn {position: fixed;left: 5px;font-size: 12px;opacity: 1;padding: 5px 10px;top: 5px;z-index: 1111;} h2.title-heading img{width:70px;} h2.title-heading{font-size: 21px; margin-top: 25px;} h2.page-title{line-height: 2; font-size: 18px;} h4.sub-heading{font-size: 16px;} ul.edited-ul{margin: 0 10px;} ul.edited-ul li{font-size: 13px;} footer.footer-bg{font-size: 12px;}
+}
+
+/*** Ipad CSS **/
+@media (min-width:768px) and (max-width:1024px){
+body {padding: 0;} #menu-toggle span{display: none;} body.main-page #wrapper.toggled{ padding-left: 0%;} #wrapper{padding-left:100%;} #wrapper.toggled #page-content-wrapper{padding: 10px 0;} .row{margin: 0 -15px;} .container-fluid{width:100%; margin: 0; padding: 0 25px;} #wrapper.toggled #sidebar-wrapper{ width:0%; left: 0%; margin-left: 0;} #sidebar-wrapper{ left:75%; margin-left:-75%; width:75%;} a#menu-toggle.btn {position: fixed;left: 5px;opacity: 1;padding: 5px 10px;top: 5px;z-index: 1111;} h2.title-heading img{width:70px;} h2.title-heading{margin-top: 25px;} h2.page-title{line-height: 2;} ul.edited-ul{margin: 0 10px;} footer.footer-bg{font-size: 12px;}
+}

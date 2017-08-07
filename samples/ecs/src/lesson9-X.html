@@ -1,0 +1,108 @@
+            <div class="main-body-div" id="main-box">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                <!-- Main Body Content -->
+                    <h2 class="page-title bg-primary">9.X Course Notes</h2>
+                   <!-- inner body -->
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Vision</h4>
+                    <p>This course will be solution focused. I'll spend a little bit of time at the beginning describing DevOps, CI/CD, and AWS. In re:Invent terms, this is close to a 300-level session. Not super deep, but also makes the assumption that they are engineers and architects, are aware of the cloud, and want to learn how to do continuous delivery, etc. on the AWS platform in a fully-automated manner.</p>
+                    <p>I'll focus purely on deployment pipeline architectures and implementation and not on software architectures. Will let the viewer determine how they can use it with various software architecture types (e.g. monoliths, microservices, FaaS, BaaS, etc.). I might make brief references to software architectures but I think anything other than that won't provide the proper level of depth and lessen the course's focus.</p>
+                    <p>With very few exceptions, I plan to use only AWS tools. These tools include: </p>
+                     <ul class="edited-ul">
+                            <li>CloudFormation</li>
+                            <li>CodePipeline</li>
+                            <li>CodeCommit</li>
+                            <li>CodeBuild</li>
+                            <li>CodeDeploy</li>
+                    </ul>
+                    <p>CodePipeline will be the primary tool for <strong>all</strong> the examples. All of the solutons will be automated via CloudFormation. There will be seven examples that use many of the tools above. All of the examples will be available from our GitHub repository. All seven examples are based on the static website. This website is the one you're viewing now and will be used to walk viewers through the lesson. The seven example solutions are: </p>
+                        <ul class="edited-ul">
+                            <li>Static Website (i.e. S3 hosted)</li>
+                            <li>EC2 (traditional EC2 deployment with CodeBuild and CodeDeploy on EC2 instances)</li>
+                            <li>OpsWorks</li>
+                            <li>Elastic Beanstalk</li>
+                            <li>ECS</li>
+                            <li>Serverless</li>
+                            <li>CodeStar</li>
+                        </ul>
+                    <p>I'll add additional complexity to the "static website" to include Java builds, services running on containers, databases, etc. but all the examples will use this website to make the live changes. I plan to incorporate the use of some third-party integratations, open-source tools into the actions. Viewers can fork the repository to make their own changes.</p>
+                    
+                    <p>There will be a lesson for each of seven examples listed above. Each lesson will follow a similar format: </p> 
+                        <ul class="edited-ul">
+                            <li><strong>Introduction</strong> - Introduce the learning objectives</li>
+                            <li><strong>Prerequisites</strong> - Describe any setup/configuration the viewer needs to perform</li>
+                            <li><strong>Architecture</strong> - Show the architecture and ability to click a Launch Stack button. To see an example, go to <em>Lesson 2.2 (Static Website: Architecture)</em></li>
+                            <li><strong>Code</strong> - Walk through the CloudFormation template(s) in detail since this is the basis for the automation of the entire solution. Will also view buildspec.yml, build, test and deploy scripts, appspec.yml, etc.</li>
+                            <li><strong>Stages</strong> - For most lessons, there will be six stages in a pipeline - Source, Build, Dev, PreProd, Canary, and Production. There will be a separate sublesson for each of the stages that describe the various actions, transitions, etc. that make up the pipeline. See each stage described below.</li>
+                            <li><strong>Monitoring</strong> - Using CloudWatch to view pipeline and production activity</li>
+                            <li><strong>Summary</strong> - A summary of what they learned</li>
+                            <li><strong>Quiz</strong> - Viewers can test thier knowledge with a 5-10 question quiz of the lesson</li>
+                        </ul>
+
+                    <p>The stages will be a focal point of each lesson. As mentioned above, most examples will include a six-stage pipeline as described below: </p> 
+                        <ul class="edited-ul">
+                            <li><strong>Source</strong> - Will use GitHib and CodeCommit as source providers</li>
+                            <li><strong>Build</strong> - Unit tests, style checkers, etc.</li>
+                            <li><strong>Dev</strong> - Deploy and integration tests - used to test the running service.</li>
+                            <li><strong>PreProd</strong> - Deploy and integration tests - used to test the combination of new software and production config.  Looks like prod, uses prod config, but doesn't receive customer traffic.</li>
+                            <li><strong>Canary</strong> - OneBox Deployment (deploy and monitor)</li>
+                            <li><strong>Production</strong> - Deploy to production (zonal, regional, etc.)</li>
+                        </ul>
+
+                    <p>Other tools and features to cover include: </p>
+                     <ul class="edited-ul">
+                            <li>Lambda</li>
+                            <li>CodePipeline gates, transitions, and approvals</li>
+                            <li>Parameter Store</li>
+                            <li>Route 53</li>
+                            <li>ELB</li>
+                            <li>Blue/Green Deployment in CodeDeploy</li>
+                            <li>VPC</li>
+                            <li>Auto Scaling</li>
+                            <li>IAM</li>
+                            <li>TBD</li>
+                    </ul>
+
+
+                 </div>
+
+
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Notes</h4>
+                    <ul class="edited-ul">
+                        <li><a href="https://www.youtube.com/watch?v=_xmYShSDDJg">AWS re:Invent 2016: DevOps on AWS: Advanced Continuous Delivery Techniques (DEV403)</a>.</li>
+                        <li>Show visual of stages at beginning of each Lesson</li>
+                        <li>Make each sample run on us-east-1 (Virginia)</li>
+                        <li>Create a deployment pipeline visualization with tools (Code* Tools and others)</li>
+                        <li>Describe the example application at beginning of each Lesson. Thinking of using course website for ALL examples. Add AWS Certificate Manager, SES, Aurora, and Java to cover the usual types of scenarios. Make a serverless version of the app? Is this necessary or does the HTML cover it already?</li>
+                        <li>Use different types of tools in each major lesson. For example, use cfn_nag in one, config-rule-status in another, etc.</li>
+                        <li>Focus of the video course is on using AWS services/tools only - unless there's currently no service for it</li>
+                        <li>Course will be cognizant of the AWS DevOps Engineer cert, but will be more solutions oriented than a cert prep course.</li>
+                        <li>Most of infrastructure as code will be CloudFormation. Not much of Chef, Puppet, etc.</li>
+                        <li>Solution Architectures: Level of Effort (High); Add X-Ray, Serverless Application Model, Inspector, Certification Manager, SES, API Gateway?</li>
+                        <li>Java: Use HTML Website; Take JavaTomcat example w/ CodeDeploy and use HTML course website; Add Blue/Green Deployment in CodeDeploy</li>
+                        <li>OpsWorks: Implement features that show up on DevOps Engineer exam; AWS Inspector</li>
+                        <li>Beanstalk: TODO: Implement features that show up on DevOps Engineer exam</li>
+                        <li>ECS: Add RDS Database (Aurora)</li>
+                        <li>Serverless: Use SAM for HTML Course Website; Use X-Ray</li>
+                    </ul>
+                       </div>  
+                     </div>
+                     </div>
+                 </div>
+
+                <div class="inner-body panel">
+                    <h4 class="sub-heading">Schedule</h4>
+                    <ul class="edited-ul">
+                        <li><strong>By COB, May 29th</strong> - 2-Static Website (Solution and Content) is mostly complete</li>
+                        <li><strong>By COB, June 5th</strong> - 6-ECS; 3-EC2; 5-Beanstalk; 4-OpsWorks EXAMPLES are complete; 7-Serverless EXAMPLE is NOT complete</li>
+                       <li><strong>By COB, June 9th</strong> - 7-Serverless Example, 8-Using AWS CodeStar Example and Lesson (no automation)</li>
+                        <li><strong>By COB, June 12th</strong> - 1-Intro/What is DevOps, 6-ECS, 3-EC2, 7-Serverless, 5-Beanstalk, 4-OpsWorks LESSONS </li>
+                        <li><strong>By COB, June 19th</strong> - 9-Summary; Powerpoint slides</li>
+                    </ul>
+                       </div>  
+                     </div>
+                     </div>
+                 </div>

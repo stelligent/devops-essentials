@@ -2,7 +2,7 @@
 import boto3
 
 # VARIABLES--------------------------------------------
-# DO NOT CHANGE stack_name or stack_status as it's a key.
+# DO NOT CHANGE stack_name or stack_status as they're keys.
 stack_name = 'StackName'
 stack_status = 'StackStatus'
 default_region = 'us-east-1'
@@ -67,7 +67,7 @@ def get_status_using_stack_names(stacks_to_be_checked):
 	return list_of_stack_statuses
 
 # THE VERSION USING STACK_ID
-
+# Returns a list of cfn statuses based on the stack IDs
 def get_status_using_stack_ids(stack_id):
 	resource = boto3.resource('cloudformation')
 	list_of_status = []
@@ -75,7 +75,6 @@ def get_status_using_stack_ids(stack_id):
 		status = resource.Stack(one_id).stack_status
 		list_of_status.append(status)
 	return list_of_status
-
 
 # TESTS-----------------------------------
 

@@ -41,11 +41,14 @@ def get_all_stack_names():
 			list_of_stack_names.append(key[stack_name])
 	return list_of_stack_names
 
-# def check_status_of_stack_names(stacks_to_be_checked):
-# 	all_stacks_names = get_all_stack_names()
-# 	for one_stack in stacks_to_be_checked:
-# 		if one_stack in all_stacks_names:
-			
+def check_existence_of_stacks(stacks_to_be_checked):
+	all_stacks_exist = True
+	all_stacks_names = get_all_stack_names()
+	for one_stack in stacks_to_be_checked:
+		if one_stack not in all_stacks_names:
+			all_stacks_exist = False
+	return all_stacks_exist
+
 
 # check_status_of_stack_names(stacks_to_be_checked)
 print ''
@@ -81,10 +84,14 @@ def test_get_status_using_stack_ids(stack_id):
 	all_the_status = get_status_using_stack_ids(stack_id)
 	print all_the_status
 
+def test_check_existence_of_stacks(stacks_to_be_checked):
+	existence = check_existence_of_stacks(stacks_to_be_checked)
+	print existence
+
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
 # test_get_status_using_stack_ids(stack_id)
-
+# test_check_existence_of_stacks(stacks_to_be_checked)
 
 print ''
 print '************************************************************'

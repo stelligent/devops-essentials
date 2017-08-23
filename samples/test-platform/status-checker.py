@@ -41,7 +41,16 @@ def get_all_stack_names():
 			list_of_stack_names.append(key[stack_name])
 	return list_of_stack_names
 
+# def check_status_of_stack_names(stacks_to_be_checked):
+# 	all_stacks_names = get_all_stack_names()
+# 	for one_stack in stacks_to_be_checked:
+# 		if one_stack in all_stacks_names:
+			
 
+# check_status_of_stack_names(stacks_to_be_checked)
+print ''
+print '******************************************'
+print ''
 # THE HARD CODED VERSION USING STACK_ID
 resource = boto3.resource('cloudformation')
 
@@ -74,7 +83,7 @@ def test_get_status_using_stack_ids(stack_id):
 
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
-# test_get_status_using_stack_ids()
+# test_get_status_using_stack_ids(stack_id)
 
 
 print ''

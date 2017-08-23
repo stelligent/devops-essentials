@@ -85,7 +85,6 @@ def test_get_all_stacks_info():
 	response = get_all_stacks_info()
 	print response
 
-
 def test_get_all_stack_names():
 	all_the_stacks = get_all_stack_names()
 	for x in all_the_stacks:

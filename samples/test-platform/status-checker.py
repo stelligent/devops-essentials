@@ -1,3 +1,5 @@
+# THIS ENTIRE PROGRAM DOES NOT LOOK AT OR FOR DELETED STACKS
+
 # IMPORTS----------------------------------------------
 import boto3
 
@@ -102,8 +104,9 @@ def test_get_status_using_stack_names(stacks_to_be_checked):
 
 print ''
 print '************************************************************'
-print ''
 print 'Tests Are Below'
+print '************************************************************'
+print ''
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
 # test_get_status_using_stack_ids(stack_id)

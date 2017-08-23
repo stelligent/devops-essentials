@@ -3,6 +3,7 @@
 # IMPORTS----------------------------------------------
 import boto3
 
+
 # VARIABLES--------------------------------------------
 # DO NOT CHANGE stack_name or stack_status as they're keys.
 stack_name = 'StackName'
@@ -17,8 +18,8 @@ stacks_to_be_checked = ['mu-service-mu-first-acceptance', 'cross-account-ami-cop
 # stack_id uses cfn stack IDs
 stack_id = ['arn:aws:cloudformation:us-east-1:324320755747:stack/ForThePeople-data-dev/6fb5e540-5198-11e7-a8f5-500c20fefad2']
 
-# FUNCTIONS--------------------------------------------
 
+# FUNCTIONS--------------------------------------------
 # Returns a dictionary holding all of the various stacks' info
 # DOES NOT RETURN DELETED STACKS' INFO!!!
 def get_all_stacks_info():
@@ -78,8 +79,8 @@ def get_status_using_stack_ids(stack_id):
 		list_of_status.append(status)
 	return list_of_status
 
-# TESTS-----------------------------------
 
+# TESTS-----------------------------------
 def test_get_all_stacks_info():
 	response = get_all_stacks_info()
 	print response

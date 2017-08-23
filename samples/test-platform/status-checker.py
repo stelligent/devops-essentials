@@ -41,19 +41,6 @@ def get_all_stack_names():
 			list_of_stack_names.append(key[stack_name])
 	return list_of_stack_names
 
-def test_get_all_stacks_info():
-	response = get_all_stacks_info()
-	print response
-
-
-def test_get_all_stack_names():
-	all_the_stacks = get_all_stack_names()
-	for x in all_the_stacks:
-		print x
-
-print ''
-print '************************************************************'
-print ''
 
 # THE HARD CODED VERSION USING STACK_ID
 resource = boto3.resource('cloudformation')
@@ -68,15 +55,31 @@ def get_status_using_stack_ids(stack_id):
 		list_of_status.append(status)
 	return list_of_status
 
+
+# TESTS-----------------------------------
+
+def test_get_all_stacks_info():
+	response = get_all_stacks_info()
+	print response
+
+
+def test_get_all_stack_names():
+	all_the_stacks = get_all_stack_names()
+	for x in all_the_stacks:
+		print x
+
 def test_get_status_using_stack_ids(stack_id):
 	all_the_status = get_status_using_stack_ids(stack_id)
 	print all_the_status
 
-
-# TESTS-----------------------------------
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
 # test_get_status_using_stack_ids()
+
+
+print ''
+print '************************************************************'
+print ''
 
 # FUTURE TO DO: change 'in' to 'set' or 'bisect' for faster processing time
 all_my_stack_status = get_status_using_stack_ids(stack_id)

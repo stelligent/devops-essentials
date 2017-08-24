@@ -135,7 +135,7 @@ def test_get_status_using_stack_names(stacks_to_be_checked):
 
 
 # SCRIPT TO RUN PROGRAM-----------------------------------
-# These three steps will check the status of the cfn templates
+# These three steps will check the status of the cfn stacks
 # And output the results into a file named cfn-stack-results.md
 raw_results = get_status_using_stack_names(stacks_to_be_checked)
 human_friendly_results = manipulate_results_data_for_humans(raw_results)

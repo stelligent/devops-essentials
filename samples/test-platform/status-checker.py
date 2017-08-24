@@ -56,21 +56,26 @@ def check_existence_of_stacks(stacks_to_be_checked):
 			all_stacks_exist = False
 	return all_stacks_exist
 
-# Returns a list of all the stack statuses from the user-picked cfn stack names.
+# Returns a dict of all the stack statuses from the user-picked cfn stack names.
 # ALL user-picked stack names must pass an existence check or else ALL will fail.
 def get_status_using_stack_names(stacks_to_be_checked):
 	all_stacks_exist = check_existence_of_stacks(stacks_to_be_checked)
-	list_of_stack_statuses = []
+	# list_of_stack_statuses = []
+	dict_of_stack_statuses = {}
 	if all_stacks_exist == True:
 		response = get_all_stacks_info()
 		for one_stack in stacks_to_be_checked:
 			for key in response['StackSummaries']:
 				if one_stack == key[stack_name] and stack_status in key:
-					list_of_stack_statuses.append(key[stack_status])
-	return list_of_stack_statuses
+					dict_of_stack_statuses[key[stack_name]] = key[stack_status]
+	# 				list_of_stack_statuses.append(key[stack_status])
+	# return list_of_stack_statuses
+	return dict_of_stack_statuses
 
-# THE VERSION USING STACK_ID
+# THE VERSION USING STACK_ID instead of names
 # Returns a list of cfn statuses based on the stack IDs
+# The results of this data are not used in other functions.
+# So this is basically out-of-use for now.
 def get_status_using_stack_ids(stack_id):
 	resource = boto3.resource('cloudformation')
 	list_of_status = []
@@ -79,8 +84,28 @@ def get_status_using_stack_ids(stack_id):
 		list_of_status.append(status)
 	return list_of_status
 
+# Takes the raw dict of the cfn stack results and returns a string that is more human readable.
+def manipulate_results_data_for_humans(raw_results):
+	color = 'R'
+	human_friendly_results = ""
+	for i in raw_results:
+		if raw_results[i] in success_states:
+			color = 'G'
+		else:
+			color = 'R'
+		# print i, color, results[i]
+		human_friendly_results += i+" | "+color+" | "+raw_results[i] +'\n'
+	return human_friendly_results
 
-# TESTS-----------------------------------
+# Creates or replaces a file and writes results (recommended to use human readable results) to it. 
+def write_results_to_file(results_from_cfn_stacks):
+	with open("cfn-stack-results.md","a+") as file:
+		file.truncate(0)
+		file.write(results_from_cfn_stacks)
+		file.close()
+
+
+# TESTS-------------------------------------------------
 def test_get_all_stacks_info():
 	response = get_all_stacks_info()
 	print response
@@ -102,14 +127,16 @@ def test_get_status_using_stack_names(stacks_to_be_checked):
 	status_of_stacks = get_status_using_stack_names(stacks_to_be_checked)
 	print status_of_stacks
 
-print ''
-print '************************************************************'
-print 'Tests Are Below'
-print '************************************************************'
-print ''
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
 # test_get_status_using_stack_ids(stack_id)
 # test_get_status_using_stack_names(stacks_to_be_checked)
 # test_check_existence_of_stacks(stacks_to_be_checked)
 
+
+# SCRIPT TO RUN PROGRAM-----------------------------------
+# These three steps will check the status of the cfn templates
+# And output the results into a file named cfn-stack-results.md
+raw_results = get_status_using_stack_names(stacks_to_be_checked)
+human_friendly_results = manipulate_results_data_for_humans(raw_results)
+write_results_to_file(human_friendly_results)

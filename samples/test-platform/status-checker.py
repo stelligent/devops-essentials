@@ -16,7 +16,7 @@ in_progress_states = ['CREATE_IN_PROGRESS','REVIEW_IN_PROGRESS','UPDATE_IN_PROGR
 # stacks_to_be_checked uses cfn stack NAMES
 stacks_to_be_checked = ['mu-service-mu-first-acceptance', 'cross-account-ami-copy-role']
 # stack_id uses cfn stack IDs
-stack_id = ['arn:aws:cloudformation:us-east-1:324320755747:stack/ForThePeople-data-dev/6fb5e540-5198-11e7-a8f5-500c20fefad2']
+stack_id = ['']
 
 
 # FUNCTIONS--------------------------------------------
@@ -110,7 +110,6 @@ print ''
 # test_get_all_stacks_info()
 # test_get_all_stack_names()
 # test_get_status_using_stack_ids(stack_id)
-# test_check_existence_of_stacks(stacks_to_be_checked)
 # test_get_status_using_stack_names(stacks_to_be_checked)
-
+# test_check_existence_of_stacks(stacks_to_be_checked)
 

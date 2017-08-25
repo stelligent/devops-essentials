@@ -1,6 +1,5 @@
 ---
-Description: Automate provisioning of CodeBuild with CodePipeline, CodeCommit. **WARNING** This template creates one or more Amazon EC2 instances.
-  You will be billed for the AWS resources used if you create a stack from this template.
+Description: Automate provisioning of CodePipeline and associated infrastructure for deploying Lambda functions
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   EmailAddress:
@@ -12,23 +11,115 @@ Parameters:
     Default: master
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
-Metadata:
-  AWS::CloudFormation::Interface:
-    ParameterGroups:
-    - Label:
-        default: Dynamic Configuration
-      Parameters:
-      - EC2KeyPairName
-      - RepositoryBranch
-    ParameterLabels:
-      EC2KeyPairName:
-        default: EC2 KeyPair Name
-      RepositoryName:
-        default: CodeCommit Repository Name
-      RepositoryBranch:
-        default: CodeCommit Repository Branch
 Resources:
-Resources:
+  CloudFormationTrustRole:
+    DependsOn:
+    - ArtifactBucket
+    Description: Creating service role in IAM for AWS CloudFormation
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - cloudformation.amazonaws.com
+      Path: "/"
+      Policies:
+      - PolicyDocument:
+          Statement:
+          - Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:GetObjectVersion
+            Effect: Allow
+            Resource:
+            - Fn::Join:
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: ArtifactBucket
+            - Fn::Join:
+              - ''
+              - - 'arn:aws:s3:::'
+                - Ref: ArtifactBucket
+                - "/*"
+          - Action:
+            - lambda:CreateFunction
+            - lambda:DeleteFunction
+            - lambda:AddPermission
+            - lambda:UpdateFunction
+            - lambda:UpdateFunctionCode
+            - lambda:GetFunctionConfiguration
+            - lambda:UpdateFunctionConfiguration
+            - lambda:RemovePermission
+            - lambda:TagResource
+            - lambda:ListTags
+            - lambda:UntagResource
+            - lambda:InvokeFunction
+            - apigateway:*
+            - dynamodb:CreateTable
+            - dynamodb:DeleteTable
+            - dynamodb:DescribeTable
+            - kinesis:CreateStream
+            - kinesis:DeleteStream
+            - kinesis:DescribeStream
+            - sns:CreateTopic
+            - sns:DeleteTopic
+            - sns:ListTopics
+            - sns:GetTopicAttributes
+            - sns:SetTopicAttributes
+            - s3:CreateBucket
+            - s3:DeleteBucket
+            - events:*
+            Effect: Allow
+            Resource: "*"
+          - Action:
+            - iam:PassRole
+            Effect: Allow
+            Resource:
+            - Fn::GetAtt:
+              - LambdaTrustRole
+              - Arn
+          - Action:
+            - cloudformation:CreateChangeSet
+            Effect: Allow
+            Resource:
+            - arn:aws:cloudformation:us-east-1:aws:transform/Serverless-2016-10-31
+        PolicyName: CloudFormationRolePolicy
+      RoleName:
+        Fn::Join:
+        - "-"
+        - - stelligent
+          - Ref: AWS::StackName
+          - CloudFormation
+    Type: AWS::IAM::Role
+  LambdaTrustRole:
+    Description: Creating service role in IAM for AWS Lambda
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: "/"
+      Policies:
+      - PolicyDocument:
+          Statement:
+          - Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - codepipeline:*
+            Effect: Allow
+            Resource: "*"
+          Version: '2012-10-17'
+        PolicyName: MyLambdaWorkerPolicy
+      RoleName: !Ref AWS::StackName
+    Type: AWS::IAM::Role
   ArtifactBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
@@ -68,63 +159,17 @@ Resources:
       - PolicyName: codepipeline-service
         PolicyDocument:
           Statement:
-          - Action:
-            - codecommit:GetBranch
-            - codecommit:GetCommit
-            - codecommit:UploadArchive
-            - codecommit:GetUploadArchiveStatus
-            - codecommit:CancelUploadArchive
-            - codebuild:*
+          - Effect: Allow
+            Action: "*"
             Resource: "*"
-            Effect: Allow
-          - Action:
-            - s3:GetObject
-            - s3:GetObjectVersion
-            - s3:GetBucketVersioning
-            Resource: "*"
-            Effect: Allow
-          - Action:
-            - s3:PutObject
-            Resource:
-            - arn:aws:s3:::codepipeline*
-            - arn:aws:s3:::elasticbeanstalk*
-            Effect: Allow
-          - Action:
-            - codedeploy:CreateDeployment
-            - codedeploy:GetApplicationRevision
-            - codedeploy:GetDeployment
-            - codedeploy:GetDeploymentConfig
-            - codedeploy:RegisterApplicationRevision
-            Resource: "*"
-            Effect: Allow
-          - Action:
-            - elasticbeanstalk:*
-            - ec2:*
-            - elasticloadbalancing:*
-            - autoscaling:*
-            - cloudwatch:*
-            - s3:*
-            - sns:*
-            - cloudformation:*
-            - rds:*
-            - sqs:*
-            - ecs:*
-            - iam:PassRole
-            Resource: "*"
-            Effect: Allow
-          - Action:
-            - lambda:InvokeFunction
-            - lambda:ListFunctions
-            Resource: "*"
-            Effect: Allow
           Version: '2012-10-17'
-  CodeBuildWebsite:
+  CodeBuildAlexa:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
     Properties:
       Name:
         Ref: AWS::StackName
-      Description: Build Java application
+      Description: Build application
       ServiceRole:
         Fn::GetAtt:
         - CodeBuildRole
@@ -132,10 +177,15 @@ Resources:
       Artifacts:
         Type: no_artifacts
       Environment:
+        EnvironmentVariables:
+        - Name: S3_BUCKET
+          Value:
+            Ref: ArtifactBucket
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/java:openjdk-8
+        Image: aws/codebuild/eb-nodejs-4.4.6-amazonlinux-64:2.1.3
       Source:
+        BuildSpec: buildspec.yml
         Location:
           Fn::Join:
           - ''
@@ -147,7 +197,41 @@ Resources:
       TimeoutInMinutes: 10
       Tags:
       - Key: Owner
-        Value: JavaTomcatProject
+        Value: MyCodeBuildProject
+  CodeBuildTestCfn:
+    Type: AWS::CodeBuild::Project
+    DependsOn: CodeBuildRole
+    Properties:
+      Name: CodeBuildTestCfn
+      Description: Build application
+      ServiceRole:
+        Fn::GetAtt:
+        - CodeBuildRole
+        - Arn
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        EnvironmentVariables:
+        - Name: S3_BUCKET
+          Value:
+            Ref: ArtifactBucket
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/java:openjdk-8
+      Source:
+        BuildSpec: buildspec-test.yml
+        Location:
+          Fn::Join:
+          - ''
+          - - https://git-codecommit.
+            - Ref: AWS::Region
+            - ".amazonaws.com/v1/repos/"
+            - Ref: AWS::StackName
+        Type: CODECOMMIT
+      TimeoutInMinutes: 10
+      Tags:
+      - Key: Owner
+        Value: MyCodeBuildProject
   MySNSTopic:
     Type: AWS::SNS::Topic
     Properties:
@@ -160,7 +244,7 @@ Resources:
     Properties:
       RepositoryName:
         Ref: AWS::StackName
-      RepositoryDescription: CodeCommit Repository
+      RepositoryDescription: CodeCommit Repository for Sample EC2 CodeDeploy Solution
       Triggers:
       - Name: MasterTrigger
         CustomData:
@@ -171,7 +255,9 @@ Resources:
         - all
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
-    DependsOn: CodeBuildWebsite
+    DependsOn:
+    - CodeBuildAlexa
+    - LambdaTrustRole
     Properties:
       RoleArn:
         Fn::Join:
@@ -202,7 +288,21 @@ Resources:
         Actions:
         - InputArtifacts:
           - Name: MyApp
-          Name: TestCFNStacks
+          Name: PackageExport
+          ActionTypeId:
+            Category: Build
+            Owner: AWS
+            Version: '1'
+            Provider: CodeBuild
+          OutputArtifacts:
+          - Name: alexa-BuildArtifact
+          Configuration:
+            ProjectName:
+              Ref: CodeBuildAlexa
+          RunOrder: 1
+        - InputArtifacts:
+          - Name: MyApp
+          Name: RunCFNStacks
           ActionTypeId:
             Category: Test
             Owner: AWS
@@ -211,8 +311,57 @@ Resources:
           OutputArtifacts: []
           Configuration:
             ProjectName:
-              Ref: CodeBuildWebsite
+              Ref: CodeBuildTestCfn
           RunOrder: 1
+      - Name: Deploy
+        Actions:
+        - InputArtifacts:
+          - Name: alexa-BuildArtifact
+          Name: GenerateChangeSet
+          ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Version: '1'
+            Provider: CloudFormation
+          OutputArtifacts: []
+          Configuration:
+            ActionMode: CHANGE_SET_REPLACE
+            ChangeSetName: pipeline-changeset
+            RoleArn:
+              Fn::GetAtt:
+              - CloudFormationTrustRole
+              - Arn
+            Capabilities: CAPABILITY_IAM
+            StackName:
+              Fn::Join:
+              - ''
+              - - ""
+                - Ref: AWS::StackName
+                - "-"
+                - Ref: AWS::Region
+                - ""
+            TemplatePath: alexa-BuildArtifact::template-export.json
+          RunOrder: 1
+        - ActionTypeId:
+            Category: Deploy
+            Owner: AWS
+            Provider: CloudFormation
+            Version: 1
+          Configuration:
+            ActionMode: CHANGE_SET_EXECUTE
+            ChangeSetName: pipeline-changeset
+            StackName:
+              Fn::Join:
+              - ''
+              - - ""
+                - Ref: AWS::StackName
+                - "-"
+                - Ref: AWS::Region
+                - ""
+          InputArtifacts: []
+          Name: ExecuteChangeSet
+          OutputArtifacts: []
+          RunOrder: 2
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
@@ -226,6 +375,21 @@ Outputs:
         - "#/view/"
         - Ref: CodePipelineStack
     Description: CodePipeline URL
+  LambdaTrustRole:
+    Description: IAM role for AWS Lambda used for passRole to Lambda functions.
+    Export:
+      Name:
+        Fn::Join:
+        - ''
+        - - ""
+          - Ref: AWS::StackName
+          - "-"
+          - Ref: AWS::Region
+          - "-LambdaTrustRole"
+    Value:
+      Fn::GetAtt:
+      - LambdaTrustRole
+      - Arn
   GitCloneCommand:
     Value:
       Fn::Join:
@@ -234,4 +398,5 @@ Outputs:
         - Ref: AWS::Region
         - ".amazonaws.com/v1/repos/"
         - Ref: AWS::StackName
+        - "/"
     Description: Git Repository URL

@@ -37,6 +37,10 @@ phases:
       - echo Here is EC2_KEY_PAIR_NAME ${EC2_KEY_PAIR_NAME}
 
       - aws cloudformation create-stack --stack-name ${STATIC_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${STATIC_TEMPLATE_URL} --parameters ParameterKey=SiteBucketName,ParameterValue=${PREFIX}${TODAY} ParameterKey=GitHubToken,ParameterValue=${MY_GITHUB_TOKEN} --tags Key=Name,Value=devops-essentials
+      - aws cloudformation create-stack --stack-name ${EC2_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${EC2_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=KeyName,ParameterValue=${EC2_KEY_PAIR_NAME} --tags Key=Name,Value=devops-essentials
+      - aws cloudformation create-stack --stack-name ${OPWORKS_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${OPWORKS_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=KeyName,ParameterValue=${EC2_KEY_PAIR_NAME} --tags Key=Name,Value=devops-essentials
+      - aws cloudformation create-stack --stack-name ${BEANSTALK_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${BEANSTALK_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} ParameterKey=S3Bucket,ParameterValue=${S3_BUCKET_BEANSTALK} --tags Key=Name,Value=devops-essentials
+      - aws cloudformation create-stack --stack-name ${ECS_PREFIX}${TODAY} --capabilities CAPABILITY_IAM --template-url ${ECS_TEMPLATE_URL} --parameters ParameterKey=EmailAddress,ParameterValue=${EMAIL_ADDRESS} --tags Key=Name,Value=devops-essentials
   post_build:
     commands:
       - echo Build completed on `date`

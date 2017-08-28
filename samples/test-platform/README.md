@@ -1,6 +1,9 @@
 # Test Platform
-Tests all the other CloudFormation stacks in the [samples](../)
-Creates a Lambda function that is AUTOMATICALLY run once a day which creates all the CloudFormation stacks.
+1. Tests all the other CloudFormation stacks in the [samples](../)
+1. Creates a Lambda function that is AUTOMATICALLY run once a day which creates all the CloudFormation stacks
+
+# !WARNING!
+When this pipeline is created (by following all of the directions below), AWS resources will be created once a day due to the automatic Lambda function. If you do not want resources to be made daily, make sure to delete all of these resources when you're finished. At the very least, go into AWS Lambda, look for the function that matches your Cloudformation stack names, and delete the Lambda function, which will stop the pipeline from running every day.
 
 # Setup
 

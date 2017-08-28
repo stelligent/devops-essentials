@@ -6,7 +6,7 @@ Test all the other CloudFormation stacks in the [samples](../)
 The following is typically configured one time per AWS account. The following examples assume AWS region `us-east-1`
 
 1. Create a *Secure String* parameter named `GitHubToken` in [Parameter Store](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Parameters:)
-1. Modify the [buildspec-test.yml](./buildspec-test.yml) to obtain the values of the parameters you defined in Parameter Store
+1. Modify the [buildspec-cfnstacks.yml](./buildspec-cfnstacks.yml) to obtain the values of the parameters you defined in Parameter Store
 
 # Launch Stack
 
@@ -18,8 +18,8 @@ The following is typically configured one time per AWS account. The following ex
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
 1. Paste the command in your Terminal
-1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec-test.yml](./buildspec-test.yml)** file to your locally cloned CodeCommit git repo
-1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec.yml](./buildspec.yml)** file to your locally cloned CodeCommit git repo
+1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec-cfnstacks.yml](./buildspec-cfnstacks.yml)** file to your locally cloned CodeCommit git repo
+1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec-lambda.yml](./buildspec-lambda.yml)** file to your locally cloned CodeCommit git repo
 1. From this [samples/test-platform](../test-platform) folder, copy the **[sam-template.yml](./sam-template.yml)** file to your locally cloned CodeCommit git repo
 1. From this [samples/test-platform](../test-platform) folder, copy the **[index.js](./index.js)** file to your locally cloned CodeCommit git repo
 1. From your Terminal, type `git add .`

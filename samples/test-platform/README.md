@@ -1,5 +1,6 @@
 # Test Platform
-Test all the other CloudFormation stacks in the [samples](../)
+Tests all the other CloudFormation stacks in the [samples](../)
+Creates a Lambda function that is AUTOMATICALLY run once a day which creates all the CloudFormation stacks.
 
 # Setup
 
@@ -22,6 +23,7 @@ The following is typically configured one time per AWS account. The following ex
 1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec-lambda.yml](./buildspec-lambda.yml)** file to your locally cloned CodeCommit git repo
 1. From this [samples/test-platform](../test-platform) folder, copy the **[sam-template.yml](./sam-template.yml)** file to your locally cloned CodeCommit git repo
 1. From this [samples/test-platform](../test-platform) folder, copy the **[index.js](./index.js)** file to your locally cloned CodeCommit git repo
+1. Open your local **[index.js](./index.js)** file and change the variable CHANGE_TO_CODEPIPELINE_NAME to match the name of your CodePipeline pipeline. (The name can be found by going to AWS CodePipeline in the AWS Console.)
 1. From your Terminal, type `git add .`
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`

@@ -12,6 +12,8 @@ default_region = 'us-east-1'
 failure_states = ['CREATE_FAILED', 'ROLLBACK_COMPLETE','ROLLBACK_IN_PROGRESS','UPDATE_ROLLBACK_FAILED','UPDATE_ROLLBACK_IN_PROGRESS','ROLLBACK_FAILED']
 success_states = ['CREATE_COMPLETE','UPDATE_COMPLETE','UPDATE_COMPLETE_CLEANUP_IN_PROGRESS']
 in_progress_states = ['CREATE_IN_PROGRESS','REVIEW_IN_PROGRESS','UPDATE_IN_PROGRESS']
+table_header = 'CFN Stack Name | Status | Details' + '\n' + '----------------------------------' + '\n'
+
 # CHANGE the strings BELOW to the stacks you want to check
 # stacks_to_be_checked uses cfn stack NAMES
 stacks_to_be_checked = ['mu-service-mu-first-acceptance', 'cross-account-ami-copy-role']
@@ -91,6 +93,8 @@ def manipulate_results_data_for_humans(raw_results):
 	for i in raw_results:
 		if raw_results[i] in success_states:
 			color = 'G'
+		elif raw_results[i] in in_progress_states:
+			color = 'Y'
 		else:
 			color = 'R'
 		# print i, color, results[i]
@@ -101,6 +105,7 @@ def manipulate_results_data_for_humans(raw_results):
 def write_results_to_file(results_from_cfn_stacks):
 	with open("cfn-stack-results.md","a+") as file:
 		file.truncate(0)
+		file.write(table_header)
 		file.write(results_from_cfn_stacks)
 		file.close()
 

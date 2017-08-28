@@ -20,6 +20,8 @@ The following is typically configured one time per AWS account. The following ex
 1. Paste the command in your Terminal
 1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec-test.yml](./buildspec-test.yml)** file to your locally cloned CodeCommit git repo
 1. From this [samples/test-platform](../test-platform) folder, copy the **[buildspec.yml](./buildspec.yml)** file to your locally cloned CodeCommit git repo
+1. From this [samples/test-platform](../test-platform) folder, copy the **[sam-template.yml](./sam-template.yml)** file to your locally cloned CodeCommit git repo
+1. From this [samples/test-platform](../test-platform) folder, copy the **[index.js](./index.js)** file to your locally cloned CodeCommit git repo
 1. From your Terminal, type `git add .`
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`

@@ -163,7 +163,7 @@ Resources:
             Action: "*"
             Resource: "*"
           Version: '2012-10-17'
-  CodeBuildAlexa:
+  CodeBuildLambdaTrigger:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
     Properties:
@@ -256,7 +256,7 @@ Resources:
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
     DependsOn:
-    - CodeBuildAlexa
+    - CodeBuildLambdaTrigger
     - LambdaTrustRole
     Properties:
       RoleArn:
@@ -295,10 +295,10 @@ Resources:
             Version: '1'
             Provider: CodeBuild
           OutputArtifacts:
-          - Name: alexa-BuildArtifact
+          - Name: lambdatrigger-BuildArtifact
           Configuration:
             ProjectName:
-              Ref: CodeBuildAlexa
+              Ref: CodeBuildLambdaTrigger
           RunOrder: 1
         - InputArtifacts:
           - Name: MyApp
@@ -316,7 +316,7 @@ Resources:
       - Name: Deploy
         Actions:
         - InputArtifacts:
-          - Name: alexa-BuildArtifact
+          - Name: lambdatrigger-BuildArtifact
           Name: GenerateChangeSet
           ActionTypeId:
             Category: Deploy
@@ -340,7 +340,7 @@ Resources:
                 - "-"
                 - Ref: AWS::Region
                 - ""
-            TemplatePath: alexa-BuildArtifact::template-export.json
+            TemplatePath: lambdatrigger-BuildArtifact::template-export.json
           RunOrder: 1
         - ActionTypeId:
             Category: Deploy

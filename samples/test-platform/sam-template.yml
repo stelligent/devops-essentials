@@ -13,21 +13,21 @@ Resources:
         - 
           Arn: 
             Fn::GetAtt: 
-              - "AlexaSkillFunction"
+              - "AutoTrigger"
               - "Arn"
-          Id: "tleavey-testing-us-east-1-AlexaSkillFunction-DKMS7J49S5X5"
+          Id: "tleavey-testing-us-east-1-AutoTrigger-DKMS7J49S5X5"
   PermissionForEventsToInvokeLambda: 
     Type: "AWS::Lambda::Permission"
     Properties: 
       FunctionName: 
-        Ref: "AlexaSkillFunction"
+        Ref: "AutoTrigger"
       Action: "lambda:InvokeFunction"
       Principal: "events.amazonaws.com"
       SourceArn: 
         Fn::GetAtt: 
           - "ScheduledRule"
           - "Arn"
-  AlexaSkillFunction:
+  AutoTrigger:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
@@ -36,5 +36,5 @@ Resources:
         Fn::ImportValue:
           !Join ['-', [!Ref 'AWS::StackName', 'LambdaTrustRole']]
       Events:
-        AlexaSkillEvent:
+        AutoTriggerEvent:
           Type: AlexaSkill

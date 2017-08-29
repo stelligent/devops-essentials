@@ -14,12 +14,6 @@ success_states = ['CREATE_COMPLETE','UPDATE_COMPLETE','UPDATE_COMPLETE_CLEANUP_I
 in_progress_states = ['CREATE_IN_PROGRESS','REVIEW_IN_PROGRESS','UPDATE_IN_PROGRESS']
 table_header = 'CFN Stack Name | Status | Details' + '\n' + '----------------------------------' + '\n'
 
-# CHANGE the strings BELOW to the stacks you want to check
-# stacks_to_be_checked uses cfn stack NAMES
-stacks_to_be_checked = ['mu-service-mu-first-acceptance', 'cross-account-ami-copy-role']
-# stack_id uses cfn stack IDs
-stack_id = ['']
-
 
 # FUNCTIONS--------------------------------------------
 # Returns a dictionary holding all of the various stacks' info
@@ -48,6 +42,15 @@ def get_all_stack_names():
 			list_of_stack_names.append(key[stack_name])
 	return list_of_stack_names
 
+def get_stacks_to_be_tested():
+	stacks_to_be_checked = []
+	all_the_names = get_all_stack_names()
+	for key in all_the_names:
+		if "ForThePeople" in key:
+			stacks_to_be_checked.append(key)
+	return stacks_to_be_checked
+
+
 # Checks if the user-input stack names actually exist in cfn, so compares against cfn reality
 # Returns a boolean
 def check_existence_of_stacks(stacks_to_be_checked):
@@ -74,18 +77,6 @@ def get_status_using_stack_names(stacks_to_be_checked):
 	# return list_of_stack_statuses
 	return dict_of_stack_statuses
 
-# THE VERSION USING STACK_ID instead of names
-# Returns a list of cfn statuses based on the stack IDs
-# The results of this data are not used in other functions.
-# So this is basically out-of-use for now.
-def get_status_using_stack_ids(stack_id):
-	resource = boto3.resource('cloudformation')
-	list_of_status = []
-	for one_id in stack_id:
-		status = resource.Stack(one_id).stack_status
-		list_of_status.append(status)
-	return list_of_status
-
 # Takes the raw dict of the cfn stack results and returns a string that is more human readable.
 def manipulate_results_data_for_humans(raw_results):
 	color = 'R'
@@ -108,6 +99,21 @@ def write_results_to_file(results_from_cfn_stacks):
 		file.write(table_header)
 		file.write(results_from_cfn_stacks)
 		file.close()
+
+# THE VERSION USING STACK_ID instead of stack names
+# Returns a list of cfn statuses based on the stack IDs
+# The results of this data are not used in other functions.
+# So this is basically OUT-OF-USE for now.
+# CHANGE the string BELOW to the stack id you want to check
+# stack_id = ['']
+# Don't use this unless you have some special case. Stick with cfn names.
+def get_status_using_stack_ids(stack_id):
+	resource = boto3.resource('cloudformation')
+	list_of_status = []
+	for one_id in stack_id:
+		status = resource.Stack(one_id).stack_status
+		list_of_status.append(status)
+	return list_of_status
 
 
 # TESTS-------------------------------------------------
@@ -140,8 +146,10 @@ def test_get_status_using_stack_names(stacks_to_be_checked):
 
 
 # SCRIPT TO RUN PROGRAM-----------------------------------
-# These three steps will check the status of the cfn stacks
+# These four steps will get the stack names to be checked,
+# Check the status of those specific cfn stacks,
 # And output the results into a file named cfn-stack-results.md
+stacks_to_be_checked = get_stacks_to_be_tested()
 raw_results = get_status_using_stack_names(stacks_to_be_checked)
 human_friendly_results = manipulate_results_data_for_humans(raw_results)
 write_results_to_file(human_friendly_results)

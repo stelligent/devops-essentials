@@ -1,4 +1,6 @@
 # THIS ENTIRE PROGRAM DOES NOT LOOK AT OR FOR DELETED STACKS
+# You must change the string in the first function, get_stacks_to_be_tested(),
+# to a part of the name of the cfn stacks you'd like to check.
 
 # IMPORTS----------------------------------------------
 import boto3
@@ -16,6 +18,15 @@ table_header = 'CFN Stack Name | Status | Details' + '\n' + '-------------------
 
 
 # FUNCTIONS--------------------------------------------
+# Define a substring that is included in the cfn stack names that you want to check the statuses of.
+def get_stacks_to_be_tested():
+	stacks_to_be_checked = []
+	all_the_names = get_all_stack_names()
+	for key in all_the_names:
+		if "ForThePeople" in key:
+			stacks_to_be_checked.append(key)
+	return stacks_to_be_checked
+
 # Returns a dictionary holding all of the various stacks' info
 # DOES NOT RETURN DELETED STACKS' INFO!!!
 def get_all_stacks_info():
@@ -41,15 +52,6 @@ def get_all_stack_names():
 			# 		print one_stack
 			list_of_stack_names.append(key[stack_name])
 	return list_of_stack_names
-
-def get_stacks_to_be_tested():
-	stacks_to_be_checked = []
-	all_the_names = get_all_stack_names()
-	for key in all_the_names:
-		if "ForThePeople" in key:
-			stacks_to_be_checked.append(key)
-	return stacks_to_be_checked
-
 
 # Checks if the user-input stack names actually exist in cfn, so compares against cfn reality
 # Returns a boolean
@@ -104,9 +106,9 @@ def write_results_to_file(results_from_cfn_stacks):
 # Returns a list of cfn statuses based on the stack IDs
 # The results of this data are not used in other functions.
 # So this is basically OUT-OF-USE for now.
-# CHANGE the string BELOW to the stack id you want to check
+# DON'T USE THIS unless you have some special case. Stick with cfn names.
+# Uncomment and change the string below to the stack id you want to check
 # stack_id = ['']
-# Don't use this unless you have some special case. Stick with cfn names.
 def get_status_using_stack_ids(stack_id):
 	resource = boto3.resource('cloudformation')
 	list_of_status = []

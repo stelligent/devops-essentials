@@ -139,6 +139,7 @@ Resources:
         IndexDocument: index.html
   PipelineBucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
   CodeBuildDeploySite:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole

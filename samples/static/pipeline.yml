@@ -125,7 +125,6 @@ Resources:
           - Action:
             - s3:*
             - cloudformation:*
-            - ecs:*
             - iam:PassRole
             Resource: "*"
             Effect: Allow
@@ -208,7 +207,7 @@ Resources:
         Type: S3
         Location: !Ref PipelineBucket
 Outputs:
-  CodePipelineUrl:
+  PipelineUrl:
     Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}
     Description: CodePipeline URL
   SiteUrl:

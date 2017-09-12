@@ -1,5 +1,5 @@
 ---
-Description: Automate provisioning of CodeBuild with CodePipeline, CodeCommit, and
+Description: Automate provisioning of CodePipeline, CodeCommit, CodeBuild, CloudWatch Events and
   CodeDeploy. **WARNING** This template creates one or more Amazon EC2 instances.
   You will be billed for the AWS resources used if you create a stack from this template.
 AWSTemplateFormatVersion: '2010-09-09'
@@ -48,7 +48,28 @@ Metadata:
       RepositoryBranch:
         default: CodeCommit Repository Branch
 Resources:
-Resources:
+  EventRule: 
+    Type: "AWS::Events::Rule"
+    Properties: 
+      Description: "EventRule"
+      EventPattern: 
+        source:
+        - aws.codepipeline
+        detail-type:
+        - CodePipeline Pipeline Execution State Change
+        detail:
+          state:
+          - FAILED
+      State: "ENABLED"
+      Targets: 
+        - 
+          Arn: 
+            Ref: "MySNSTopic"
+          Id: "PipelineNotificationTopic"
+          InputTransformer:
+            InputTemplate: '"The Pipeline <pipeline> has failed. Go to https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/<pipeline>" '
+            InputPathsMap:
+              pipeline: "$.detail.pipeline" 
   ArtifactBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete

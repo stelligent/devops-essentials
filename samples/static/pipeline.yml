@@ -71,28 +71,6 @@ Metadata:
       BuildImage: 
         default: CodeBuild image
 Resources:
-  EventRule: 
-    Type: "AWS::Events::Rule"
-    Properties: 
-      Description: "EventRule"
-      EventPattern: 
-        source:
-        - aws.codepipeline
-        detail-type:
-        - CodePipeline Pipeline Execution State Change
-        detail:
-          state:
-          - FAILED
-      State: "ENABLED"
-      Targets: 
-        - 
-          Arn: 
-            Ref: "MySNSTopic"
-          Id: "PipelineNotificationTopic"
-          InputTransformer:
-            InputTemplate: '"The Pipeline <pipeline> has failed. Go to https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/<pipeline>" '
-            InputPathsMap:
-              pipeline: "$.detail.pipeline" 
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:

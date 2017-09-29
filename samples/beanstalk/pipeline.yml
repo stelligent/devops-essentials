@@ -91,7 +91,7 @@ Resources:
       - Namespace: aws:elasticbeanstalk:environment
         OptionName: EnvironmentType
         Value: LoadBalanced
-      SolutionStackName: 64bit Amazon Linux 2017.03 v4.2.2 running Node.js
+      SolutionStackName: 64bit Amazon Linux 2017.03 v4.3.0 running Node.js
   nodeEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     DependsOn:

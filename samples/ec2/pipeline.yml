@@ -328,6 +328,14 @@ Outputs:
         - "#/view/"
         - Ref: CodePipelineStack
     Description: CodePipeline URL
+  CodeDeployURL:
+    Value:
+      Fn::Join:
+      - ''
+      - - https://console.aws.amazon.com/codedeploy/home?region=
+        - Ref: AWS::Region
+        - "#/deployments/"
+    Description: CodeDeploy URL
   GitCloneCommand:
     Value:
       Fn::Join:

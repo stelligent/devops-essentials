@@ -250,3 +250,14 @@ Resources:
 Outputs:
   PipelineUrl:
     Value: !Sub https://console.aws.amazon.com/codepipeline/home?region=${AWS::Region}#/view/${Pipeline}
+
+  GitCloneCommand:
+    Value:
+      Fn::Join:
+      - ''
+      - - "git clone https://git-codecommit."
+        - Ref: AWS::Region
+        - ".amazonaws.com/v1/repos/"
+        - Ref: AWS::StackName
+        - "/"
+    Description: Git Repository URL

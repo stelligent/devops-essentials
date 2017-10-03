@@ -61,3 +61,14 @@ Outputs:
   PipelineUrl:
     Description: The continuous deployment pipeline in the AWS Management Console.
     Value: !GetAtt DeploymentPipeline.Outputs.PipelineUrl
+
+  GitCloneCommand:
+    Value:
+      Fn::Join:
+      - ''
+      - - "git clone https://git-codecommit."
+        - Ref: AWS::Region
+        - ".amazonaws.com/v1/repos/"
+        - Ref: AWS::StackName
+        - "/"
+    Description: Git Repository URL

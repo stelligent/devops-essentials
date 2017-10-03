@@ -230,7 +230,7 @@ Outputs:
           - EndpointURL
         - "/"
     Description: URL for the working Node application
-  CodePipelineURL:
+  PipelineUrl:
     Value:
       Fn::Join:
       - ''

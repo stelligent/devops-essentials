@@ -13,7 +13,6 @@ Solution | Launch Template | README
 **ECS**  | [![Launch ECS Stack with CloudFormation](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-ecs%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/ecs/pipeline.yml) | [README](./ecs)
 **Serverless** | [![Launch Serverless Stack with CloudFormation](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-serverless%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/serverless/pipeline.yml) | [README](./serverless)
 **Alexa** | [![Launch Serverless Stack for Alexa with CloudFormation](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-alexa%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/serverless/alexa/pipeline.yml) | [README](./serverless/alexa)
-**Test Framework** | [![Launch Test Framework Stack with CloudFormation](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-test-platform%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/test-platform/pipeline.yml) | [README](./test-platform)
 
 # Changes
 

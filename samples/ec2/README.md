@@ -16,7 +16,7 @@ This repo is a demonstration of Continuous Delivery of a static website to EC2 i
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
 1. Paste the command in your Terminal
-1. From [this](../ec2) folder, copy **all** of its contents to your locally cloned CodeCommit Git repo
+1. Copy **all** of the contents from [this](../ec2) folder to your locally cloned CodeCommit Git repo
 1. From your Terminal, type `git add .`
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`

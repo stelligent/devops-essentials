@@ -11,11 +11,16 @@ This repo is a demonstration of Continuous Delivery of a static website to Elast
 
 # Launch Stack
 
-[![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-beanstalk%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml)
-1. When launching the stack, enter the name of the S3 Bucket you created in the `S3Bucket` CloudFormation parameter
+
 
 # Configure Solution
 
+## Before Launching the Stack
+
+[![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-beanstalk%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml)
+1. When launching the stack, enter the name of the S3 Bucket you created in the `S3Bucket` CloudFormation parameter
+
+## After Launching the Stack
 1. Once the CloudFormation stack is successful, select the checkbox next to the stack and click the **Outputs** tab. 
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit

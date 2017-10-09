@@ -21,7 +21,7 @@ This repo is a demonstration of Continuous Delivery of a static website to EC2 i
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`
 1. Go back to your pipeline in CodePipeline and see the changes flow through the pipeline
-1. Once the pipeline is complete, go to your CloudFormation Outputs and click on the **CodeDeployURL** Output to get to to the EC2 instance for which CodeDeploy has deployed the application
+1. Once the pipeline is complete, go to your CloudFormation Outputs and click on the **CodeDeployURL** Output to get to the EC2 instance for which CodeDeploy has deployed the application
 
 
 # Resources

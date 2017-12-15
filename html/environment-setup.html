@@ -9,35 +9,31 @@
                  <div class="inner-body panel">
                     <h4 class="sub-heading">Introduction</h4>
                     <div class="inner-body panel">
-                        <p>"Amazon Simple Storage Service (Amazon S3) is object storage with a simple web service interface to store and retrieve any amount of data from anywhere on the web." (<a href="https://aws.amazon.com/s3/">Source</a>)</p>
-                        <p>In this sublesson, you will upload HTML and other files to an Amazon Simple Storage Service (S3) bucket and configure it as a static website. Later in this lesson, you will automate the process you're performing manually.</p>
-                        <p>For more information on using S3 for static website hosting, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/user-guide/static-website-hosting.html">How Do I Configure an S3 Bucket for Static Website Hosting?</a></p>
+                        <p>AWS Cloud9 is a cloud IDE for writing, running, and debugging code. With it, you can code with only your web browser. No need to download software, configure your environments, or setup your IDE and its configuration on each of your computers. You can collaborate in the same environment with other developers while seeing each of your changes in real time. This is something that I think raises the bar when it comes to pair programming and code reviews.</p>
+
+                        <p>You can also code in nearly any programming language you choose and it supports some of the top IDE platforms such as vim, emacs, and Sublime.</p>
+
+                        <p>From the perspective of reducing the waiting and speeding up feedback loops, there are a couple of key benefits to Cloud9. The first is the real-time collaboration in being up to work with other developers in real time on the same code. The fact that most tools are already installed and configured (e.g. git and the AWS CLI) saves a lot of time and you can go from computer to computer and access your same environments and settings. All of this saves lots of unnecessary time and allows developers to focus on developing features for customers. In less than one minute, it launches your environment and you can immediately start writing code. You can also configure your environment settings such as your color scheme, key bindings, AWS, project, and user settings.</p>
+
+                        <p>Comes with the SAM Local CLI. It also supports integration with AWS Lambda and running and debugging these functions in your IDE. </p> 
+
+                        <p>There is AWS CodeStar integration in Cloud9. With AWS CodeStar, you can set up your entire continuous delivery toolchain in minutes, allowing you to start releasing code faster.</p>
                     </div>  
                  </div>  
 
 
                  <div class="inner-body panel">
-                    <h4 class="sub-heading">Create and configure an S3 Bucket for Static Website Hosting</h4>
+                    <h4 class="sub-heading">Setup Cloud9 Environment</h4>
                     <div class="inner-body panel">
-                        <p>Follow these steps to create and configure an S3 bucket for static website hosting -</p>
                         <ul class="ul-listed">
-                            <li>Go to the <a href="https://console.aws.amazon.com/s3/">Amazon S3 console</a> and select <strong>Create Bucket</strong></li>
-                            <li>Enter a globally-unique <strong>Bucket name</strong>. See <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html">Bucket Restrictions and Limitations</a> for bucket naming constraints and other limits.</li>
-                            <li>Select the <strong>US East</strong> region</li>
-                            <li>Select <strong>Next</strong></li>
-                            <li>From the <em>Set Properties</em> panel, select <strong>Next</strong></li>
-                            <li>From the <em>Set Permissions</em> panel, select <strong>Next</strong></li>
-                            <li>From the <em>Review</em> panel, select <strong>Create bucket</strong></li>
-                            <li>Click the newly-created bucket and go to the <strong>Properties</strong> tab and select  <strong>Static website hosting</strong></li>
-                            <li>Choose the <strong>Use this bucket to host a website</strong> radio button and type <strong>index.html</strong> for <em>Index document</em> and select <strong>Save</strong></li>
-                            <li>Select the <strong>Objects</strong> tab. Select <strong>Upload</strong>, then drag and drop the contents of the <strong>html</strong> directory from your cloned GitHub repository.</li>
-                            <li>Choose <strong>Next</strong></li>
-                            <li>Choose <strong>Manage public permissions</strong> and select the <strong>Read</strong> checkbox for <em>Objects</em> and <em>Everyone</em></li>
-                            <li>Choose <strong>Next</strong></li>
-                            <li>Choose <strong>Next</strong></li>
-                            <li>Choose <strong>Upload</strong></li>
-                            <li>Select the <strong>Properties</strong> tab</li>
-                            <li>Select the <strong>Static website hosting</strong> and click on the <em>Endpoint URL</em>. The static website should correctly display.</li>
+                            <li>Go to the <a href="https://console.aws.amazon.com/cloud9/">Amazon Cloud9 console</a> and select <strong>Create environment</strong></li>
+                            <li>Enter a <strong>Name</strong> and <strong>Description</strong></li>
+                            <li>Select <strong>Next step</strong></li>
+                            <li>Select <strong>Create a new instance for environment (EC2)</strong></li>
+                            <li>Select <strong>t2.micro</strong></li>
+                            <li>Leave the <em>Cost-saving setting</em> at the <strong>After 30-minute (default)</strong></li>
+                            <li>Select <strong>Next step</strong></li>
+                            <li>Review best practices and select <strong>Create environment</strong></li>
                         </ul>
                     </div>  
                  </div>  

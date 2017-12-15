@@ -7,25 +7,26 @@
 
 
                  <div class="inner-body panel">
-                    <h4 class="sub-heading">About Elastic Compute Cloud (EC2)</h4>
+                    <h4 class="sub-heading">About AWS CloudFormation</h4>
                     <div class="inner-body panel">
-                        <p>"Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides secure, resizable compute capacity in the cloud. It is designed to make web-scale cloud computing easier for developers.</p>
-                        <p>Amazon EC2's simple web service interface allows you to obtain and configure capacity with minimal friction. It provides you with complete control of your computing resources and lets you run on Amazon’s proven computing environment. Amazon EC2 reduces the time required to obtain and boot new server instances to minutes, allowing you to quickly scale capacity, both up and down, as your computing requirements change. Amazon EC2 changes the economics of computing by allowing you to pay only for capacity that you actually use. Amazon EC2 provides developers the tools to build failure resilient applications and isolate them from common failure scenarios." (<a href="https://aws.amazon.com/ec2/">Source</a>)</p>
+                        <p>"AWS CloudFormation provides a common language for you to describe and provision all the infrastructure resources in your cloud environment. CloudFormation allows you to use a simple text file to model and provision, in an automated and secure manner, all the resources needed for your applications across all regions and accounts. This file serves as the single source of truth for your cloud environment."</p>
                     </div>  
                  </div>  
 
 
                 <div class="inner-body panel">
-                    <h4 class="sub-heading">Launch an EC2 Instance and review other EC2 features</h4>
+                    <h4 class="sub-heading">AWS CloudFormation</h4>
                     <div class="inner-body panel">
-                        <p>Follow these steps to create an EC2 instance - </p>
+                        <p>Use AWS CloudFormation - </p>
                        <ul class="edited-ul">
+                            <li>Review the top-level objects of a CloudFormation template: AWSTemplateFormatVersion, Description, Parameters, Resources, Mappings, Outputs in the jenkins.template file. The Resources object is the only object that's required</li>
+                            <li>The Resources object contains the definitions of the AWS resources you want to create with the template. Each resource is listed separately and specifies the properties necessary for creating that particular resource. The resource declaration begins with a String that specifies the logical name for the resource. The logical name can be used to refer to the resources within the template.</li>
+                            <li>You use the Parameters object to declare values that can be passed to the template when you create the Stack. A parameter is an effective way to specify sensitive information - such as usernames/passwords - that you don't want to store in the template itself.</li>
+                            <li>You use Mappings to declare conditional values that are evaluated in a similar manner as a switch statement. The template uses Mappings to select the correct Amazon Machine Image for the Region and the Architecture Type for The Instance Type.</li>
+                            <li>Outputs define custom values that are returned by the cfn-describe-stacks command and in the AWS Management Console Outputs tab after the stack is created. You can use Output values to return information from the resources in the stacks such as the URL for a website created in the template.   </li>                        
+                           
+                           
                             <li>Launch an <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#">EC2 instance</a></li>
-                            <li>View <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#SecurityGroups:sort=groupId">Security Groups</a></li>
-                            <li>View <a href="https://console.aws.amazon.com/vpc/home?region=us-east-1#">VPC</a></li>
-                            <li>View <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:">Load Balancers</a<</li>
-                            <li>Create a Parameter Using <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Parameters:sort=Name">Parameter Store</a></li>
-                            <li><a href="https://console.aws.amazon.com/ec2/autoscaling/home?region=us-east-1#LaunchConfigurations:">Auto Scaling</a></li>
                         </ul>
                     </div>  
                  </div> 

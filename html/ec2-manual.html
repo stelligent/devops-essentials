@@ -20,6 +20,7 @@
                     <div class="inner-body panel">
                         <p>Follow these steps to deploying a Java application on an EC2 instance -</p>
                         <ul class="ul-listed">
+                        <li>IAM - Create a new <a href="https://console.aws.amazon.com/iam/">IAM</a> User and give it access <strong>AWSCodeCommitFullAccess</strong> and all AWS resources. Login with this new user.</li>
                         <li>Prerequisites - Ensure <a href="https://github.com/stelligent/devops-essentials/wiki/Prerequisites">Prerequisites</a> have been established</li>
                           <li>EC2 - Create an <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName">EC2 Key Pair</a></li>
                           <li>S3 - Create an <a href="https://s3.console.aws.amazon.com/s3/home?region=us-east-1">S3 bucket</a> to store (version it)</li>
@@ -33,7 +34,6 @@
                           <li>IAM/CodeCommit - Assign <a href="http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-gc.html">Git credentials for CodeCommit></a> in <a href="https://console.aws.amazon.com/iam/">IAM</a></li>
                           <li>CodeCommit - Manually create a <a href="https://console.aws.amazon.com/codecommit/">CodeCommit</a> repository</li>
                           <li>CodePipeline - Manually create a <a href="https://console.aws.amazon.com/codepipeline/">CodePipeline</a> pipeline</li>
-                          
                         </ul>
                     </div>  
                  </div>  

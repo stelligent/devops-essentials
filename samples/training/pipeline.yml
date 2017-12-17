@@ -313,7 +313,7 @@ Resources:
         Actions:
         - InputArtifacts:
           - Name: MyApp
-          Name: cfn_nag
+          Name: CfnStaticAnalysis
           ActionTypeId:
             Category: Test
             Owner: AWS

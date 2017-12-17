@@ -298,7 +298,7 @@ Resources:
   CodeDeployEC2InstancesStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/training/CodeDeploy_SampleCF_Template.json
+      TemplateURL: https://s3.amazonaws.com/stelligent-public/cloudformation-templates/github/labs/codebuild/CodeDeploy_SampleCF_Template.json
       TimeoutInMinutes: '60'
       Parameters:
         TagValue:

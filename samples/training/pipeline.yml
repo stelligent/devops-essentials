@@ -408,8 +408,8 @@ Resources:
           Configuration:
             FunctionName:
               Ref: CodePipelineLambdaDummy
-              UserParameters:
-                Ref: AWS::StackName
+            UserParameters:
+              Ref: AWS::StackName
           RunOrder: 1
       - Name: Deploy
         Actions:

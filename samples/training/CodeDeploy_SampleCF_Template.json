@@ -981,6 +981,11 @@
           "Arn"
         ]
       }
+    },
+    "EC2Instance":{
+      "Value":{
+        "Ref":"LinuxEC2Instance"
+      }
     }
   }
 }

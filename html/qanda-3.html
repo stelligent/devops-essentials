@@ -17,13 +17,13 @@
                 <div class="container-fluid">        
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
-                         <h4 class="bg-info secondary-header">CodeBuild</h4> 
+                         <h4 class="bg-info secondary-header">Of the available options, choose the one with all of the correct CodeDeploy hooks?</h4> 
                             <div class="inner-body panel">
                                 <ul class="ul-listed">
-                                   <li>A tool or set of tools to increase automation</li>
-                                   <li>A team of senior operations engineers that enable infrastructure operation </li>
-                                   <li>A team of developers that own their application in production	</li>
-                                   <li>Any efficiencies gained in the feedback loop to speed up the delivery of software to customers</li>
+                                   <li>StopServer, BeforeInstall, StartServer, VerifyApp</li>
+                                   <li>BootupService, BeforeStart, StartApplication, ValidateService</li>
+                                   <li>ApplicationStop, BeforeInstall, ApplicationStart, ValidateService</li>
+                                   <li>Stop, Begin, Start, Validate</li>
                                 </ul>
                             </div>
                         </div>
@@ -33,32 +33,31 @@
             <div class="container-fluid">        
                 <div class="row">
                         <div class="col-xs-12 col-md-12">
-                         <h4 class="bg-info secondary-header">CodeDeploy</h4> 
+                         <h4 class="bg-info secondary-header">How can you define a CodeBuild project without using a buildpsec.yml file?</h4> 
                             <div class="inner-body panel">
                                 <ul class="ul-listed">
-                                    <li>Software is always ready to release and there is one team working on a single pipeline</li>
-                                    <li>Software is always ready to release and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and errors in the pipeline can be ignored, allowing developers to continue working on important new features</li>
+                                    <li>You can't; CodeBuild must find a buildspec.yml file to properly run</li>
+                                    <li>Provide the build commands in the BuildSpec section of a CloudFormation template</li>
+                                    <li>Provide the build commands in the BuildSpec section of a CodePipeline</li>
+                                    <li>Include a Dockerfile and CodeBuild will automatically build a docker image</li>
                                 </ul>
                             </div>
                         </div>
+                </div>
             <!-- container-fluid ends here --> </div> 
             
-            <div class="container-fluid">        
+             <div class="container-fluid">        
                 <div class="row">
                         <div class="col-xs-12 col-md-12">
-                         <h4 class="bg-info secondary-header">Lambda</h4> 
+                         <h4 class="bg-info secondary-header">How does the CodeDeploy deployment group know which EC2 instances to deploy to?</h4> 
                             <div class="inner-body panel">
                                 <ul class="ul-listed">
-                                    <li>Software is always ready to release and there is one team working on a single pipeline</li>
-                                    <li>Software is always ready to release and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and errors in the pipeline can be ignored, allowing developers to continue working on important new features</li>
+                                    <li>The instance id is provided as an input to the CodeDeploy deployment group resource</li>
+                                    <li>The instance private IP is provided as an input to the CodeDeploy deployment group resource</li>
+                                    <li>The logical name of the resource in the CloudFormation template is provided as an input to the CodeDeploy deployment group resource</li>
+                                    <li>The instance tag name and value are provided as an input to the CodeDeploy deployment group resource</li>
                                 </ul>
                             </div>
                         </div>
+                </div>
             <!-- container-fluid ends here --> </div> 
-
-
-

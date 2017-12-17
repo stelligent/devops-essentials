@@ -278,7 +278,7 @@ Resources:
       Code:
         S3Bucket:
           Ref: S3BucketLambdaFunction
-        S3Key: CheckWebsite.zip
+        S3Key: Archive.zip
       Role:
         Fn::GetAtt:
         - CodePipelineLambdaRole

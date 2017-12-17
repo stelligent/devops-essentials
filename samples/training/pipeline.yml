@@ -162,9 +162,11 @@ Resources:
   CodeBuildJavaProject:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
-    Properties:
-      Name:
-        Ref: AWS::StackName
+        Fn::Join:
+        - ''
+        - - Run
+          - "Java"
+          - Ref: AWS::StackName
       Description: Build Java application
       ServiceRole:
         Fn::GetAtt:
@@ -193,9 +195,11 @@ Resources:
   CodeBuildCfnNag:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
-    Properties:
-      Name:
-        Ref: AWS::StackName
+        Fn::Join:
+        - ''
+        - - Run
+          - "CfnNag"
+          - Ref: AWS::StackName
       Description: Build application
       ServiceRole:
         Fn::GetAtt:

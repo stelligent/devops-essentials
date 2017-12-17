@@ -4,6 +4,11 @@ Description: Automate provisioning of CodePipeline, CodeCommit, CodeBuild, Cloud
   You will be billed for the AWS resources used if you create a stack from this template.
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
+  S3BucketLambdaFunction:
+    Type: String
+    Description: S3 bucket to use for artifacts. Just bucket Name; not URL. IAM user
+      should have access to the bucket.
+    Default: stelligent-public
   EmailAddress:
     Description: Email Address for sending SNS notifications for CodeCommit
     Type: String
@@ -73,6 +78,41 @@ Resources:
   ArtifactBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
+  CodePipelineLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+  LambdaCodePipelineExecutionPolicy:
+    DependsOn:
+    - CodePipelineLambdaRole
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: LambdaRolePolicy
+      Roles:
+      - Ref: CodePipelineLambdaRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:*
+          Resource:
+          - arn:aws:logs:*:*:*
+        - Effect: Allow
+          Action:
+          - codepipeline:PutJobSuccessResult
+          - codepipeline:PutJobFailureResult
+          Resource:
+          - "*"
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -229,6 +269,25 @@ Resources:
       Tags:
       - Key: Owner
         Value: MyCodeBuildProject
+  CodePipelineLambdaDummy:
+    Type: AWS::Lambda::Function
+    DependsOn:
+    - CodePipelineLambdaRole
+    - LambdaCodePipelineExecutionPolicy
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: S3BucketLambdaFunction
+        S3Key: Archive.zip
+      Role:
+        Fn::GetAtt:
+        - CodePipelineLambdaRole
+        - Arn
+      Description: Always return success
+      Timeout: 20
+      Handler: index.handler
+      Runtime: nodejs6.10
+      MemorySize: 128
   MySNSTopic:
     Type: AWS::SNS::Topic
     Properties:

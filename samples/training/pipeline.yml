@@ -397,6 +397,8 @@ Resources:
             ProjectName:
               Ref: CodeBuildJavaProject
           RunOrder: 1
+      - Name: Test
+        Actions:
         - InputArtifacts: []
           Name: UnitTest
           ActionTypeId:
@@ -411,6 +413,9 @@ Resources:
             UserParameters:
               Ref: AWS::StackName
           RunOrder: 1
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket
       - Name: Deploy
         Actions:
         - InputArtifacts:

@@ -285,7 +285,7 @@ Resources:
         - Arn
       Description: Always return success
       Timeout: 20
-      Handler: checkwebsite.handler
+      Handler: lambdadummy.handler
       Runtime: nodejs6.10
       MemorySize: 128
   MySNSTopic:
@@ -408,7 +408,8 @@ Resources:
           Configuration:
             FunctionName:
               Ref: CodePipelineLambdaDummy
-              UserParameters: 'http:/www.devopsessentialsaws.com/'
+              UserParameters:
+                Ref: AWS::StackName
           RunOrder: 1
       - Name: Deploy
         Actions:

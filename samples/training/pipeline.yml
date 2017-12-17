@@ -408,8 +408,7 @@ Resources:
           Configuration:
             FunctionName:
               Ref: CodePipelineLambdaDummy
-            UserParameters:
-              Ref: AWS::StackName
+              UserParameters: 'http:/www.devopsessentialsaws.com/'
           RunOrder: 1
       - Name: Deploy
         Actions:

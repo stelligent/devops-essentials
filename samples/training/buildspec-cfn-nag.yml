@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - gem install cfn-nag --version 0.3.4
+      - cfn_nag_scan --input-path pipeline-cfn-nag-fail.json
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'

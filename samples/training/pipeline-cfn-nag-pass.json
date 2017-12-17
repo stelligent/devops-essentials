@@ -1,0 +1,372 @@
+{
+  "Description": "Automate provisioning of CodeBuild with CodePipeline, CodeCommit, and CodeDeploy. **WARNING** This template creates one or more Amazon EC2 instances. You will be billed for the AWS resources used if you create a stack from this template.",
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "EmailAddress": {
+      "Description": "Email Address for sending SNS notifications for CodeCommit",
+      "Type": "String"
+    },
+    "RepositoryBranch": {
+      "Description": "The name of the branch for the CodeCommit repo",
+      "Type": "String",
+      "Default": "master",
+      "AllowedPattern": "[\\x20-\\x7E]*",
+      "ConstraintDescription": "Can contain only ASCII characters."
+    },
+    "TagKey": {
+      "Type": "String",
+      "Default": "Name",
+      "Description": "The tag name that is associated with EC2 instances on which CodeDeploy agent is installed"
+    },
+    "TagValue": {
+      "Description": "The tag value that identifies this as a target for deployments.",
+      "Type": "String",
+      "Default": "CodeDeployEC2Tag",
+      "AllowedPattern": "[\\x20-\\x7E]*",
+      "ConstraintDescription": "Can contain only ASCII characters."
+    },
+    "EC2KeyPairName": {
+      "Description": "Name of an existing Amazon EC2 key pair to enable SSH access to the instances.",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "MinLength": "1",
+      "MaxLength": "255",
+      "AllowedPattern": "[\\x20-\\x7E]*",
+      "ConstraintDescription": "Can contain only ASCII characters."
+    }
+  },
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "default": "Dynamic Configuration"
+          },
+          "Parameters": [
+            "EC2KeyPairName",
+            "RepositoryBranch"
+          ]
+        }
+      ],
+      "ParameterLabels": {
+        "EC2KeyPairName": {
+          "default": "EC2 KeyPair Name"
+        },
+        "RepositoryName": {
+          "default": "CodeCommit Repository Name"
+        },
+        "RepositoryBranch": {
+          "default": "CodeCommit Repository Branch"
+        }
+      }
+    }
+  },
+  "Resources": {
+    "ArtifactBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Delete"
+    },
+    "CodeDeployEC2InstancesStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/stelligent-public/cloudformation-templates/github/labs/codebuild/CodeDeploy_SampleCF_Template.json",
+        "TimeoutInMinutes": "60",
+        "Parameters": {
+          "TagValue": {
+            "Ref": "TagValue"
+          },
+          "KeyPairName": {
+            "Ref": "EC2KeyPairName"
+          }
+        }
+      }
+    },
+    "CodeCommitRepo": {
+      "Type": "AWS::CodeCommit::Repository",
+      "Properties": {
+        "RepositoryName": {
+          "Ref": "AWS::StackName"
+        },
+        "RepositoryDescription": "CodeCommit Repository for Sample EC2 CodeDeploy Solution",
+        "Triggers": [
+          {
+            "Name": "MasterTrigger",
+            "CustomData": {
+              "Ref": "AWS::StackName"
+            },
+            "DestinationArn": {
+              "Ref": "MySNSTopic"
+            },
+            "Events": [
+              "all"
+            ]
+          }
+        ]
+      }
+    },
+    "MyApplication": {
+      "Type": "AWS::CodeDeploy::Application",
+      "DependsOn": "CodeDeployEC2InstancesStack"
+    },
+    "MyDeploymentGroup": {
+      "Type": "AWS::CodeDeploy::DeploymentGroup",
+      "DependsOn": "MyApplication",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "MyApplication"
+        },
+        "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+        "Ec2TagFilters": [
+          {
+            "Key": {
+              "Ref": "TagKey"
+            },
+            "Value": {
+              "Ref": "TagValue"
+            },
+            "Type": "KEY_AND_VALUE"
+          }
+        ],
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "CodeDeployEC2InstancesStack",
+            "Outputs.CodeDeployTrustRoleARN"
+          ]
+        }
+      }
+    },
+    "CodePipelineStack": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "DependsOn": "CodeBuildWebsite",
+      "Properties": {
+        "RoleArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:iam::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":role/",
+              {
+                "Ref": "CodePipelineRole"
+              }
+            ]
+          ]
+        },
+        "Stages": [
+          {
+            "Name": "Source",
+            "Actions": [
+              {
+                "InputArtifacts": [
+
+                ],
+                "Name": "Source",
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Version": "1",
+                  "Provider": "CodeCommit"
+                },
+                "OutputArtifacts": [
+                  {
+                    "Name": "MyApp"
+                  }
+                ],
+                "Configuration": {
+                  "BranchName": {
+                    "Ref": "RepositoryBranch"
+                  },
+                  "RepositoryName": {
+                    "Ref": "AWS::StackName"
+                  }
+                },
+                "RunOrder": 1
+              }
+            ]
+          },
+          {
+            "Name": "Build",
+            "Actions": [
+              {
+                "InputArtifacts": [
+                  {
+                    "Name": "MyApp"
+                  }
+                ],
+                "Name": "cfn_nag",
+                "ActionTypeId": {
+                  "Category": "Test",
+                  "Owner": "AWS",
+                  "Version": "1",
+                  "Provider": "CodeBuild"
+                },
+                "OutputArtifacts": [
+
+                ],
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "CodeBuildWebsite"
+                  }
+                },
+                "RunOrder": 1
+              },
+              {
+                "InputArtifacts": [
+                  {
+                    "Name": "MyApp"
+                  }
+                ],
+                "Name": "Build",
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Version": "1",
+                  "Provider": "CodeBuild"
+                },
+                "OutputArtifacts": [
+                  {
+                    "Name": "MyAppBuild"
+                  }
+                ],
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "CodeBuildWebsite"
+                  }
+                },
+                "RunOrder": 4
+              }
+            ]
+          },
+          {
+            "Name": "Deploy",
+            "Actions": [
+              {
+                "InputArtifacts": [
+                  {
+                    "Name": "MyAppBuild"
+                  }
+                ],
+                "Name": "DeployToProd",
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Version": "1",
+                  "Provider": "CodeDeploy"
+                },
+                "OutputArtifacts": [
+
+                ],
+                "Configuration": {
+                  "ApplicationName": {
+                    "Ref": "MyApplication"
+                  },
+                  "DeploymentGroupName": {
+                    "Ref": "MyDeploymentGroup"
+                  }
+                },
+                "RunOrder": 1
+              }
+            ]
+          }
+        ],
+        "ArtifactStore": {
+          "Type": "S3",
+          "Location": "ArtifactBucket"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "CodeBuildURL": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://console.aws.amazon.com/codebuild/home?region=",
+            {
+              "Ref": "AWS::Region"
+            },
+            "#/projects/",
+            {
+              "Ref": "CodeBuildWebsite"
+            },
+            "/view"
+          ]
+        ]
+      },
+      "Description": "CodeBuild URL"
+    },
+    "CodeCommitURL": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://console.aws.amazon.com/codecommit/home?region=",
+            {
+              "Ref": "AWS::Region"
+            },
+            "#/repository/",
+            {
+              "Ref": "AWS::StackName"
+            },
+            "/browse/HEAD/--/"
+          ]
+        ]
+      },
+      "Description": "Git Repository URL"
+    },
+    "CodeDeployURL": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://console.aws.amazon.com/codedeploy/home?region=",
+            {
+              "Ref": "AWS::Region"
+            },
+            "#/deployments/"
+          ]
+        ]
+      },
+      "Description": "CodeDeploy URL"
+    },
+    "CodePipelineURL": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://console.aws.amazon.com/codepipeline/home?region=",
+            {
+              "Ref": "AWS::Region"
+            },
+            "#/view/",
+            {
+              "Ref": "CodePipelineStack"
+            }
+          ]
+        ]
+      },
+      "Description": "CodePipeline URL"
+    },
+    "GitCloneCommand": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "git clone https://git-codecommit.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".amazonaws.com/v1/repos/",
+            {
+              "Ref": "AWS::StackName"
+            },
+            "/"
+          ]
+        ]
+      },
+      "Description": "Git Repository URL"
+    }
+  }
+}

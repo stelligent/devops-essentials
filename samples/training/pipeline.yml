@@ -278,14 +278,14 @@ Resources:
       Code:
         S3Bucket:
           Ref: S3BucketLambdaFunction
-        S3Key: Archive.zip
+        S3Key: CheckWebsite.zip
       Role:
         Fn::GetAtt:
         - CodePipelineLambdaRole
         - Arn
       Description: Always return success
       Timeout: 20
-      Handler: lambdadummy.handler
+      Handler: checkwebsite.handler
       Runtime: nodejs6.10
       MemorySize: 128
   MySNSTopic:

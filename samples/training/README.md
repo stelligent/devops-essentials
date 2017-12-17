@@ -7,7 +7,7 @@ This repo is a demonstration of Continuous Delivery of a Java application to EC2
 
 # Launch Stack
 
-[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-java-prod%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/training/pipeline.yml)
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-prod-java%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/training/pipeline.yml)
 
 # Configure Solution
 

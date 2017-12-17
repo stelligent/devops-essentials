@@ -326,7 +326,7 @@ Resources:
           RunOrder: 1
         - InputArtifacts:
           - Name: MyApp
-          Name: Build
+          Name: BuildJavaAoo
           ActionTypeId:
             Category: Build
             Owner: AWS
@@ -336,7 +336,7 @@ Resources:
           - Name: MyAppBuild
           Configuration:
             ProjectName:
-              Ref: CodeBuildCfnNag
+              Ref: CodeBuildJavaProject
           RunOrder: 1
       - Name: Deploy
         Actions:

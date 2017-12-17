@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - npm install
+      - npm install aws-cli-js
+      - aws cloudformation package --template sam-template.yml --s3-bucket $S3_BUCKET --output-template template-export.json
+
+artifacts:
+  type: zip
+  files:
+    - template-export.json

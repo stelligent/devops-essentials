@@ -17,13 +17,13 @@
                 <div class="container-fluid">        
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
-                         <h4 class="bg-info secondary-header">CloudFormation</h4> 
+                         <h4 class="bg-info secondary-header">What is the only required object in a CloudFormation template?</h4> 
                             <div class="inner-body panel">
                                 <ul class="ul-listed">
-                                   <li>A tool or set of tools to increase automation</li>
-                                   <li>A team of senior operations engineers that enable infrastructure operation </li>
-                                   <li>A team of developers that own their application in production	</li>
-                                   <li>Any efficiencies gained in the feedback loop to speed up the delivery of software to customers</li>
+                                    <li>Parameters</li>
+                                    <li>Mappings</li>
+                                    <li>Resources</li>
+                                    <li>Outputs</li>
                                 </ul>
                             </div>
                         </div>
@@ -33,13 +33,28 @@
             <div class="container-fluid">        
                 <div class="row">
                         <div class="col-xs-12 col-md-12">
-                         <h4 class="bg-info secondary-header">CodeCommit</h4> 
+                         <h4 class="bg-info secondary-header">How can you protect confidential information passed as a parameter into a CloudFormation stack?</h4> 
                             <div class="inner-body panel">
                                 <ul class="ul-listed">
-                                    <li>Software is always ready to release and there is one team working on a single pipeline</li>
-                                    <li>Software is always ready to release and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and developers no longer need to interact with operations staff</li>
-                                    <li>Multiple versions of a software application are run in production in parallel, and errors in the pipeline can be ignored, allowing developers to continue working on important new features</li>
+                                    <li>Put the information in SSM Parameter Store</li>
+                                    <li>Encrypt with KMS and CloudFormation will automatically decrypt</li>
+                                    <li>Include the attribute NoEcho with a value of true</li>
+                                    <li>Provide the name of an object in S3 to read the value from</li>
+                                </ul>
+                            </div>
+                        </div>
+            <!-- container-fluid ends here --> </div> 
+            
+            <div class="container-fluid">        
+                <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                         <h4 class="bg-info secondary-header">What is AWS CodeCommit?</h4> 
+                            <div class="inner-body panel">
+                                <ul class="ul-listed">
+                                    <li>Fully-managed service that automatically synchronize files between GitHub and AWS</li>
+                                    <li>Fully-managed source control service to host secure and highly scalable private Git repositories</li>
+                                    <li>A cloud-based IDE to deploying applications to AWS</li>
+                                    <li>A service that automatically commits files across all AWS services</li>
                                 </ul>
                             </div>
                         </div>

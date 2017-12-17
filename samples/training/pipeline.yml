@@ -159,7 +159,7 @@ Resources:
             Resource: "*"
             Effect: Allow
           Version: '2012-10-17'
-  CodeBuildWebsite:
+  CodeBuildCfnNag:
     Type: AWS::CodeBuild::Project
     DependsOn: CodeBuildRole
     Properties:
@@ -242,7 +242,7 @@ Resources:
         - Outputs.CodeDeployTrustRoleARN
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
-    DependsOn: CodeBuildWebsite
+    DependsOn: CodeBuildCfnNag
     Properties:
       RoleArn:
         Fn::Join:
@@ -282,7 +282,7 @@ Resources:
           OutputArtifacts: []
           Configuration:
             ProjectName:
-              Ref: CodeBuildWebsite
+              Ref: CodeBuildCfnNag
           RunOrder: 1
         - InputArtifacts:
           - Name: MyApp
@@ -296,7 +296,7 @@ Resources:
           - Name: MyAppBuild
           Configuration:
             ProjectName:
-              Ref: CodeBuildWebsite
+              Ref: CodeBuildCfnNag
           RunOrder: 1
       - Name: Deploy
         Actions:

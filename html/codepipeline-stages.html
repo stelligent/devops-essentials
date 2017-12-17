@@ -18,16 +18,18 @@
                  <div class="inner-body panel">
                     <h4 class="sub-heading">Deployment Pipeline Stages for Example Java Application</h4>    
                     <ul class="edited-ul">
-                        <li><strong>Source</strong> - Poll the GitHub version-control repository looking for changes and let CodePipeline securely store source artifacts in S3.</li>
-                        <li><strong>Production</strong> - Perform "build" and deploy to static S3 website using CodeBuild</li>
+                        <li><strong>Source</strong> - Poll the CodeCommit version-control repository looking for changes and let CodePipeline securely store source artifacts in S3.</li>
+                        <li><strong>Build</strong> - Run static analysis and build Java application from source files stored securely in S3 via CodePipeline</li>
+                        <li><strong>Test</strong> - Test the application using Lambda</li>
+                        <li><strong>Approve</strong> - Ensure certain manual verification and validation has been performed via Approvals</li>
+                        <li><strong>Deploy</strong> - Deploy the software onto the EC2 instance(s) using CodeDeploy</li>
                     </ul>
                  </div> 
-
-
+        
                  <div class="inner-body panel">
                     <h4 class="sub-heading">Introduction</h4>
                     <div class="inner-body panel">
-                        <p>Before we do that, though, let's have a look at AWS CodePipeline in a bit more detail. In CodePipeline, Stages are composed of a collection of Actions. Actions actually perform the work in a pipeline. Within Actions, you'll see integration with other tools, running commands to build, test, deploy, and release your service. Currently, there are six Action types: Source, Build, Test, Deploy, Invoke, and Approval. In this sample, we're just using two types: Source and Build. You can run actions in parallel. A stage is not complete until all actions are successful.</p>
+                        <p>Let's have a look at AWS CodePipeline in a bit more detail. In CodePipeline, Stages are composed of a collection of Actions. Actions actually perform the work in a pipeline. Within Actions, you'll see integration with other tools, running commands to build, test, deploy, and release your service. Currently, there are six Action types: Source, Build, Test, Deploy, Invoke, and Approval. In this sample, we're just using two types: Source and Build. You can run actions in parallel. A stage is not complete until all actions are successful.</p>
                         <p>You can enable and disable transitions to acts as gates between stages and several other features but let's not get ahead of ourselves as you'll be learning more about this and other features of CodePipeline in other lessons.</p>
                         <p>With CodePipeline, you can - </p>
                         <ul class="edited-ul">

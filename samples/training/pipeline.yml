@@ -285,7 +285,7 @@ Resources:
         - Arn
       Description: Always return success
       Timeout: 20
-      Handler: index.handler
+      Handler: lambdadummy.handler
       Runtime: nodejs6.10
       MemorySize: 128
   MySNSTopic:

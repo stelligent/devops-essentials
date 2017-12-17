@@ -397,6 +397,20 @@ Resources:
             ProjectName:
               Ref: CodeBuildJavaProject
           RunOrder: 1
+        - InputArtifacts: []
+          Name: UnitTest
+          ActionTypeId:
+            Category: Invoke
+            Owner: AWS
+            Version: '1'
+            Provider: Lambda
+          OutputArtifacts: []
+          Configuration:
+            FunctionName:
+              Ref: CodePipelineLambdaDummy
+            UserParameters:
+              Ref: AWS::StackName
+          RunOrder: 1
       - Name: Deploy
         Actions:
         - InputArtifacts:

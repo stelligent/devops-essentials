@@ -3,6 +3,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Stelligent CloudFormation Sample Template ** This template creates one
   or more Amazon resources. You will be billed for the AWS resources used if you create
   a stack from this template.
+Parameters:
+  EmailAddress:
+    Description: Email Address for sending notifications
+    Type: String
 Resources:
   MyQueue:
     Type: AWS::SQS::Queue

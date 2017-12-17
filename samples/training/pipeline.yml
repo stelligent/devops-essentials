@@ -326,7 +326,7 @@ Resources:
           RunOrder: 1
         - InputArtifacts:
           - Name: MyApp
-          Name: BuildJavaAoo
+          Name: BuildJavaApp
           ActionTypeId:
             Category: Build
             Owner: AWS

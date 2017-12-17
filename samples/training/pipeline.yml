@@ -413,10 +413,10 @@ Resources:
             UserParameters:
               Ref: AWS::StackName
           RunOrder: 1
-      - Name: Approval
+      - Name: Approve
         Actions:
         - InputArtifacts: []
-          Name: Approval
+          Name: ApproveRevision
           ActionTypeId:
             Category: Approval
             Owner: AWS

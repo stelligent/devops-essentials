@@ -112,7 +112,7 @@
                                 <pre>devops-ess-stage</pre> <pre>devops-ess-prod</pre> 
                                 <pre>https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/</pre>
                                 <pre>aws cloudformation create-stack --stack-name myteststack --template-body file://simple.yml</pre>
-                                <pre>aws cloudformation create-stack --stack-name myteststack --template-url https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/training/simple.yml</pre>
+                                <pre>aws cloudformation create-stack --stack-name myteststack --template-url https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/training/simple.yml --parameters ParameterKey=EmailAddress,ParameterValue=sample@example.com</pre>
                                <pre>cd /home/ec2-user/environment/devops-essentials/samples/training</pre>
                                <pre>sudo cp -r . /home/ec2-user/environment/devops-ess-stage-java</pre>
                                <pre>aws cloudformation create-stack --stack-name devops-ess-prod --capabilities CAPABILITY_IAM --template-body file://pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=youremail@sample.com ParameterKey=KeyName,ParameterValue=devops-ess-prod</pre>

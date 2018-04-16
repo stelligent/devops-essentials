@@ -35,7 +35,7 @@ This repo is a demonstration of Continuous Delivery of a static website to Elast
 # Resources
 
 1. The CloudFormation template is available [here](https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml).
-1. A list of available Elastic Beanstalk templates are available [here](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html) or from the [CLI](http://docs.aws.amazon.com/cli/latest/reference/elasticbeanstalk/list-available-solution-stacks.html#examples)
+1. A list of available Elastic Beanstalk templates are available [here](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html#concepts.platforms.nodejs) or from the [CLI](http://docs.aws.amazon.com/cli/latest/reference/elasticbeanstalk/list-available-solution-stacks.html#examples)
 
 
 

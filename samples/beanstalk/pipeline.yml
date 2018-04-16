@@ -25,6 +25,11 @@ Parameters:
     Default: html.zip
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
+  MySolutionStackName:
+    Description: Name of the current solution stack name. See https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html
+    Type: String
+    Default: 64bit Amazon Linux 2017.09 v4.4.6 running Node.js
+    ConstraintDescription: Can contain only ASCII characters.
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -91,7 +96,8 @@ Resources:
       - Namespace: aws:elasticbeanstalk:environment
         OptionName: EnvironmentType
         Value: LoadBalanced
-      SolutionStackName: 64bit Amazon Linux 2017.03 v4.3.0 running Node.js
+      SolutionStackName: 
+        Ref: MySolutionStackName
   nodeEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     DependsOn:

@@ -182,7 +182,7 @@ Resources:
             Version: '1'
             Provider: GitHub
           OutputArtifacts:
-          - Name: SourceOutput
+          - Name: SourceArtifacts
           Configuration:
             Owner: !Ref GitHubUser
             Repo: !Ref GitHubRepo
@@ -198,9 +198,9 @@ Resources:
             Version: '1'
             Provider: CodeBuild
           InputArtifacts:
-          - Name: SourceOutput
+          - Name: SourceArtifacts
           OutputArtifacts:
-          - Name: DeployOutput
+          - Name: DeploymentArtifacts
           Configuration:
             ProjectName: !Ref CodeBuildDeploySite
           RunOrder: 1

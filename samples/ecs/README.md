@@ -14,7 +14,7 @@ This repo is a demonstration of Continuous Delivery of a static website to ECS v
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
 1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
 1. Paste the command in your Terminal
-1. From [this](../ecs) folder, copy the **html** folder to your locally cloned Git repo
+1. From [this](../ecs) folder, copy the **Dockerfile** and **src** folder to your locally cloned Git repo
 1. From your Terminal, type `git add .`
 1. From your Terminal, type `git commit -am "add new files"`
 1. From your Terminal, type `git push`

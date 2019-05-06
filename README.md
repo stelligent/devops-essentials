@@ -7,7 +7,7 @@ AWS CodePipeline (along with other AWS Developer Tools such as AWS CodeCommit, A
 # Launch Stack
 To launch the first solution (i.e. a static website to S3), you'll need to specify a unique S3 bucket name for the website bucket that will be created along with a GitHub token. Review and ensure you've configured the [Prerequisites](https://github.com/stelligent/devops-essentials/wiki/Prerequisites) before launching the stack below.
 
-[![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-static%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/static/pipeline.yml) 
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=devops-essentials-static&templateURL=https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/static/pipeline.yml) 
 
 The CloudFormation template is available [here](https://s3.amazonaws.com/www.devopsessentialsaws.com/samples/static/pipeline.yml).
 

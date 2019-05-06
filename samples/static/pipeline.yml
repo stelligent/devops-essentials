@@ -156,7 +156,7 @@ Resources:
       Source:
         Type: CODEPIPELINE
         BuildSpec: !Sub |
-          version: 0.1
+          version: 0.2
           phases:
             post_build:
               commands:
@@ -182,7 +182,7 @@ Resources:
             Version: '1'
             Provider: GitHub
           OutputArtifacts:
-          - Name: SourceArtifacts
+          - Name: SourceArtifacts 
           Configuration:
             Owner: !Ref GitHubUser
             Repo: !Ref GitHubRepo
@@ -198,7 +198,7 @@ Resources:
             Version: '1'
             Provider: CodeBuild
           InputArtifacts:
-          - Name: SourceArtifacts
+          - Name: SourceArtifacts 
           OutputArtifacts:
           - Name: DeploymentArtifacts
           Configuration:

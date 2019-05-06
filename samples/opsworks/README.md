@@ -6,7 +6,7 @@ This repo is a demonstration of Continuous Delivery of a static website to OpsWo
 
 # Launch Stack
 
-[![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-opsworks%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/opsworks/pipeline.yml)
+[![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-opsworks%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/opsworks/pipeline.yml)
 
 # Configure Solution
 

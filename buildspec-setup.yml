@@ -1,0 +1,58 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.7
+    commands:
+      - python --version
+  build:
+    commands:
+      - echo In buildspec-setup.yml Build started on `date`
+      - >-
+        aws s3api list-buckets --query 'Buckets[?starts_with(Name,
+        `csoa-wkshop-abcd`) == `true`].[Name]' --output text | xargs -I {} aws s3
+        rb s3://{} --force
+      - 'aws s3 mb s3://csoa-wkshop-abcd'
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+#       lesson0
+#       lesson1-security
+#       lesson2-devtools
+#       lesson3-iam
+#       lesson4-detective
+#       lesson5-infra-protection
+#       lesson6-data-protection
+#       lesson7-incident-response
+#       lesson8-deployment-arch
+#       lesson9-continuous-security
+      - cd lesson0
+      - python ccoa-delete-config.py
+      - cd ../lesson1-automate
+      - zip csoa-1-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson2-manage
+      - zip csoa-2-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson3-develop
+      - zip csoa-3-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson4-transit
+      - zip csoa-4-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson5-rest
+      - zip csoa-5-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson6-detect
+      - zip csoa-6-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson7-log
+      - zip csoa-7-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - cd ../lesson8-continuous
+      - zip csoa-8-examples.zip *.*
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+  post_build:
+    commands:
+      - echo In buildspec-setup.yml Build completed on `date`
+artifacts:
+  files:
+    - '**/*'

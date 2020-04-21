@@ -1,0 +1,14 @@
+project:
+  name: ce
+  regions:
+    - us-east-1
+    # - us-east-2
+tests:
+  lesson1-automate:
+    template: ./lesson1-automate/ceoa-1-cfn.yml
+  l4:
+    parameters:
+      S3ComplianceResourceId: ccoa-8-s3-unencrypted-test
+      CodeCommitS3Bucket: ceoa-wkshop-abcd
+      CodeCommitS3Key: ceoa-8-examples.zip
+    template: ./lesson8-continuous/ceoa-8-pipeline.yml

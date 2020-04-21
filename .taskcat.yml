@@ -1,14 +1,10 @@
 project:
-  name: ce
+  name: csoa
   regions:
     - us-east-1
-    # - us-east-2
 tests:
-  lesson1-automate:
-    template: ./lesson1-automate/ceoa-1-cfn.yml
-  l4:
+  static:
     parameters:
-      S3ComplianceResourceId: ccoa-8-s3-unencrypted-test
-      CodeCommitS3Bucket: ceoa-wkshop-abcd
-      CodeCommitS3Key: ceoa-8-examples.zip
-    template: ./lesson8-continuous/ceoa-8-pipeline.yml
+      GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
+      SiteBucketName: delete-pmd-static-1533
+    template: ./samples/static/pipeline.yml

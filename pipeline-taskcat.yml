@@ -5,11 +5,11 @@ Parameters:
   GitHubUser:
     Type: String
     Description: GitHub User
-    Default: "PaulDuvall"
+    Default: "stelligent"
   GitHubRepo:
     Type: String
     Description: GitHub Repo to pull from. Only the Name. not the URL
-    Default: "aws-encryption-workshop"
+    Default: "devops-essentials"
   GitHubBranch:
     Type: String
     Description: GitHub Branch

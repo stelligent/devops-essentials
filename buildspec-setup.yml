@@ -12,7 +12,7 @@ phases:
       - 'aws s3 mb s3://deoa-s3-$UUID'
       - 'aws s3 sync . s3://deoa-s3-$UUID'
       - cd samples/static
-      - cd ../samples/ec2
+      - cd samples/ec2
       - zip deoa-ec2-examples.zip *.*
       - 'aws s3 sync . s3://deoa-s3-$UUID'
   post_build:

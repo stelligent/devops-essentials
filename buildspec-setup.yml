@@ -8,7 +8,8 @@ phases:
   build:
     commands:
       - echo In buildspec-setup.yml Build started on `date`
-      - 'aws s3 mb s3://deoa-$(aws secretsmanager get-random-password --password-length 4 --exclude-numbers --exclude-punctuation --exclude-uppercase --output text)'
+      - 'UUID=$(aws secretsmanager get-random-password --password-length 8 --exclude-numbers --exclude-punctuation --exclude-uppercase --output text)'
+      - 'aws s3 mb s3://deoa-$UUID'
   post_build:
     commands:
       - echo In buildspec-setup.yml Build completed on `date`

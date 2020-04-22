@@ -5,6 +5,7 @@ Parameters:
   SiteBucketName:
     Type: String
     Description: Name of bucket to create to host the website
+    Default: "notused"
   GitHubUser:
     Type: String
     Description: GitHub User
@@ -37,10 +38,6 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: "Site Configuration"
-        Parameters:
-          - SiteBucketName
-      - Label:
           default: "GitHub Configuration"
         Parameters:
           - GitHubToken
@@ -54,8 +51,6 @@ Metadata:
           - BuildComputeType
           - BuildImage
     ParameterLabels:
-      SiteBucketName:
-        default: Name of S3 Bucket to create for website hosting
       GitHubToken:
         default: GitHub OAuth2 Token
       GitHubUser: 
@@ -134,7 +129,6 @@ Resources:
     DeletionPolicy: Delete
     Properties:
       AccessControl: PublicRead
-      BucketName: !Ref SiteBucketName
       WebsiteConfiguration:
         IndexDocument: index.html
   PipelineBucket:
@@ -160,8 +154,8 @@ Resources:
           phases:
             post_build:
               commands:
-                - aws s3 cp --recursive --acl public-read ./samples s3://${SiteBucketName}/samples 
-                - aws s3 cp --recursive --acl public-read ./html s3://${SiteBucketName}/ 
+                - aws s3 cp --recursive --acl public-read ./samples s3://${SiteBucket}/samples 
+                - aws s3 cp --recursive --acl public-read ./html s3://${SiteBucket}/ 
           artifacts:
             type: zip
             files:

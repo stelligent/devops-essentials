@@ -32,6 +32,25 @@ Parameters:
     MaxLength: '255'
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
+  CodeCommitS3Bucket:
+    Description: S3 bucket that holds zip of source code for CodeCommit Repo
+    Type: String
+  CodeCommitS3Key:
+    Description: zipfile key located in CodeCommitS3Bucket 
+    Type: String
+  Environment: 
+    Description: Flag to populate CodeCommit repo with files uploaded to S3
+    Default: prod
+    Type: String
+    AllowedValues: 
+      - test
+      - prod
+    ConstraintDescription: must specify create or donotcreate.
+Conditions:
+  ISProduction:
+    !Equals [!Ref Environment, prod]
+  ISNotProduction:
+    !Not [Condition: ISProduction]
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -208,10 +227,15 @@ Resources:
           Ref: KeyName
   CodeCommitRepo:
     Type: AWS::CodeCommit::Repository
+    Condition: ISProduction
     Properties:
       RepositoryName:
         Ref: AWS::StackName
       RepositoryDescription: CodeCommit Repository for Sample EC2 CodeDeploy Solution
+      Code:
+        S3:
+          Bucket: !Ref CodeCommitS3Bucket
+          Key: !Ref CodeCommitS3Key
       Triggers:
       - Name: MasterTrigger
         CustomData:

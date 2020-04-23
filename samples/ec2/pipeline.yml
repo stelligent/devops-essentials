@@ -28,10 +28,6 @@ Parameters:
     Description: Name of an existing Amazon EC2 key pair to enable SSH access to the
       instances.
     Type: AWS::EC2::KeyPair::KeyName
-    MinLength: '1'
-    MaxLength: '255'
-    AllowedPattern: "[\\x20-\\x7E]*"
-    ConstraintDescription: Can contain only ASCII characters.
   CodeCommitS3Bucket:
     Description: S3 bucket that holds zip of source code for CodeCommit Repo
     Type: String
@@ -62,8 +58,6 @@ Metadata:
     ParameterLabels:
       KeyName:
         default: EC2 KeyPair Name
-      RepositoryName:
-        default: CodeCommit Repository Name
       RepositoryBranch:
         default: CodeCommit Repository Branch
 Resources:

@@ -3,13 +3,18 @@ project:
   regions:
     - us-east-1
 tests:
-  static:
+  # static:
+  #   parameters:
+  #     GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
+  #     SiteBucketName: delete-pmd-static-1533
+  #   template: ./samples/static/pipeline.yml
+  ec2:
     parameters:
-      GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
-      SiteBucketName: delete-pmd-static-1533
-    template: ./samples/static/pipeline.yml
-  # ec2:
+      EmailAddress: fake-email@fake-fake-fake-email.com
+      KeyName: paul-duvall-demo-us-east-1	
+    template: ./samples/ec2/pipeline.yml
+  # beanstalk:
   #   parameters:
   #     EmailAddress: fake-email@fake-fake-fake-email.com
   #     KeyName: paul-duvall-demo-us-east-1	
-  #   template: ./samples/ec2/pipeline.yml
+  #   template: ./samples/beanstalk/pipeline.yml

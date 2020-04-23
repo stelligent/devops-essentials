@@ -14,6 +14,8 @@ phases:
       - cd samples/static
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*
+      - cd ../beanstalk
+      - zip deoa-beanstalk-examples.zip *.*
       - 'aws s3 sync . s3://deoa-s3-$UUID'
   post_build:
     commands:

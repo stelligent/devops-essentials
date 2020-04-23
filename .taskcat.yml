@@ -11,7 +11,7 @@ tests:
   ec2:
     parameters:
       EmailAddress: "fake-email@fake-fake-fake-email.com"
-      KeyName: "paul-duvall-demo-us-east-1"	
+      KeyName: "paul-duvall-demo-us-east-1"
     template: ./samples/ec2/pipeline.yml
   # beanstalk:
   #   parameters:

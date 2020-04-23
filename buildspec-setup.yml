@@ -11,6 +11,8 @@ phases:
       - 'UUID=$(aws secretsmanager get-random-password --password-length 8 --exclude-numbers --exclude-punctuation --exclude-uppercase --output text)'
       - 'aws s3 mb s3://deoa-s3-$UUID'
       - 'aws s3 sync . s3://deoa-s3-$UUID'
+      - aws ssm put-parameter --name "DeoaS3Bucket" --type "String" --value "deoa-s3-$UUID" --overwrite
+  --description "This is a new description for the secret."
       - cd samples/static
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*

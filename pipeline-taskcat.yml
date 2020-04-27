@@ -109,6 +109,7 @@ Resources:
             - cloudtrail:*
             - codebuild:*
             - codecommit:*
+            - codedeploy:*
             - codepipeline:*
             - config:*
             - dynamodb:*

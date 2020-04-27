@@ -10,10 +10,10 @@ phases:
       - echo In buildspec-setup.yml Build started on `date`
       - >-
         aws s3api list-buckets --query 'Buckets[?starts_with(Name,
-        `csoa-wkshop-abcd`) == `true`].[Name]' --output text | xargs -I {} aws s3 rb s3://{} --force
+        `deoa-wkshop-abcd`) == `true`].[Name]' --output text | xargs -I {} aws s3 rb s3://{} --force
       - 'sleep 10'
-      - 'aws s3 mb s3://csoa-wkshop-abcd'
-      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - 'aws s3 mb s3://deoa-wkshop-abcd'
+      - 'aws s3 sync . s3://deoa-wkshop-abcd'
       - cd samples/static
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*
@@ -21,7 +21,7 @@ phases:
       - zip deoa-beanstalk-examples.zip *.*
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*      
-      - 'aws s3 sync . s3://csoa-wkshop-abcd'
+      - 'aws s3 sync . s3://deoa-wkshop-abcd'
   post_build:
     commands:
       - echo In buildspec-setup.yml Build completed on `date`

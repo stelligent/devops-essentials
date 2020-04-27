@@ -8,10 +8,12 @@ phases:
   build:
     commands:
       - echo In buildspec-setup.yml Build started on `date`
-      - 'UUID=$(aws secretsmanager get-random-password --password-length 8 --exclude-numbers --exclude-punctuation --exclude-uppercase --output text)'
-      - 'aws s3 mb s3://deoa-s3-$UUID'
-      - 'aws s3 sync . s3://deoa-s3-$UUID'
-      - 'aws ssm put-parameter --name "DeoaS3Bucket" --type "String" --value "deoa-s3-$UUID" --overwrite --description "This is a new description for the secret."'
+      - >-
+        aws s3api list-buckets --query 'Buckets[?starts_with(Name,
+        `csoa-wkshop-abcd`) == `true`].[Name]' --output text | xargs -I {} aws s3 rb s3://{} --force
+      - 'sleep 10'
+      - 'aws s3 mb s3://csoa-wkshop-abcd'
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
       - cd samples/static
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*
@@ -19,7 +21,7 @@ phases:
       - zip deoa-beanstalk-examples.zip *.*
       - cd ../ec2
       - zip deoa-ec2-examples.zip *.*      
-      - 'aws s3 sync . s3://deoa-s3-$UUID'
+      - 'aws s3 sync . s3://csoa-wkshop-abcd'
   post_build:
     commands:
       - echo In buildspec-setup.yml Build completed on `date`

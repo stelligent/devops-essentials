@@ -113,6 +113,7 @@ Resources:
             - config:*
             - dynamodb:*
             - ec2:*
+            - events:*
             - iam:*
             - kms:*
             - lambda:*
@@ -123,6 +124,7 @@ Resources:
             - s3:*
             - sns:*
             - sqs:*
+            - ssm:*
             Effect: Allow
             Resource: "*"
           Version: '2012-10-17'

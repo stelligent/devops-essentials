@@ -149,6 +149,7 @@ Resources:
             - codedeploy:GetDeployment
             - codedeploy:GetDeploymentConfig
             - codedeploy:RegisterApplicationRevision
+            - codedeploy:CreateApplication
             Resource: "*"
             Effect: Allow
           - Action:

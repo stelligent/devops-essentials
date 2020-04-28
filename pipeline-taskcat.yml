@@ -115,6 +115,7 @@ Resources:
             - dynamodb:*
             - ec2:*
             - elasticbeanstalk:*
+            - elasticloadbalancing:*
             - events:*
             - iam:*
             - kms:*

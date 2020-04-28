@@ -114,6 +114,7 @@ Resources:
             - config:*
             - dynamodb:*
             - ec2:*
+            - elasticbeanstalk:*
             - events:*
             - iam:*
             - kms:*

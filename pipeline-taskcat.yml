@@ -104,6 +104,7 @@ Resources:
           Statement:
           - Action:
             - apigateway:*
+            - autoscaling:*
             - cloudformation:*
             - cloudwatch:*
             - cloudtrail:*

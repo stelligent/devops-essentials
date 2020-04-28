@@ -6,7 +6,7 @@ tests:
   static:
     parameters:
       GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
-      SiteBucketName: delete-pmd-static-0918
+      SiteBucketName: delete-pmd-static-1021
     template: ./samples/static/pipeline.yml
   ec2:
     parameters:
@@ -18,5 +18,6 @@ tests:
   beanstalk:
     parameters:
       EmailAddress: fake-email@fake-fake-fake-email.com
-      KeyName: paul-duvall-demo-us-east-1
+      S3Bucket: deoa-wkshop-abcd
+      S3Key: deoa-beanstalk-examples.zip
     template: ./samples/beanstalk/pipeline.yml

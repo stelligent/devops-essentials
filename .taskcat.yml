@@ -18,5 +18,5 @@ tests:
   beanstalk:
     parameters:
       EmailAddress: fake-email@fake-fake-fake-email.com
-      KeyName: paul-duvall-demo-us-east-1	
+      KeyName: paul-duvall-demo-us-east-1
     template: ./samples/beanstalk/pipeline.yml

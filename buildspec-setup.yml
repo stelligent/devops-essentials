@@ -14,13 +14,11 @@ phases:
       - 'sleep 10'
       - 'aws s3 mb s3://deoa-wkshop-abcd'
       - 'aws s3 sync . s3://deoa-wkshop-abcd'
-      - cd samples/static
-      - cd ../ec2
+      - cd samples/ec2
       - zip deoa-ec2-examples.zip *.*
+      - 'aws s3 sync . s3://deoa-wkshop-abcd'
       - cd ../beanstalk
       - zip deoa-beanstalk-examples.zip *.*
-      - cd ../ec2
-      - zip deoa-ec2-examples.zip *.*      
       - 'aws s3 sync . s3://deoa-wkshop-abcd'
   post_build:
     commands:

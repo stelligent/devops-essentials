@@ -3,18 +3,18 @@ project:
   regions:
     - us-east-1
 tests:
-  static:
-    parameters:
-      GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
-      SiteBucketName: delete-pmd-static-1021
-    template: ./samples/static/pipeline.yml
-  ec2:
-    parameters:
-      EmailAddress: fake-email@fake-fake-fake-email.com
-      KeyName: paul-duvall-demo-us-east-1
-      CodeCommitS3Bucket: deoa-wkshop-abcd
-      CodeCommitS3Key: deoa-ec2-examples.zip
-    template: ./samples/ec2/pipeline.yml
+  # static:
+  #   parameters:
+  #     GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
+  #     SiteBucketName: delete-pmd-static-1021
+  #   template: ./samples/static/pipeline.yml
+  # ec2:
+  #   parameters:
+  #     EmailAddress: fake-email@fake-fake-fake-email.com
+  #     KeyName: paul-duvall-demo-us-east-1
+  #     CodeCommitS3Bucket: deoa-wkshop-abcd
+  #     CodeCommitS3Key: deoa-ec2-examples.zip
+  #   template: ./samples/ec2/pipeline.yml
   beanstalk:
     parameters:
       EmailAddress: fake-email@fake-fake-fake-email.com

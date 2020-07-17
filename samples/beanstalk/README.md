@@ -16,7 +16,7 @@ aws s3 mb s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Acco
 aws s3 mb s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 git clone https://github.com/PaulDuvall/devops-essentials.git tmp-doea
 cd tmp-doea/samples/beanstalk
-zip -r doea-eb-samples.zip -x '*.git*'
+zip -r doea-eb-samples.zip . -x '*.git*'
 aws s3 sync ~/environment/tmp-doea/samples/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
 aws s3 sync ~/environment/tmp-doea/samples/beanstalk s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```

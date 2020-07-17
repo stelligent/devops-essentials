@@ -122,6 +122,35 @@ Resources:
         Ref: nodeConfigurationTemplate
       VersionLabel:
         Ref: nodeApplicationVersion
+      OptionSettings:
+        - Namespace: 'aws:autoscaling:launchconfiguration'
+          OptionName: IamInstanceProfile
+          Value: !Ref InstanceProfile
+        - Namespace: 'aws:elasticbeanstalk:environment'
+          OptionName: InstanceProfileRole
+          Value: !Ref InstanceProfileRole
+  InstanceProfileRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "ec2.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
+      RoleName: "scorekeep-beanstalk-ecs-role"
+  InstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Roles:
+        - !Ref 'InstanceProfileRole'
+      InstanceProfileName: "scorekeep-beanstalk-ecs-role"
   CodePipelineRole:
     Type: AWS::IAM::Role
     Properties:

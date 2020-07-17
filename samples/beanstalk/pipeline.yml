@@ -34,7 +34,7 @@ Parameters:
   MySolutionStackName:
     Description: Name of the current solution stack name. See https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html
     Type: String
-    Default: "64bit Amazon Linux 2018.03 v4.14.1 running Node.js"
+    Default: 64bit Amazon Linux 2 v5.1.0 running Node.js 12
     ConstraintDescription: Can contain only ASCII characters.
 Metadata:
   AWS::CloudFormation::Interface:

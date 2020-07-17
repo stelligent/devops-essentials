@@ -144,13 +144,11 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
-      # RoleName: "scorekeep-beanstalk-ecs-role"
   InstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
       Roles:
         - !Ref 'InstanceProfileRole'
-      # InstanceProfileName: "scorekeep-beanstalk-ecs-role"
   CodePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -218,7 +216,8 @@ Resources:
           Version: '2012-10-17'
   ArtifactBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
     DependsOn:

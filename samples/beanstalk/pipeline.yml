@@ -127,7 +127,7 @@ Resources:
           OptionName: IamInstanceProfile
           Value: !Ref InstanceProfile
         - Namespace: 'aws:elasticbeanstalk:environment'
-          OptionName: InstanceProfileRole
+          OptionName: ServiceRole
           Value: !Ref InstanceProfileRole
   InstanceProfileRole:
     Type: AWS::IAM::Role

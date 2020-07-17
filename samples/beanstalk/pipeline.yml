@@ -144,13 +144,13 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
-      RoleName: "scorekeep-beanstalk-ecs-role"
+      # RoleName: "scorekeep-beanstalk-ecs-role"
   InstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
       Roles:
         - !Ref 'InstanceProfileRole'
-      InstanceProfileName: "scorekeep-beanstalk-ecs-role"
+      # InstanceProfileName: "scorekeep-beanstalk-ecs-role"
   CodePipelineRole:
     Type: AWS::IAM::Role
     Properties:

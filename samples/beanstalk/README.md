@@ -14,10 +14,10 @@ cd ~/environment
 aws s3 mb s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
 aws s3 mb s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 git clone https://github.com/PaulDuvall/devops-essentials.git tmp-doea
-cd tmp-doea/devops-essentials/beanstalk
-zip -r doea-eb-samples.zip ./tmp-doea/devops-essentials/beanstalk -x '*.git*'
-aws s3 sync ~/environment/tmp-doea/devops-essentials/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
-aws s3 sync ~/environment/tmp-doea/devops-essentials/beanstalk/html.zip s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+cd tmp-doea/beanstalk
+zip -r doea-eb-samples.zip ./tmp-doea/beanstalk -x '*.git*'
+aws s3 sync ~/environment/tmp-doea/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 sync ~/environment/tmp-doea/beanstalk/html.zip s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 ## Launch the CloudFormation stack from the CLI
@@ -25,7 +25,7 @@ aws s3 sync ~/environment/tmp-doea/devops-essentials/beanstalk/html.zip s3://doe
 From your Cloud9 terminal, type the following:
 
 ```
-aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/tmp-doea/devops-essentials/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-eb-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/tmp-doea/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-eb-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 

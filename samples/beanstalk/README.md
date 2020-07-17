@@ -10,14 +10,15 @@ This repo is a demonstration of Continuous Delivery of a static website to Elast
 From your [AWS Cloud9](https://github.com/paulduvall/aws-compliance-workshop/wiki/0.2#setup-aws-cloud9) terminal, type the following to setup your directory structure:
 
 ```
+sudo rm -rf ~/environment/tmp-doea
 cd ~/environment
 aws s3 mb s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
 aws s3 mb s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 git clone https://github.com/PaulDuvall/devops-essentials.git tmp-doea
-cd tmp-doea/beanstalk
-zip -r doea-eb-samples.zip ./tmp-doea/beanstalk -x '*.git*'
-aws s3 sync ~/environment/tmp-doea/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
-aws s3 sync ~/environment/tmp-doea/beanstalk/html.zip s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+cd tmp-doea/samples/beanstalk
+zip -r doea-eb-samples.zip -x '*.git*'
+aws s3 sync ~/environment/tmp-doea/samples/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 sync ~/environment/tmp-doea/samples/beanstalk s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 ## Launch the CloudFormation stack from the CLI
@@ -25,7 +26,7 @@ aws s3 sync ~/environment/tmp-doea/beanstalk/html.zip s3://doea-eb-sitebucket-$(
 From your Cloud9 terminal, type the following:
 
 ```
-aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/tmp-doea/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-eb-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/tmp-doea/samples/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-eb-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 

@@ -4,32 +4,34 @@ AWS Elastic Beanstalk Examples.
 # Overview
 This repo is a demonstration of Continuous Delivery of a static website to Elastic Beanstalk via CodePipeline, CodeCommit, CodeBuild, and Elastic Beanstalk. Ensure you've configured the [Prerequisites](https://github.com/stelligent/devops-essentials/wiki/Prerequisites) before launching the stack below.
 
-# Upload html.zip file
-
-1. Download [html.zip](https://github.com/stelligent/devops-essentials/blob/master/samples/beanstalk/html.zip) from GitHub
-1. Create a new S3 bucket and make note of the unique bucketname name you created
 
 # Launch Stack
 
+From your [AWS Cloud9](https://github.com/paulduvall/aws-compliance-workshop/wiki/0.2#setup-aws-cloud9) terminal, type the following to setup your directory structure:
 
+```
+cd ~/environment
+aws s3 mb s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 mb s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+git clone https://github.com/PaulDuvall/devops-essentials.git
+cd devops-essentials/beanstalk
+zip -r doea-samples.zip . -x '*.git*'
+aws s3 sync ~/environment/devops-essentials/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 sync ~/environment/devops-essentials/beanstalk/html.zip s3://doea-eb-sitebucket$(aws sts get-caller-identity --output text --query 'Account')
+```
 
-# Configure Solution
+## Launch the CloudFormation stack from the CLI
 
-## Before Launching the Stack
+From your Cloud9 terminal, type the following:
 
-[![Launch CFN stack](https://s3.amazonaws.com/www.devopsessentialsaws.com/img/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#cstack=sn%7Edevops-essentials-beanstalk%7Cturl%7Ehttps://s3.amazonaws.com/www.devopsessentialsaws.com/samples/beanstalk/pipeline.yml)
-1. When launching the stack, enter the name of the S3 Bucket you created in the `S3Bucket` CloudFormation parameter
+```
+aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/devops-essentials/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+```
+
 
 ## After Launching the Stack
 1. Once the CloudFormation stack is successful, select the checkbox next to the stack and click the **Outputs** tab. 
 1. From Outputs, click on the **PipelineUrl** output. The Source action will be in a failed state.
-1. From the CodePipeline Source action, click on the CodeCommit provider and copy the **git clone** statement provided by CodeCommit
-1. Paste the command in your Terminal
-1. From [this](../beanstalk) folder, copy all of its *contents* to your locally cloned Git repo
-1. From your Terminal, type `git add .`
-1. From your Terminal, type `git commit -am "add new files"`
-1. From your Terminal, type `git push`
-1. Go back to your pipeline in CodePipeline and see the changes flow through the pipeline
 1. Once the pipeline is complete, go to your CloudFormation Outputs and click on the **SiteUrl** Output
 
 # Resources

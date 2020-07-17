@@ -15,9 +15,9 @@ aws s3 mb s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Acco
 aws s3 mb s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 git clone https://github.com/PaulDuvall/devops-essentials.git
 cd devops-essentials/beanstalk
-zip -r doea-samples.zip . -x '*.git*'
+zip -r doea-eb-samples.zip . -x '*.git*'
 aws s3 sync ~/environment/devops-essentials/beanstalk/ s3://doea-eb-$(aws sts get-caller-identity --output text --query 'Account')
-aws s3 sync ~/environment/devops-essentials/beanstalk/html.zip s3://doea-eb-sitebucket$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 sync ~/environment/devops-essentials/beanstalk/html.zip s3://doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 ## Launch the CloudFormation stack from the CLI
@@ -25,7 +25,7 @@ aws s3 sync ~/environment/devops-essentials/beanstalk/html.zip s3://doea-eb-site
 From your Cloud9 terminal, type the following:
 
 ```
-aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/devops-essentials/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
+aws cloudformation create-stack --stack-name doea-beanstalk --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/devops-essentials/beanstalk/pipeline.yml --parameters ParameterKey=EmailAddress,ParameterValue=fake-email@fake-fake-fake-email.com ParameterKey=CodeCommitS3Bucket,ParameterValue=doea-eb-$(aws sts get-caller-identity --output text --query 'Account') ParameterKey=CodeCommitS3Key,ParameterValue=doea-eb-samples.zip ParameterKey=S3Bucket,ParameterValue=doea-eb-sitebucket-$(aws sts get-caller-identity --output text --query 'Account')
 ```
 
 

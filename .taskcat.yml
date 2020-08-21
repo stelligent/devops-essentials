@@ -8,13 +8,13 @@ tests:
   #     GitHubToken: '{{resolve:secretsmanager:github/personal-access-token:SecretString}}'
   #     SiteBucketName: delete-pmd-static-1021
   #   template: ./samples/static/pipeline.yml
-  # ec2:
-  #   parameters:
-  #     EmailAddress: fake-email@fake-fake-fake-email.com
-  #     KeyName: paul-duvall-demo-us-east-1
-  #     CodeCommitS3Bucket: deoa-wkshop-abcd
-  #     CodeCommitS3Key: deoa-ec2-examples.zip
-  #   template: ./samples/ec2/pipeline.yml
+  ec2:
+    parameters:
+      EmailAddress: fake-email@fake-fake-fake-email.com
+      KeyName: '{{resolve:secretsmanager:ec2/keyname:SecretString}}'
+      CodeCommitS3Bucket: S3_BUCKET_TOKEN
+      CodeCommitS3Key: doea-ec2-examples.zip
+    template: ./samples/ec2/pipeline.yml
   beanstalk:
     parameters:
       EmailAddress: fake-email@fake-fake-fake-email.com

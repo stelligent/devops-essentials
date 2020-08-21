@@ -85,7 +85,8 @@ Resources:
               pipeline: "$.detail.pipeline" 
   ArtifactBucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:

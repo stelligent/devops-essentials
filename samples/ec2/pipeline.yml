@@ -27,7 +27,7 @@ Parameters:
   KeyName:
     Description: Name of an existing Amazon EC2 key pair to enable SSH access to the
       instances.
-    Type: AWS::EC2::KeyPair::KeyName
+    Type: String
   CodeCommitS3Bucket:
     Description: S3 bucket that holds zip of source code for CodeCommit Repo
     Type: String

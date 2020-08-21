@@ -15,9 +15,9 @@ phases:
     commands:
       - echo In buildspec-setup.yml Build started on `date`
       - >-
-        zip -r doea-ec2-examples.zip ./samples/ec2 -j -x '*.git*'
+        zip -r doea-ec2-examples.zip ./samples/ec2 -x '*.git*'
       - >-
-        zip -r doea-beanstalk-examples.zip ./samples/beanstalk -j -x '*.git*'
+        zip -r doea-beanstalk-examples.zip ./samples/beanstalk -x '*.git*'
       - >-
         aws s3 sync . s3://$PIPELINE_BUCKET
   post_build:

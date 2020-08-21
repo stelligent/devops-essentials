@@ -5,21 +5,21 @@ phases:
       python: 3.7
     commands:
       - python --version
+  pre_build:
+    commands:
+      - >-
+        ls -las
+      - chmod +x *.sh
+      - ./update-taskcat.sh $PIPELINE_BUCKET
   build:
     commands:
       - echo In buildspec-setup.yml Build started on `date`
       - >-
-        aws s3api list-buckets --query 'Buckets[?starts_with(Name,
-        `deoa-wkshop-abcd`) == `true`].[Name]' --output text | xargs -I {} aws s3 rb s3://{} --force
-      - 'sleep 10'
-      - 'aws s3 mb s3://deoa-wkshop-abcd'
-      - 'aws s3 sync . s3://deoa-wkshop-abcd'
-      - cd samples/ec2
-      - zip deoa-ec2-examples.zip *.*
-      - 'aws s3 sync . s3://deoa-wkshop-abcd'
-      - cd ../beanstalk
-      - zip deoa-beanstalk-examples.zip *.*
-      - 'aws s3 sync . s3://deoa-wkshop-abcd'
+        zip -r doea-ec2-examples.zip ./samples/ec2 -j -x '*.git*'
+      - >-
+        zip -r doea-beanstalk-examples.zip ./samples/beanstalk -j -x '*.git*'
+      - >-
+        aws s3 sync . s3://$PIPELINE_BUCKET
   post_build:
     commands:
       - echo In buildspec-setup.yml Build completed on `date`

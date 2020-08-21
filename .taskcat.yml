@@ -18,8 +18,8 @@ tests:
   beanstalk:
     parameters:
       EmailAddress: fake-email@fake-fake-fake-email.com
-      S3Bucket: deoa-wkshop-abcd
-      S3Key: deoa-beanstalk-examples.zip
-      CodeCommitS3Bucket: deoa-wkshop-abcd
-      CodeCommitS3Key: deoa-beanstalk-examples.zip
+      S3Bucket: S3_BUCKET_TOKEN
+      S3Key: doea-beanstalk-examples.zip
+      CodeCommitS3Bucket: S3_BUCKET_TOKEN
+      CodeCommitS3Key: doea-beanstalk-examples.zip
     template: ./samples/beanstalk/pipeline.yml

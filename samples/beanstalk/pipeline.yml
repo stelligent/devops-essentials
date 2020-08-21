@@ -26,7 +26,7 @@ Parameters:
     AllowedPattern: "[\\x20-\\x7E]*"
     ConstraintDescription: Can contain only ASCII characters.
   S3Key:
-    Description: S3 Bucket that hosts the application code
+    Description: Zip file that contains application code 
     Type: String
     Default: html.zip
     AllowedPattern: "[\\x20-\\x7E]*"

@@ -80,9 +80,10 @@ Resources:
             Ref: "MySNSTopic"
           Id: "PipelineNotificationTopic"
           InputTransformer:
-            InputTemplate: '"The Pipeline <pipeline> has failed. Go to https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/<pipeline>" '
+            InputTemplate: '"The Pipeline <pipeline> has failed. Go to https://console.aws.amazon.com/codepipeline/home?region=<region>#/view/<pipeline>" '
             InputPathsMap:
               pipeline: "$.detail.pipeline" 
+              region: "$.region"
   ArtifactBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete

@@ -16,7 +16,7 @@ Parameters:
 
   GitHubBranch:
     Type: String
-    Default: master
+    Default: main
     Description: The branch of the repo to continuously deploy.
 
   GitHubToken:

